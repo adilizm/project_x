@@ -24,11 +24,37 @@
 
     <!-- custom javascript -->
     <script src="{{asset('bootstrap_ecom/js/script.js')}}" type="text/javascript"></script>
+    <style>
+        html, body {
+  height: 100%;
+}
+
+#wrap {
+  min-height: 100%;
+}
+
+#main {
+  overflow:auto;
+  padding-bottom:410px; /* this needs to be bigger than footer height*/
+}
+
+.footer {
+  position: relative;
+  margin-top: -396px; /* negative value of footer height */
+  height: 396px;
+  clear:both;
+  padding-top:20px;
+} 
+    </style>
     @yield('head')
 </head>
 <body>
-    @yield('content')
-
+    <div id="wrap">
+        <div id="main" class="container clear-top">
+            @yield('content')
+        </div>
+    </div>
+    @extends('layouts.footer')
     @yield('script')
 
 </body>

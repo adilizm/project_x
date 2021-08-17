@@ -18,9 +18,8 @@ use App\Http\Middleware\Authenticate;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () {   return view('welcome');});
+Route::get('/register_vondeur', function () { return view('register_vondeur'); })->name('login.vondeur');
 
 Route::prefix('managment')->middleware([Authenticate::class])->group(function () {
     Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
