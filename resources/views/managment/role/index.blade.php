@@ -6,7 +6,7 @@
 
 @section('managment_content')
 <section class="content">
-
+@include('managment.layout.flash_messages')
 <!-- Default box -->
 <div class="card">
   <div class="card-header d-flex">
@@ -40,8 +40,8 @@
                     <td>{{$role->name}}</td>
                     <td>{{$role->number_user_with_that_role}}</td>
                     <td>
-                        <a href="#" class="mx-1" ><i class="fas fa-edit"></i></a>
-                        <a href="{{ route('roles.destroy',$role->id )}}" class="mx-1"  ><i class="fas fa-trash-alt"></i></a>
+                        <a href="{{ route('roles.edit', encrypt($role->id))}}" class="mx-1" ><i class="fas fa-edit"></i></a>
+                        <a href="{{ route('roles.destroy',encrypt($role->id) )}}" class="mx-1"  ><i class="fas fa-trash-alt"></i></a>
                     </td>
                     
                 </tr>

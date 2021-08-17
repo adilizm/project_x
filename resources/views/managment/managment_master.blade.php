@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="/AdminLTE3/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/AdminLTE3/css/adminlte.min.css">
+  <!-- toastr css  -->
+  <link rel="stylesheet" href="/toastr/toastr.min.css">
+  <!-- toastr js  -->
+  <script src="/toastr/toastr.min.js"></script>
+
   @yield('managment_head')
 
 @endsection
