@@ -6,7 +6,6 @@
 
 @section('managment_content')
 <section class="content">
-@include('managment.layout.flash_messages')
 <!-- Default box -->
 <div class="card">
   <div class="card-header d-flex">

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\VondeurController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
@@ -18,8 +19,9 @@ use App\Http\Middleware\Authenticate;
 |
 */
 
-Route::get('/', function () {   return view('welcome');});
+Route::get('/', function () {   return view('frantend.home');})->name('home');
 Route::get('/register_vondeur', function () { return view('register_vondeur'); })->name('login.vondeur');
+Route::post('/register_vondeur', [VondeurController::class,'create_vondeur'])->name('create_vondeur');
 
 Route::prefix('managment')->middleware([Authenticate::class])->group(function () {
     Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
@@ -34,6 +36,8 @@ Route::prefix('managment')->middleware([Authenticate::class])->group(function ()
     Route::get('users', [UsersController::class,'index'])->name('users.index');
     Route::get('users/creer', [UsersController::class,'create'])->name('users.create');
     Route::post('users/store', [UsersController::class,'store'])->name('users.store');
+    Route::post('users/change_Role', [UsersController::class,'change_role'])->name('users.change_Role');
+    Route::get('users/login/{id}', [UsersController::class,'login'])->name('users.login');
 
     
 });

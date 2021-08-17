@@ -2,11 +2,11 @@
 
 @section('managment_head')
 
+
 @stop
 
 @section('managment_content')
 <section class="content">
-
 <!-- Default box -->
 <div class="card">
   <div class="card-header d-flex">
@@ -43,10 +43,22 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->phone}}</td>
                     <td>{{$user->email}}</td>
-                    <td>{{$user->Role->name}}</td>
+                    <td>
+                        <form action="{{ route('users.change_Role')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{$user->id}}">
+                            <select onchange="this.form.submit()" class="form-control" name="role">
+                            @foreach($Roles as $key=>$role)
+                            <option @if($user->Role->id == $role->id) selected @endif value="{{$role->id}}">{{$role->name}}</option>
+                            @endforeach
+                            </select>
+                        </form>
+                    </td>
                     <td>
                         <a href="#" class="mx-1" ><i class="fas fa-user-edit"></i></a>
-                        <a href="#" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
+                        @if(Auth::user()->id != $user->id)
+                        <a href="{{ route('users.login',encrypt($user->id))}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
+                        @endif
                     </td>
                     
                 </tr>
@@ -63,5 +75,5 @@
 @stop
 
 @section('managment_script')
-
+    
 @stop

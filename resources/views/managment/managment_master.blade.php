@@ -1,7 +1,34 @@
-@extends('../master')
 
-@section('head')
-  <!-- Font Awesome -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- jQuery -->
+    <script src="{{asset('bootstrap_ecom/js/jquery-2.0.0.min.js')}}" type="text/javascript"></script>
+
+    <!-- Bootstrap4 files-->
+    <script src="{{asset('bootstrap_ecom/js/bootstrap.bundle.min.js')}}" type="text/javascript"></script>
+    <link href="{{asset('bootstrap_ecom/css/bootstrap.css')}}" rel="stylesheet" type="text/css"/>
+
+    <!-- Fonticons -->
+    <link href="{{asset('bootstrap_ecom/fonts/fontawesome/css/all.min.css')}}" type="text/css" rel="stylesheet">
+    <link href="{{asset('bootstrap_ecom/fonts/feathericons/css/iconfont.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('bootstrap_ecom/fonts/material-icons/css/materialdesignicons.css')}}" rel="stylesheet" type="text/css" />
+
+    <!-- custom style -->
+    <link href="{{asset('bootstrap_ecom/css/ui.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('bootstrap_ecom/css/responsive.css')}}" rel="stylesheet" />
+    <link href="{{asset('css/app.css')}}" rel="stylesheet" />
+
+    <!-- custom javascript -->
+    <script src="{{asset('bootstrap_ecom/js/script.js')}}" type="text/javascript"></script>
+    <script src="{{asset('js/app.js')}}" type="text/javascript"></script>
+    
+     <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('AdminLTE3/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="/AdminLTE3/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -11,15 +38,15 @@
   <link rel="stylesheet" href="/toastr/toastr.min.css">
   <!-- toastr js  -->
   <script src="/toastr/toastr.min.js"></script>
-
   @yield('managment_head')
 
-@endsection
-
-@section('content')
- <!-- Site wrapper -->
+</head>
+<body>
+    
+    <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Navbar -->
+  @include('managment.layout.flash_messages')
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -244,10 +271,9 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-@endsection
-@section('script')
+
      <!-- jQuery -->
-    <script src="/AdminLTE3/plugins/jquery/jquery.min.js"></script>
+     <script src="/AdminLTE3/plugins/jquery/jquery.min.js"></script>
      <!-- Bootstrap 4 -->
     <script src="/AdminLTE3/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
@@ -256,4 +282,6 @@
     <script src="/AdminLTE3/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes --> 
     @yield('managment_script')
-@endsection
+</body>
+</html>
+
