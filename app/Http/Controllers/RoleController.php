@@ -77,7 +77,8 @@ class RoleController extends Controller
         }
         $role->permissions=json_encode($permitions);
         $role->save();
-        return back();
+        return redirect()->Route('roles.index')->with('success','le Role: <strong>'.$role->name.'</strong> a été enregistré !');
+
     }
 
     /**
@@ -97,9 +98,22 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
-    {
-        //
+    public function edit($id)
+    {   
+
+        if( !in_array( "role.edit", json_decode(Auth::user()->Role->permissions))){
+            abort(403, 'Unauthorized action.');
+        }
+        $role=Role::find(decrypt($id));
+        $auths=[];
+        $autorisation_parents= Autorisation::where('is_parent','1')->get();
+            foreach($autorisation_parents as $auth_parent){
+                $auth_childs= Autorisation::where('parent_id',$auth_parent->id)->get();
+                $auth_parent['childs']=$auth_childs;
+                array_push($auths,$auth_parent);
+            }   
+        return view('managment.role.edit',compact('role','auths'));
+       
     }
 
     /**
@@ -109,11 +123,22 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
         if( !in_array( "role.edit", json_decode(Auth::user()->Role->permissions))){
             abort(403, 'Unauthorized action.');
         }
+        $role=Role::find(decrypt($id));
+        $role->name= $request->name;
+        $permitions= [];
+        if( $request->permissions!= null){
+            foreach($request->permissions as $permition){
+                array_push($permitions,$permition);
+            }
+        } 
+        $role->permissions=json_encode($permitions);
+        $role->save();
+        return redirect()->Route('roles.index')->with('success','le Role: <strong>'.$role->name.'</strong> a été modifier!');
 
     }
 
@@ -123,16 +148,18 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
         if( !in_array( "role.destroy", json_decode(Auth::user()->Role->permissions))){
             abort(403, 'Unauthorized action.');
         }
+        $role=Role::find(decrypt($id));
+
         $users_with_role= User::where('role_id',$role->id)->get();
         foreach($users_with_role as $user){
             $user->update(['role_id'=>5]);            
         }
         $role->destroy($role->id);
-        return  redirect()->route('roles.index');
+        return  redirect()->route('roles.index')->with('success','le Role: <strong>'.$role->name.'</strong> est supprimer!');
     }
 }

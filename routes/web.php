@@ -28,7 +28,9 @@ Route::prefix('managment')->middleware([Authenticate::class])->group(function ()
     Route::get('roles', [RoleController::class,'index'])->name('roles.index');
     Route::get('roles/creer', [RoleController::class,'create'])->name('roles.create');
     Route::post('roles/store', [RoleController::class,'store'])->name('roles.store');
-    Route::get('roles/destroy/{role}', [RoleController::class,'destroy'])->name('roles.destroy');
+    Route::get('roles/modifier/{id}', [RoleController::class,'edit'])->name('roles.edit');
+    Route::put('roles/update/{id}', [RoleController::class,'update'])->name('roles.update');
+    Route::get('roles/destroy/{id}', [RoleController::class,'destroy'])->name('roles.destroy');
 
     Route::get('users', [UsersController::class,'index'])->name('users.index');
     Route::get('users/creer', [UsersController::class,'create'])->name('users.create');
