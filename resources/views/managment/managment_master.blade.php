@@ -188,14 +188,22 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-          @if( in_array( "1", json_decode(Auth::user()->Role->permissions)))
-            <li class="nav-item">
-                <a href="{{route('roles.index')}}" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Rols</p>
-                </a>
-            </li>
-           @endif
+        @if( in_array( "role.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('roles.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Rols</p>
+            </a>
+        </li>
+        @endif
+        @if( in_array( "users.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('users.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Utilisateurs</p>
+            </a>
+        </li>
+        @endif
 
         </ul>
       </nav>

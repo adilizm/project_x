@@ -9,8 +9,11 @@
 
 <!-- Default box -->
 <div class="card">
-  <div class="card-header">
+  <div class="card-header d-flex">
     <h3 class="card-title">Roles</h3>
+    <div class=" w-100 float-right">
+        <a href="{{ route('roles.create')}}" class="btn bg-gradient-primary btn-sm float-right">ajouter un role</a>
+    </div>
   </div>
   <div class="card-body p-0">
     <table class="table table-striped projects">
@@ -20,10 +23,10 @@
                     #
                 </th>
                 <th style="width: 30%">
-                    Role Name
+                le Rôle
                 </th>
                 <th style="width: 30%">
-                    Number user with this role
+                Numéro d'utilisateur avec ce rôle
                 </th>
                 <th style="width: 30%">
                    option
@@ -35,8 +38,11 @@
                 <tr>
                     <td>{{$role->id}}</td>
                     <td>{{$role->name}}</td>
-                    <td>{{$role->name}}</td>
-                    <td>{{$role->name}}</td>
+                    <td>{{$role->number_user_with_that_role}}</td>
+                    <td>
+                        <a href="#" class="mx-1" ><i class="fas fa-edit"></i></a>
+                        <a href="{{ route('roles.destroy',$role->id )}}" class="mx-1"  ><i class="fas fa-trash-alt"></i></a>
+                    </td>
                     
                 </tr>
 
