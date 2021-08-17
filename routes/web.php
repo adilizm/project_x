@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
@@ -23,7 +24,16 @@ Route::get('/', function () {
 
 Route::prefix('managment')->middleware([Authenticate::class])->group(function () {
     Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
+
     Route::get('roles', [RoleController::class,'index'])->name('roles.index');
+    Route::get('roles/creer', [RoleController::class,'create'])->name('roles.create');
+    Route::post('roles/store', [RoleController::class,'store'])->name('roles.store');
+    Route::get('roles/destroy/{role}', [RoleController::class,'destroy'])->name('roles.destroy');
+
+    Route::get('users', [UsersController::class,'index'])->name('users.index');
+    Route::get('users/creer', [UsersController::class,'create'])->name('users.create');
+    Route::post('users/store', [UsersController::class,'store'])->name('users.store');
+
     
 });
 

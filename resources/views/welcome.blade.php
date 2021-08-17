@@ -28,7 +28,7 @@
                             <li><a class="dropdown-item" href="#"> Mon profil </a></li>
                             <li><a class="dropdown-item" href="#"> Ma carte </a></li>
                             @if(Auth::user()->role_id == 1)
-                            <li><a class="dropdown-item" href="#"> Admin managment  </a></li>
+                            <li><a class="dropdown-item" href="{{ route('managment.index')}}"> Admin managment  </a></li>
                             @elseif(Auth::user()->role_id == 2)
                             <li><a class="dropdown-item" href="#"> manager managment  </a></li>
                             @elseif(Auth::user()->role_id == 3)
