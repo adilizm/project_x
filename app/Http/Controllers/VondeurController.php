@@ -16,9 +16,10 @@ class VondeurController extends Controller
             'email' => 'required|email',
             'phone' => 'required|max:13',
             'password' => 'required|min:6|confirmed',
-           
             ]);
+            
         $user= new User();
+
         $user->create([
             'name'=>$request->nom .' '. $request->prenom ,
             'email'=>$request->email,
