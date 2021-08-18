@@ -52,14 +52,7 @@
 		<input type="email" name="email" class="form-control" placeholder="">
 		<small class="form-text text-muted">Nous ne partagerons jamais votre e-mail avec quelqu'un d'autre.</small>
 	</div> <!-- form-group end.// -->
-		<div class="form-group ">
-		  <label>Ville <span class="text-danger">*</span></label>
-		  <input type="text" name="ville" class="form-control">
-		</div> <!-- form-group end.// -->
-		<div class="form-group ">
-		  <label>Adresse <span class="text-danger">*</span></label>
-		  <textarea  name="address" class="form-control" ></textarea>
-		</div> <!-- form-group end.// -->
+		
         
 	<div class="form-row">
 		<div class="form-group col-md-6">

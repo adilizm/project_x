@@ -4,6 +4,7 @@ use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VondeurController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
@@ -23,9 +24,20 @@ Route::get('/', function () {   return view('frantend.home');})->name('home');
 Route::get('/register_vondeur', function () { return view('register_vondeur'); })->name('login.vondeur');
 Route::post('/register_vondeur', [VondeurController::class,'create_vondeur'])->name('create_vondeur');
 
+
+Route::get('shops', [ShopController::class,'index'])->name('shops.index');
+
+Route::middleware([Authenticate::class])->group(function () {
+    Route::get('shops/create', [ShopController::class,'create'])->name('shops.create');
+    Route::post('shops/enregistre', [ShopController::class,'save'])->name('shops.save');
+
+});
+
+
 Route::prefix('managment')->middleware([Authenticate::class])->group(function () {
     Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
 
+    /* roles Routes */
     Route::get('roles', [RoleController::class,'index'])->name('roles.index');
     Route::get('roles/creer', [RoleController::class,'create'])->name('roles.create');
     Route::post('roles/store', [RoleController::class,'store'])->name('roles.store');
@@ -33,6 +45,7 @@ Route::prefix('managment')->middleware([Authenticate::class])->group(function ()
     Route::put('roles/update/{id}', [RoleController::class,'update'])->name('roles.update');
     Route::get('roles/destroy/{id}', [RoleController::class,'destroy'])->name('roles.destroy');
 
+     /* useres Routes */
     Route::get('users', [UsersController::class,'index'])->name('users.index');
     Route::get('users/creer', [UsersController::class,'create'])->name('users.create');
     Route::post('users/store', [UsersController::class,'store'])->name('users.store');

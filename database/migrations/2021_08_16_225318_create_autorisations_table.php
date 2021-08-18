@@ -21,6 +21,7 @@ class CreateAutorisationsTable extends Migration
             $table->integer('is_parent')->default(0);
             $table->integer('parent_id')->default(null);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
