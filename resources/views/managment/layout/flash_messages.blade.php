@@ -23,7 +23,9 @@
 @endif
   
 @if ($errors->any())
-<script>
-    toastr.error("{!! $message !!}");
-</script>
+    @foreach ($errors->all() as $error)
+        <script>
+            toastr.error("{!! $error !!}");
+        </script>
+    @endforeach
 @endif

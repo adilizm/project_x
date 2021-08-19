@@ -30,7 +30,7 @@ class ShopController extends Controller
             ]); 
             
         $fileName = time().'_'.$request->logo->getClientOriginalName();
-        $filePath = $request->file('logo')->storeAs('uploads', $fileName, 'public');
+        $filePath = $request->file('logo')->storeAs('shops', $fileName, 'public');
         
         $shop= new Shop();
         $shop->create([
@@ -43,7 +43,10 @@ class ShopController extends Controller
           'logo_path'=>$filePath, 
           'user_id'=>Auth::user()->id, 
       ]);
-      dd($shop);
+     
     }
-    
+    public function register_complet(){
+        $shop = Auth::user()->Shop;
+        return view('shops.register_complet',compact('shop'));
+    }
 }

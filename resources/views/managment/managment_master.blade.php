@@ -224,7 +224,7 @@
         <li class="nav-item">
             <a href="{{route('roles.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Rols</p>
+            <p>les rôles</p>
             </a>
         </li>
         @endif
@@ -232,7 +232,15 @@
         <li class="nav-item">
             <a href="{{route('users.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
-            <p>Utilisateurs</p>
+            <p>les utilisateurs</p>
+            </a>
+        </li>
+        @endif
+        @if( in_array( "category.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('category.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Les categories</p>
             </a>
         </li>
         @endif
