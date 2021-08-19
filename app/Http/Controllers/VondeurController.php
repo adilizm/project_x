@@ -10,14 +10,17 @@ use Illuminate\Support\Facades\Hash;
 class VondeurController extends Controller
 {
     public function create_vondeur(){
+        if (Auth::user() != null) {
+            if (Auth::user()->role_id == 5 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4) {  /* 5 is role_id for client */
+                return view('frantend.convert_client_to_vondeur');
+            }
 
-        if(Auth::user()->role_id == 5 || Auth::user()->role_id == 2 || Auth::user()->role_id == 4 ){  /* 5 is role_id for client */
-            return view('frantend.convert_client_to_vondeur');
+            if (Auth::user()->role_id == 3) {
+                return redirect()->route('home');
+            }
         }
-        if(Auth::user()->role_id == 3){
-            return redirect()->route('home');
-        }
-         return view('register_vondeur');
+        
+        return view('register_vondeur');
     }
 
 

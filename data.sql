@@ -27,9 +27,9 @@ INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `d
 (5, 'client', '[]', '2021-07-27 03:03:22', '2021-07-27 03:03:22', NULL),
 (6, 'voircategorie', '[\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\"]', '2021-08-18 21:46:39', '2021-08-18 21:46:39', NULL);
 
-INSERT INTO `shops` (`id`, `user_id`, `name`, `Ville`, `address`, `map_latitude`, `map_longitude`, `logo_path`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'bi3shop', 'agadir', 'hay sallam', '30.403141238623295', '-9.548317266209384', 'uploads/1629313976_pikatshu.png', 'description de la boutique description de la boutique description de la boutique description de la boutique description de la boutique description de la boutique description de la boutique', '2021-08-18 18:12:57', '2021-08-18 18:12:57', NULL);
-
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `role_id`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'admin', 'admin@yahoo.com', NULL, '$2y$10$rIqF1C0Z8fPvogZjkVYvD.ygJiFzIF62ndrvOv5A2t9lnmivVqHzK', '0606060606', 1, 'NPyI0ZKegHK7Km6VeaBUcYTggySDRxR7Dt1W8xvssbSGldSco2HZSpgI2ZRt', '2021-08-15 10:16:31', '2021-08-18 18:08:36', NULL),
 (2, 'user test', 'test@test.ma', NULL, '$2y$10$nvbkKYGbHMXpMh540vCkU.Tdj8hVJlMmguYVHxXbFlGk1oRrdq3di', '0303030303', 3, 'UflJIl36180NmIuJs5zqcslGsrHNYZ4yeL7M63ZjoKTYTGMSoh9sPhQpKnkA', '2021-08-17 01:16:08', '2021-08-18 18:10:55', NULL);
+
+INSERT INTO `shops` (`id`, `user_id`, `name`, `Ville`, `address`, `map_latitude`, `map_longitude`, `logo_path`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'bi3shop', 'agadir', 'hay sallam', '30.403141238623295', '-9.548317266209384', 'uploads/1629313976_pikatshu.png', 'description de la boutique description de la boutique description de la boutique description de la boutique description de la boutique description de la boutique description de la boutique', '2021-08-18 18:12:57', '2021-08-18 18:12:57', NULL);
