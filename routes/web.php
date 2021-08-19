@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
@@ -21,8 +22,8 @@ use App\Http\Middleware\Authenticate;
 */
 
 Route::get('/', function () {   return view('frantend.home');})->name('home');
-Route::get('/register_vondeur', function () { return view('register_vondeur'); })->name('login.vondeur');
-Route::post('/register_vondeur', [VondeurController::class,'create_vondeur'])->name('create_vondeur');
+Route::get('/register_vondeur', [VondeurController::class,'create_vondeur'])->name('login.vondeur');
+Route::post('/save_vondeur', [VondeurController::class,'Register_vondeur'])->name('create_vondeur');
 
 
 Route::get('shops', [ShopController::class,'index'])->name('shops.index');
@@ -30,6 +31,9 @@ Route::get('shops', [ShopController::class,'index'])->name('shops.index');
 Route::middleware([Authenticate::class])->group(function () {
     Route::get('shops/create', [ShopController::class,'create'])->name('shops.create');
     Route::post('shops/enregistre', [ShopController::class,'save'])->name('shops.save');
+    Route::get('shops/enregistre/complete', [ShopController::class,'register_complet'])->name('shops.register_complet');
+
+    Route::post('client/vondeur', [VondeurController::class,'VondeurController'])->name('client_to_vondeur');
 
 });
 
@@ -52,7 +56,17 @@ Route::prefix('managment')->middleware([Authenticate::class])->group(function ()
     Route::post('users/change_Role', [UsersController::class,'change_role'])->name('users.change_Role');
     Route::get('users/login/{id}', [UsersController::class,'login'])->name('users.login');
 
-    
+     /* useres Routes */
+    Route::get('categorie', [CategoryController::class,'index'])->name('category.index');
+    Route::get('categorie/creer', [CategoryController::class,'create'])->name('category.create');
+    Route::post('categorie/store', [CategoryController::class,'store'])->name('category.store');
+  
+
+    Route::prefix('vendeur')->middleware([Authenticate::class])->group(function () {
+        Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
+
+    });
+
 });
 
 Route::get('/index', function () {

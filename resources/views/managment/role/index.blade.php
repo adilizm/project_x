@@ -9,7 +9,7 @@
 <!-- Default box -->
 <div class="card">
   <div class="card-header d-flex">
-    <h3 class="card-title">Roles</h3>
+    <h3 class="card-title">LES RÔLES</h3>
     <div class=" w-100 float-right">
         <a href="{{ route('roles.create')}}" class="btn bg-gradient-primary btn-sm float-right">ajouter un role</a>
     </div>
