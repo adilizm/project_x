@@ -20,13 +20,15 @@ class CategoryController extends Controller
         if( !in_array( "category.index", json_decode(Auth::user()->Role->permissions))){
             abort(403, 'Unauthorized action.');
         }
-        $categories=[];
-        $temp_categories=Category::whereNull('parent_id')->get();
-        foreach($temp_categories as $temp_category){
-            $category=Category::where('parent_id',$temp_category->id)->get();
-            $temp_category['categories']=$category;
+       
+        $categories=Category::paginate(3);
+        /* foreach($temp_categories as $temp_category){
+            if($temp_category->parent_id != null){
+                $category=Category::where('parent_id',$temp_category->id)->first();
+                $temp_category['parent_category']=$category;
+            }
             array_push($categories,$temp_category);
-        }
+        } */
        
         return view('managment.categories.index',compact('categories'));
     }
