@@ -30,7 +30,25 @@ class ProductsController extends Controller
             return view('managment.products.manager.index');
         } else if (Auth::user()->role_id == 3) { // vondeur
             
-            $products = Product::where('shop_id', Auth::user()->Shop->id)->with('Images')->paginate(10);
+            $products = Product::where('shop_id', Auth::user()->Shop->id)->with('Images')->orderBy('created_at', 'desc');
+            $date = $request->date;
+            $nbr_products = $request->nbr_products;
+            $sort_search = null;
+
+            if ($request->has('search')){
+                $sort_search = $request->search;
+                $products = $products->where('name', 'like', '%'.$sort_search.'%');
+            }
+            if ($date != null) {
+                $products = $products->where('created_at', '>=', date('Y-m-d', strtotime(explode(" to ", $date)[0])))->where('created_at', '<=', date('Y-m-d', strtotime(explode(" to ", $date)[1])));
+            }
+
+            if ($nbr_products != null) {
+                $products = $products->paginate($nbr_products);
+            }else{
+                $products = $products->paginate(10);
+            }
+
             return view('managment.products.vondeur.index', compact('products'));
         } else {
             abort(403);

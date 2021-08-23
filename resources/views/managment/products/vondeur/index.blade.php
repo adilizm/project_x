@@ -24,6 +24,7 @@
         <form class="mx-2" action="{{ route('products.index') }}" method="get">
           @csrf
           <div class="d-flex justify-content-end">
+            <input type="number" min="1" class="form-control mr-1" placeholder="10" name="nbr_products" >
             <select name="" class="form-control mr-1" id="">
               <option> filtrer Des produit</option>
               <option value="new">En attente</option>
