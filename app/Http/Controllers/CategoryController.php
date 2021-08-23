@@ -53,8 +53,8 @@ class CategoryController extends Controller
         }
         $request->validate([
             'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
-            'name' => 'required|max:20',
-            'description' => 'required|max:400',
+            'name' => 'required|max:50',
+            'description' => 'required|max:300000',
             ]); 
             
         $fileName = time().'_'.$request->logo->getClientOriginalName();
