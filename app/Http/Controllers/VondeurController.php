@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Vondeur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +43,12 @@ class VondeurController extends Controller
             'phone'=>$request->phone,
             'role_id'=>3,
             'password'=>Hash::make($request->password),
+        ]);
+
+        $vonder= new Vondeur();
+        
+        $vonder->create([
+            'user_id'=>$user->id,
         ]);
 
         auth()->login($user, true);

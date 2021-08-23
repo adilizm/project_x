@@ -21,14 +21,7 @@ class CategoryController extends Controller
             abort(403, 'Unauthorized action.');
         }
        
-        $categories=Category::paginate(3);
-        /* foreach($temp_categories as $temp_category){
-            if($temp_category->parent_id != null){
-                $category=Category::where('parent_id',$temp_category->id)->first();
-                $temp_category['parent_category']=$category;
-            }
-            array_push($categories,$temp_category);
-        } */
+        $categories=Category::All();
        
         return view('managment.categories.index',compact('categories'));
     }
@@ -43,7 +36,7 @@ class CategoryController extends Controller
         if( !in_array( "category.create", json_decode(Auth::user()->Role->permissions))){
             abort(403, 'Unauthorized action.');
         }
-        $parent_categories=Category::whereNull('parent_id')->get();
+        $parent_categories=Category::all();
         return view('managment.categories.create',compact('parent_categories'));
     }
 
@@ -69,11 +62,10 @@ class CategoryController extends Controller
 
         $category=new Category();
 
-        if($request->parent_id !=null){
+        if($request->parent_id == 0){
             $category->create([
                 'name'=>$request->name,
                 'description'=>$request->description,
-                
                 'slug'=>Str::slug($request->name),
                 'picture'=>$filePath,
             ]);

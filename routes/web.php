@@ -6,6 +6,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VondeurController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
@@ -32,15 +33,17 @@ Route::middleware([Authenticate::class])->group(function () {
     Route::get('shops/create', [ShopController::class,'create'])->name('shops.create');
     Route::post('shops/enregistre', [ShopController::class,'save'])->name('shops.save');
     Route::get('shops/enregistre/complete', [ShopController::class,'register_complet'])->name('shops.register_complet');
-
+    
     Route::post('client/vondeur', [VondeurController::class,'VondeurController'])->name('client_to_vondeur');
 
 });
 
 
 Route::prefix('managment')->middleware([Authenticate::class])->group(function () {
-    Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
 
+    Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
+    Route::get('products', [ProductsController::class,'index'])->name('products.index');
+     
     /* roles Routes */
     Route::get('roles', [RoleController::class,'index'])->name('roles.index');
     Route::get('roles/creer', [RoleController::class,'create'])->name('roles.create');
@@ -62,10 +65,21 @@ Route::prefix('managment')->middleware([Authenticate::class])->group(function ()
     Route::post('categorie/store', [CategoryController::class,'store'])->name('category.store');
   
 
-    Route::prefix('vendeur')->middleware([Authenticate::class])->group(function () {
-        Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
+    Route::prefix('vendeur')->group(function () {
+        //this route may neot be important check it 
+        Route::get('control', [ManagmentController::class,'index'])->name('managment.vondeur.index');
+
+        Route::prefix('products')->group(function () {
+            Route::get('create', [ProductsController::class,'vondeur_create'])->name('vondeur.products.create');
+            Route::post('store', [ProductsController::class,'vondeur_store'])->name('vondeur.products.store');
+
 
     });
+
+
+    });
+
+     
 
 });
 

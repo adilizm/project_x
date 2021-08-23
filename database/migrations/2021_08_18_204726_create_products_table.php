@@ -19,17 +19,16 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->constrained();
             $table->string('name');
             $table->string('slug');
-            $table->string('description')->nullable()->default(null);
+            $table->longText('description')->nullable()->default(null);
             $table->string('prix');
             $table->string('unite')->nullable()->default(null);
-            $table->integer('min_quantity');
+            $table->integer('min_quantity')->default(1);
             $table->text('keywords')->nullable()->default(null);
             $table->json("variants")->nullable()->default(null);
-            $table->boolean('published')->default(0);
-            $table->boolean('confirmed')->default(0);
+            $table->string('status')->default('new'); // draft - new - published - unpublished  - banned
+            $table->boolean('confermed')->default(0); // before change status to public check this confermation of admin 
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

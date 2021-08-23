@@ -17,14 +17,24 @@
         @csrf
         <div class="form-group">
           <label for="name">Nom</label>
-          <input type="text" class="form-control" id="name" name="name" required placeholder="">
+          <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required placeholder="">
         </div>
     
         <div class="form-group">
           <label for="name">Description</label>
-          <textarea type="text" class="form-control" name="description" required></textarea>
+          <textarea type="text" class="form-control" name="description" required>{{ old('description') }}</textarea>
         </div>
-    
+        
+
+        <div class="form-group">
+        <label for="name">catégorie mére</label>
+                  <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"  tabindex="-1" aria-hidden="true" name="parent_id" >
+                   <option value="0">selectioner une catégorie</option>
+                  @foreach($parent_categories as $parent_category)
+                    <option value="{{$parent_category->id}}">{{$parent_category->name}}</option>
+                    @endforeach
+                  </select>
+                 </div>
         <div class="custom-file">
             <input type="file" class="custom-file-input" name="logo" required id="customFile">
             <label class="custom-file-label" for="customFile">Choose file</label>
@@ -32,15 +42,8 @@
         <div>
             <img id="target" style=" max-height: 350px;" />
         </div>
-        <div class="form-group">
-          <label for="name">catégorie mére</label>
-          <select name="parent_id" class="form-control">
-              <option>sélectionnez une catégorie</option>
-              @foreach($parent_categories as $parent_category)
-              <option value="{{$parent_category->id}}">{{$parent_category->name}}</option>
-              @endforeach
-          </select>
-        </div>
+      
+        
         <div class=" w-100 float-right">
             <button type="submit" class="btn bg-gradient-primary btn-sm float-right">Enregistrer</a>
         </div>

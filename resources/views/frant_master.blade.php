@@ -32,7 +32,7 @@
                             @elseif(Auth::user()->role_id == 2)
                             <li><a class="dropdown-item" href="#"> manager managment  </a></li>
                             @elseif(Auth::user()->role_id == 3)
-                            <li><a class="dropdown-item" href="#"> vendor managment  </a></li>
+                            <li><a class="dropdown-item" href="{{ route('managment.index')}}"> vendor managment  </a></li>
                             @elseif(Auth::user()->role_id == 4)
                             <li><a class="dropdown-item" href="#"> livreur managment  </a></li>
                             @endif
