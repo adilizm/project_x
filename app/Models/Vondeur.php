@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductImage extends Model
+class Vondeur extends Model
 {
     use HasFactory,SoftDeletes;
-
     protected $guarded=['id'];
 
-    public function Product()
+    public function User()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasone(User::class);
     }
 }

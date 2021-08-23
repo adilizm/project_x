@@ -23,6 +23,7 @@ class CreateShopsTable extends Migration
             $table->string('map_longitude')->nullable();
             $table->string('logo_path');
             $table->text('description');
+            $table->boolean('is_published')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

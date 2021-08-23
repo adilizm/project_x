@@ -52,4 +52,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Shop::class);
     }
+    public function Manager()
+    {
+        return $this->hasOne(Manager::class);
+    }
+    public function Livreur()
+    {
+        return $this->hasOne(Livreur::class);
+    }
+    public function Vondeur()
+    {
+        return $this->hasone(Vondeur::class);
+    }
 }

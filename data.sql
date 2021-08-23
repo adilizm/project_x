@@ -14,10 +14,12 @@ INSERT INTO `autorisations` (`id`, `name`, `autorisation_key`, `autorisation_des
 (12, '', 'category.index', 'voir les categories', 0, 11, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL),
 (13, '', 'category.create', 'cree une nouvelle categorie', 0, 11, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL),
 (14, '', 'category.edit', 'editer les categories', 0, 11, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL),
-(15, '', 'category.destroy', 'supprimer les categories', 0, 11, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL);
-
-INSERT INTO `categories` (`id`, `name`, `slug`, `parent_id`, `description`, `picture`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'unicorn', 'unicorn', NULL, 'this is a new category id', 'categories/1629332973_e09d0aeaa1bf41189f01382e265bd270.png', '2021-08-18 23:29:33', '2021-08-18 23:29:33', NULL);
+(15, '', 'category.destroy', 'supprimer les categories', 0, 11, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL),
+(16, 'les produits', '', '', 1, 0, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL),
+(17, '', 'products.index', 'voir les produits', 0, 16, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL), 
+(18, '', 'products.create', 'cree une nouvelle produits', 0, 16, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL), 
+(19, '', 'products.edit', 'editer les produits', 0, 16, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL), 
+(20, '', 'products.destroy', 'supprimer les produits', 0, 16, '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL);
 
 INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'admin', '[\"role.index\",\"role.create\",\"role.edit\",\"role.destroy\",\"users.index\",\"users.edit\",\"users.create\",\"users.destroy\",\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\"]', '2021-07-27 03:03:22', '2021-08-18 21:47:10', NULL),

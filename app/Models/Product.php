@@ -14,7 +14,7 @@ class Product extends Model
 
     public function Shop()
     {
-        return $this->hasone(Shop::class);
+        return $this->belongsTo(Shop::class);
     }
     
     public function Images()
