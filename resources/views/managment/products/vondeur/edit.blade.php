@@ -20,20 +20,20 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header d-flex">
-            <h3 class="card-title">Creation d'un produit</h3>
+            <h3 class="card-title">Edition d'un produit</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('vondeur.products.store')}}" method="post" enctype="multipart/form-data">
+            <form action="#" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group ">
                             <label for="prodname">nom</label>
-                            <input type="text" required name="name" class="form-control" id="prodname" aria-describedby="emailHelp">
+                            <input type="text" required name="name" value="{{$product->name}}" class="form-control" id="prodname" aria-describedby="emailHelp">
                         </div>
                         <div class="form-group ">
                             <label for="summernote">Decsription</label>
-                            <textarea id="summernote" name="description"></textarea>
+                            <textarea id="summernote" name="description"> {{ $product->description }} </textarea>
                         </div>
                     </div>
 
@@ -48,15 +48,15 @@
                         </div>
                         <div class="form-group ">
                             <label for="unite">Prix standard</label>
-                            <input type="number" class="form-control" name="standar_prix" id="unite">
+                            <input type="number" value="{{ $product->prix }}" class="form-control" name="standar_prix" id="unite">
                         </div>
                         <div class="form-group ">
                             <label for="unite">unite</label>
-                            <input type="text" class="form-control" name="unite" id="unite">
+                            <input type="text" value="{{ $product->unit }}" class="form-control" name="unite" id="unite">
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" name="save_as_draft" class="custom-control-input" id="customSwitch1">
+                                <input type="checkbox" @if($product->status == 'draft')   checked @endif name="save_as_draft" class="custom-control-input" id="customSwitch1">
                                 <label class="custom-control-label" for="customSwitch1">enregistrer comme brouillon</label>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                     <div class=" col-md-4">
                     <div class="form-group ">
                             <label >les mot cle du produit (max:5)</label>
-                            <input type="text" name="keywords" class="form-control" value="t-shirt" style="width: 100% !important;height:100% !important;" data-role="tagsinput" >
+                            <input type="text" name="keywords" class="form-control" value="" style="width: 100% !important;height:100% !important;" data-role="tagsinput" >
                         </div>
                         <div class="form-group ">
                             <label >Quantité minimum</label>
@@ -112,56 +112,24 @@
                         <div class="form-group ">
                             <button type="button" id="add_variant_to_this_product" onclick="Adding_variants_to_product()" class="btn btn-secondary btn-sm">Ajouter une variante a ce produit</button>
                         </div>
-
-                        <div id="option1" class="form-group  d-none mt-3 mb-3">
+                        @foreach($options as $option)
+                        <div id="{{'option'.$loop->index}}" class="form-group mt-3 mb-3">
                             <hr>
                             <div class="row">
                                 <div class="col-3">
                                     <small class="small-hint">nom de la variant</small>
-                                    <input type="text" name="options[]" class="form-control"  id="option1inpute_name">
+                                    <input type="text" name="options[]" value="{{$option}}" class="form-control"  id="{{'option'.$loop->index.'inpute_name'}}">
                                 </div>
                                 <div class="col-8 option1inpute">
                                     <small class="small-hint">les option doit être séparé par virgule ','</small>
-                                    <input type="text" name="values[]" class="form-control option1" value="" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="option1inpute">
+                                    <input type="text" name="values[]" class="{{'form-control option'.$loop->index}}" value="{{$options_values[$loop->index]}}" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="{{'option'.$loop->index.'inpute'}}">
                                 </div>
                                 <div class="col-1" style="align-self: center;">
-                                    <span onclick='removeOption("option1inpute")' class="btn btn-danger">X</span>
+                                    <span onclick='removeOption("{{'option'.$loop->index.'inpute'}}")' class="btn btn-danger">X</span>
                                 </div>
                             </div>
                         </div>
-                        <div id="option2" class="form-group  d-none mt-3 mb-3">
-                            <hr>
-                            <div class="row">
-                                <div class="col-3">
-                                    <small class="small-hint">nom de la variant</small>
-                                    <input type="text" name="options[]" class="form-control" id="option2inpute_name">
-                                </div>
-                                <div class="col-8 option2inpute">
-                                    <small class="small-hint">les option doit être séparé par virgule ','</small>
-                                    <input type="text" name="values[]" class="form-control option2" value="" style="width: 100% !important;height:unset" data-role="tagsinput" id="option2inpute">
-                                </div>
-                                <div class="col-1" style="align-self: center;">
-                                    <span onclick='removeOption("option2inpute")' class="btn btn-danger">X</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="option3" class="form-group  d-none mt-3 mb-3" style="padding-bottom: 20px;">
-                            <hr>
-                            <div class="row">
-                                <div class="col-3">
-                                    <small class="small-hint">nom de la variant</small>
-                                    <input type="text" name="options[]" class="form-control" id="option3inpute_name">
-                                </div>
-                                <div class="col-8 option3inpute">
-                                    <small class="small-hint">les option doit être séparé par virgule ','</small>
-                                    <input type="text" name="values[]" class="form-control option3" value="" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="option3inpute">
-                                </div>
-                                <div class="col-1" style="align-self: center;">
-                                    <span onclick='removeOption("option3inpute")' class="btn btn-danger">X</span>
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
+                        @endforeach
                         <div class="form-group ">
                             <button type="button" id="btn_generate_prices" onclick="genirate_prices()" class="btn btn-secondary btn-sm d-none">Ajouter le prix de chaque variant</button>
                         </div>

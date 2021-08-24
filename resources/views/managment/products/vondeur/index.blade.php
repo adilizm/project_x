@@ -24,17 +24,22 @@
         <form class="mx-2" action="{{ route('products.index') }}" method="get">
           @csrf
           <div class="d-flex justify-content-end">
-            <input type="number" min="1" class="form-control mr-1" placeholder="10" name="nbr_products" >
-            <select name="" class="form-control mr-1" id="">
-              <option> filtrer Des produit</option>
+            <select name="status" class="form-control mr-1" id="">
+              <option>filtrer Des produit</option>
               <option value="new">En attente</option>
               <option value="published">Publié</option>
               <option value="unpublished">Non Publié</option>
               <option value="draft">Brouillon</option>
               <option value="banned">Refusé</option>
+              <option value="all">100 par page</option>
             </select>
             <input type="text" class="form-control mr-1" placeholder="tapez et Entrer" name="search" id="search">
+            @if(session()->has('100_each_page'))
+            <input type="checkbox" checked  class="d-none" name="delete_100_each_page">
+            <button type="submit" class="btn btn-primary">Annuler le filtre</button>
+            @else
             <button type="submit" class="btn btn-primary">Filtrer</button>
+            @endif
           </div>
         </form>
        
@@ -74,6 +79,7 @@
                     <td>{{$product->name}}</td>
                     <td>{{$product->prix}}</td>
                     <td>0</td>
+                    
                     <td>
                       @if($product->status == "new")
                       <span class="badge badge-info">en attente</span>
@@ -91,7 +97,7 @@
                       {{$product->created_at}}
                     </td>
                     <td>
-                      <a href="#" class="mx-1"><i class="fas fa-edit"></i></a>
+                      <a href="{{ route('vondeur.products.edit',encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit"></i></a>
                     </td>
                   </tr>
 
