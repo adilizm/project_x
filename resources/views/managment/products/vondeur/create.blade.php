@@ -215,7 +215,9 @@
     let option1 = false;
     let option2 = false;
     let option3 = false;
-
+    function Click_btn_generate_prices(){
+        document.getElementById('btn_generate_prices').click();
+    }
     function Adding_variants_to_product() {
         document.getElementById('btn_generate_prices').classList.remove('d-none')
         document.getElementById('btn_generate_prices').classList.add('d-flex')

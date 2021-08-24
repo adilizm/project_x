@@ -10,7 +10,7 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
+use Symfony\Component\VarDumper\VarDumper;
 
 class ProductsController extends Controller
 {
@@ -104,6 +104,7 @@ class ProductsController extends Controller
             'variants_images.*' => 'mimes:png,jpg,jpeg|max:2048',
             'description' => 'required|max:1000000',
             'category' => 'required',
+            'name' => 'required',
         ]);
         $product = new Product();
 
@@ -137,6 +138,8 @@ class ProductsController extends Controller
                                     $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                                     $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                                     $variant['image'] = $filePath;
+                                }else{
+                                    $variant['image'] = null;
                                 }
                                 if ($request['v_i_' . $Counter] != null) {
                                     $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
@@ -164,6 +167,8 @@ class ProductsController extends Controller
                                 $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                                 $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                                 $variant['image'] = $filePath;
+                            }else{
+                                $variant['image'] = null;
                             }
 
                             array_push($variants, $variant);
@@ -189,12 +194,14 @@ class ProductsController extends Controller
                             $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                             $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                             $variant['image'] = $filePath;
+                        }else{
+                            $variant['image'] = null;
                         }
                         array_push($variants, $variant);
                         $Counter++;
                     }
                 } else {
-                    dd($values[0], $request);
+
                     $variant = [];
                     $variant[$request->options[0]] = $value0;
                     if ($request->qtys[$Counter] == null) {
@@ -211,6 +218,8 @@ class ProductsController extends Controller
                         $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                         $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                         $variant['image'] = $filePath;
+                    }else{
+                        $variant['image'] = null;
                     }
                     array_push($variants, $variant);
                     $Counter++;
@@ -237,6 +246,8 @@ class ProductsController extends Controller
                             $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                             $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                             $variant['image'] = $filePath;
+                        }else{
+                            $variant['image'] = null;
                         }
                         array_push($variants, $variant);
                         $Counter++;
@@ -258,6 +269,8 @@ class ProductsController extends Controller
                         $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                         $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                         $variant['image'] = $filePath;
+                    }else{
+                        $variant['image'] = null;
                     }
                     array_push($variants, $variant);
                     $Counter++;
@@ -281,6 +294,8 @@ class ProductsController extends Controller
                     $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                     $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                     $variant['image'] = $filePath;
+                }else{
+                    $variant['image'] = null;
                 }
                 array_push($variants, $variant);
                 $Counter++;
@@ -316,7 +331,7 @@ class ProductsController extends Controller
             'slug' => Str::slug($request->name, '-'),
             'description' => $request->description,
             'prix' => $request->standar_prix,
-            'unit' => $unit,
+            'unite' => $unit,
             'status' => $status,
             'confermed' => 0,
             'keywords' => $keywords,
@@ -365,21 +380,352 @@ class ProductsController extends Controller
         foreach ($variants as $option) {
             array_push($options,  $option);
         }
-        $options = array_keys(get_object_vars($options[0]));
+        if (count($options) > 0) {
+            $options = array_keys(get_object_vars($options[0]));
+        }
         // calculate option values like : "red,blue,green"
         $optons_values_temp = [];
         $options_values = [];
 
+       
         foreach ($options as $option) {
             foreach ($variants as $variant) {
-                array_push($optons_values_temp, get_object_vars($variant)[$option]);
+                if (!in_array(get_object_vars($variant)[$option], $optons_values_temp)) {
+                    array_push($optons_values_temp, get_object_vars($variant)[$option]);
+                }
+               
             }
-            array_push($options_values, implode(",",$optons_values_temp));
-            $optons_values_temp=[];
+            array_push($options_values, implode(",", $optons_values_temp));
+            $optons_values_temp = [];
         }
-//dd($product, $keywords, $options,$options_values);
-        return view('managment.products.vondeur.edit', compact('product', 'categreis', 'keywords','options','options_values'));
+        $qtys = [];
+        $prixs = [];
+        if (count($options) > 0) {
+            $qtys = $options_values[count($options_values) - 2]; // this is qty 
+            $prixs = $options_values[count($options_values) - 1]; // this is prix
+            unset($options_values[count($options_values) - 2]);
+            unset($options_values[count($options_values) - 1]);
+        }
+        //convert variants element from objects to arrays 
+        $variants_as_array = [];
+        foreach ($variants as $variant) {
+            array_push($variants_as_array, (array)$variant);
+        }
+        // dd($product, $keywords, $options,$options_values,$qtys,$prixs,(array)$variants[0],$variants_as_array);
+        return view('managment.products.vondeur.edit', compact('product', 'categreis', 'keywords', 'options', 'options_values', 'prixs', 'qtys', 'variants_as_array'));
     }
+    public function vondeur_update(Request $request)
+    {
+        $product = Product::Find(decrypt($request->product_id));
+
+        if (!in_array("products.create", json_decode(Auth::user()->Role->permissions))) {
+            abort(403, 'Unauthorized action.');
+        }
+        $request->validate([
+            'description' => 'required|max:1000000',
+            'category' => 'required',
+            'name' => 'required'
+        ]);
+        if ($request->main_image != null) {
+            $request->validate([
+                'main_image' => 'required|mimes:png,jpg,jpeg|max:2048',
+            ]);
+        }
+
+        if ($request->images != null) {
+            $request->validate([
+                'images.*' => 'mimes:png,jpg,jpeg|max:2048',
+            ]);
+        }
+
+        if ($request->variants_images != null) {
+            $request->validate([
+                'variants_images.*' => 'mimes:png,jpg,jpeg|max:2048',
+            ]);
+        }
+
+        $values = [];
+        $Counter = 0;
+        foreach ($request->values as $value) {
+            $values[$Counter] =  explode(",", $value);
+            $Counter++;
+        }
+        unset($values[count($values) - 1]);
+
+        $Counter = 0;
+
+        $variants = [];
+        if ($request->options[0] != null) {
+            foreach ($values[0] as $value0) {
+                if ($request->options[1] != null) {
+                    foreach ($values[1] as $value1) {
+                        if ($request->options[2] != null) {
+                            foreach ($values[2] as $value2) {
+                                $variant = [];
+                                $variant[$request->options[0]] = $value0;
+                                $variant[$request->options[1]] = $value1;
+                                $variant[$request->options[2]] = $value2;
+                                if ($request->allprices == null) {
+                                    $variant['prix'] = null;
+                                } else {
+                                    var_dump($Counter, $value0, $value1, $value2, $request->allprices[$Counter]);
+                                    $variant['prix'] = $request->allprices[$Counter];
+                                }
+                                if ($request['v_i_' . $Counter] != null) {
+                                    $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                                    $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                                    $variant['image'] = $filePath;
+                                }else{
+                                    $variant['image'] = null;
+                                }
+                                if ($request['v_i_' . $Counter] != null) {
+                                    $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                                    $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                                    $variant['image'] = $filePath;
+                                }else{
+                                    $variant['image'] = null;
+                                }
+                                array_push($variants, $variant);
+                                //dd($Counter , $request->allprices ,$values,$request);
+                                $Counter++;
+                            }
+                            $Counter = 0;
+                        } else {
+                            $variant = [];
+                            $variant[$request->options[0]] = $value0;
+                            $variant[$request->options[1]] = $value1;
+                            if ($request->qtys == null) {
+                                $variant['qty'] = null;
+                            } else {
+                                $variant['qty'] = $request->qtys[$Counter];
+                            }
+                            if ($request->allprices == null) {
+                                $variant['prix'] = null;
+                            } else {
+                                $variant['prix'] = $request->allprices[$Counter];
+                            }
+                            if ($request['v_i_' . $Counter] != null) {
+                                $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                                $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                                $variant['image'] = $filePath;
+                            }else{
+                                $variant['image'] = null;
+                            }
+                            array_push($variants, $variant);
+                            $Counter++;
+                        }
+                    }
+                    $Counter = 0;
+                } else if ($request->options[2] != null) {
+                    foreach ($values[2] as $value2) {
+                        $variant = [];
+                        $variant[$request->options[0]] = $value0;
+                        $variant[$request->options[2]] = $value2;
+                        if ($request->qtys == null) {
+                            $variant['qty'] = null;
+                        } else {
+                            $variant['qty'] = $request->qtys[$Counter];
+                        }
+                        if ($request->allprices == null) {
+                            $variant['prix'] = null;
+                        } else {
+                            $variant['prix'] = $request->allprices[$Counter];
+                        }
+                        if ($request['v_i_' . $Counter] != null) {
+                            $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                            $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                            $variant['image'] = $filePath;
+                        }else{
+                            $variant['image'] = null;
+                        }
+                        array_push($variants, $variant);
+                        $Counter++;
+                    }
+                    $Counter = 0;
+                } else {
+
+                    $variant = [];
+                    $variant[$request->options[0]] = $value0;
+                    if ($request->qtys[$Counter] == null) {
+                        $variant['qty'] = null;
+                    } else {
+                        $variant['qty'] = $request->qtys[$Counter];
+                    }
+                    if ($request->allprices[$Counter] == null) {
+                        $variant['prix'] = null;
+                    } else {
+                        $variant['prix'] = $request->allprices[$Counter];
+                    }
+                    if ($request['v_i_' . $Counter] != null) {
+                        $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                        $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                        $variant['image'] = $filePath;
+                    }else{
+                        $variant['image'] = null;
+                    }
+                    array_push($variants, $variant);
+                    $Counter++;
+                }
+            }
+            $Counter = 0;
+        } else if ($request->options[1] != null) {
+            foreach ($values[1] as $value1) {
+                if ($request->options[2] != null) {
+                    foreach ($values[2] as $value2) {
+                        $variant = [];
+                        $variant[$request->options[1]] = $value1;
+                        $variant[$request->options[2]] = $value2;
+                        if ($request->qtys == null) {
+                            $variant['qty'] = null;
+                        } else {
+                            $variant['qty'] = $request->qtys[$Counter];
+                        }
+                        if ($request->allprices == null) {
+                            $variant['prix'] = null;
+                        } else {
+                            $variant['prix'] = $request->allprices[$Counter];
+                        }
+                        if ($request['v_i_' . $Counter] != null) {
+                            $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                            $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                            $variant['image'] = $filePath;
+                        }else{
+                            $variant['image'] = null;
+                        }
+                        array_push($variants, $variant);
+                        $Counter++;
+                    }
+                    $Counter = 0;
+                } else {
+                    $variant = [];
+                    $variant[$request->options[1]] = $value1;
+                    if ($request->qtys == null) {
+                        $variant['qty'] = null;
+                    } else {
+                        $variant['qty'] = $request->qtys[$Counter];
+                    }
+                    if ($request->allprices == null) {
+                        $variant['prix'] = null;
+                    } else {
+                        $variant['prix'] = $request->allprices[$Counter];
+                    }
+                    if ($request['v_i_' . $Counter] != null) {
+                        $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                        $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                        $variant['image'] = $filePath;
+                    }else{
+                        $variant['image'] = null;
+                    }
+                    array_push($variants, $variant);
+                    $Counter++;
+                }
+            }
+            $Counter = 0;
+        } else if ($request->options[2] != null) {
+            foreach ($values[2] as $value2) {
+                $variant = [];
+                $variant[$request->options[2]] = $value2;
+                if ($request->qtys == null) {
+                    $variant['qty'] = null;
+                } else {
+                    $variant['qty'] = $request->qtys[$Counter];
+                }
+                if ($request->allprices == null) {
+                    $variant['prix'] = null;
+                } else {
+                    $variant['prix'] = $request->allprices[$Counter];
+                }
+                if ($request['v_i_' . $Counter] != null) {
+                    $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
+                    $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+                    $variant['image'] = $filePath;
+                }else{
+                    $variant['image'] = null;
+                }
+                array_push($variants, $variant);
+                $Counter++;
+            }
+            $Counter = 0;
+        }
+
+        $variants_saved = json_encode($variants);
+
+        $min_qty = null;
+        if ($request->min_qty != null) {
+            $min_qty = $request->min_qty;
+        }
+
+        $keywords = null;
+        if ($request->keywords != null) {
+            $keywords = json_encode(explode(",", $request->keywords));
+        }
+
+        $status = 'new';
+        if ($request->save_as_draft != null) {
+            $status = 'draft';
+        }
+
+        $unite = null;
+        if ($request->unite != null) {
+            $unite = $request->unite;
+        }
+
+        $product->update([
+            'category_id' => $request->category,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name, '-'),
+            'description' => $request->description,
+            'prix' => $request->standar_prix,
+            'unite' => $unite,
+            'status' => $status,
+            'confermed' => 0,
+            'keywords' => $keywords,
+            'min_quantity' => $min_qty,
+            'variants' => $variants_saved,
+        ]);
+
+        /* save remplace main product image  */
+        if ($request->main_image != null) {
+            $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
+            $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
+            $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first;
+            unlink('/storage/' . $product_image->path);
+            $product_image->update([
+                'path' => $filePath,
+            ]);
+        }
+
+
+
+        //save detailed_image for product 
+        if ($request->images != null) {
+            //delete old images
+            $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->get();
+
+            foreach ($images as $image) {
+                unlink('storage/' . $image->path);
+            }
+            $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->delete();
+            $Counter = 0;
+            $images = $request->file('images');
+            foreach ($images as $image) {
+                if ($Counter < 5) {
+                    $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request->images[$Counter]->guessExtension();
+                    $path = $image->storeAs('details_products', $fileName, 'public');
+                    $Counter++;
+                    $product_image_detaile = new ProductImage();
+                    $product_image_detaile->create([
+                        'product_id' => $product->id,
+                        'path' => $path,
+                        'is_main' => 0
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->Route('products.index')->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
+    }
+
 
 
     /**

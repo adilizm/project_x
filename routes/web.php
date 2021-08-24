@@ -73,6 +73,7 @@ Route::prefix('managment')->middleware([Authenticate::class])->group(function ()
             Route::get('create', [ProductsController::class,'vondeur_create'])->name('vondeur.products.create');
             Route::get('edit/{id}', [ProductsController::class,'vondeur_edit'])->name('vondeur.products.edit');
             Route::post('store', [ProductsController::class,'vondeur_store'])->name('vondeur.products.store');
+            Route::post('update', [ProductsController::class,'vondeur_update'])->name('vondeur.products.update');
 
 
     });
