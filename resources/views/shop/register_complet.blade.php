@@ -24,7 +24,7 @@
             </div> <!-- step.// -->
         </div>
         <div class=" d-flex justify-content-center">
-            <a href="#">Voir la boutique</a>
+            <a href="#">Voir panneau de gestion</a>
         </div>
     </article> <!-- card-body end .// -->
 </div>

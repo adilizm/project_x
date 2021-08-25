@@ -37,7 +37,7 @@ class VondeurController extends Controller
             
         $user= new User();
 
-        $user->create([
+        $user = $user->create([
             'name'=>$request->nom .' '. $request->prenom ,
             'email'=>$request->email,
             'phone'=>$request->phone,
@@ -52,7 +52,7 @@ class VondeurController extends Controller
         ]);
 
         auth()->login($user, true);
-        return redirect()->route('home');
+        return redirect()->route('shops.create');
     }
 
     public function VondeurController(Request $request){

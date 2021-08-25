@@ -3,10 +3,33 @@
 @section('frant_head')
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style>
+    .gm-style .gm-style-iw-t::after {
+        background: linear-gradient(45deg, crimson 50%, rgba(255, 255, 255, 0) 51%, rgba(255, 255, 255, 0) 100%);
+        box-shadow: -2px 2px 2px 0 rgb(178 178 178 / 40%);
+        content: "";
+        height: 15px;
+        left: 0;
+        position: absolute;
+        top: -1px;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        width: 15px;
+    }
+
+    .gm-style-iw-c {
+        background-color: crimson !important;
+
+    }
+</style>
 @stop
 @section('frant_content')
 <div class="card col-lg-10 m-auto jusify-content-center">
     <article class="card-body">
+        @if ($message = Session::get('info'))
+        <div class="alert alert-info" role="alert">
+            {!! $message !!}
+        </div>
+        @endif
         <header class="mb-4">
             <h4 class="card-title">Détail de la boutique</h4>
         </header>
@@ -24,7 +47,7 @@
                 <span class="text"> Enregistrement complet </span>
             </div> <!-- step.// -->
         </div>
-        <form action="{{ route('shops.save')}}" method="post" enctype="multipart/form-data" >
+        <form action="{{ route('shops.save')}}" method="post" enctype="multipart/form-data">
             @csrf
 
             @if ($errors->any())
@@ -59,7 +82,7 @@
                 <button class="btn btn-primary-light " onclick="Geocod();return false;">confirmer l'address</button>
             </div>
             <div class="form-group mt-2" id="map_container">
-            <p class="text-muted" id="note" style="display:none" >merci de choisir la position exacte de votre boutique</p>
+                <p class="text-muted" id="note" style="display:none">merci de choisir la position exacte de votre boutique</p>
                 <div id="map" style="height: 100%;"></div>
             </div>
             <div class="form-group " style="margin-top:2.5rem">
@@ -127,18 +150,18 @@
                     key: 'AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE'
                 }
             }).then(function(responce) {
-               
+
                 var formatedaddress = responce.data.results[0].formatted_address;
                 // change addres to formated address 
                 // document.getElementById('address').value = formatedaddress;
                 // get the lat and lng of address
                 lats = responce.data.results[0].geometry.location.lat;
                 lngs = responce.data.results[0].geometry.location.lng
-               
+
                 initMap();
-                
+
                 document.getElementById('lat').setAttribute("value", lats)
-                document.getElementById('note').removeAttribute("style","display:block")
+                document.getElementById('note').removeAttribute("style", "display:block")
                 document.getElementById('lng').setAttribute("value", lngs)
             }).catch(function(err) {
                 console.log(err);
@@ -162,7 +185,7 @@
         });
         // Create the initial InfoWindow.
         let infoWindow = new google.maps.InfoWindow({
-            content: "votre magasin situé à proximité de cette position",
+            content: "",
             position: myLatlng,
         });
         infoWindow.open(map);
@@ -173,13 +196,13 @@
             // Create a new InfoWindow.
             infoWindow = new google.maps.InfoWindow({
                 position: mapsMouseEvent.latLng,
-                
+
             });
-           document.getElementById('lat').setAttribute("value",  mapsMouseEvent.latLng.toJSON().lat),
-            document.getElementById('lng').setAttribute("value",  mapsMouseEvent.latLng.toJSON().lng),
-            infoWindow.setContent(
-                'votre magasin situé à proximité de cette position'
-            );
+            document.getElementById('lat').setAttribute("value", mapsMouseEvent.latLng.toJSON().lat),
+                document.getElementById('lng').setAttribute("value", mapsMouseEvent.latLng.toJSON().lng),
+                infoWindow.setContent(
+                    ''
+                );
             infoWindow.open(map);
         });
     }

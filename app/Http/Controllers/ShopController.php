@@ -43,10 +43,10 @@ class ShopController extends Controller
           'logo_path'=>$filePath, 
           'user_id'=>Auth::user()->id, 
       ]);
-     
+    return redirect()->route('shops.register_complet');
     }
     public function register_complet(){
         $shop = Auth::user()->Shop;
-        return view('shops.register_complet',compact('shop'));
+        return view('shop.register_complet',compact('shop'));
     }
 }

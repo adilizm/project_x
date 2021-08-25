@@ -50,8 +50,8 @@ class ProductsController extends Controller
         } else if (Auth::user()->role_id == 2) { // manager
             return view('managment.products.manager.index');
         } else if (Auth::user()->role_id == 3) { // vondeur
-            if (Auth::user()->Shop() == null) {
-                dd('ma3ndoch shop redirect to create shop first');
+            if(Auth::user()->Shop()->first() == null){
+                return redirect()->route('shops.create')->with('info','pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique') ;
             }
             $products = Product::orderBy('created_at', 'asc')->where('shop_id', Auth::user()->Shop->id)->with('Images');
 
@@ -64,9 +64,6 @@ class ProductsController extends Controller
             if ($request->status != null && $request->status != 'all' && $request->delete_100_each_page == null && $request->status != 'filtrer Des produit') {
                 $products = $products->where('status', $request->status);
             }
-
-
-
             if ($request->status != null && $request->status == 'all' || $request->session()->has('100_each_page')) {
                 if ($request->delete_100_each_page != null) {
                     $request->session()->forget('100_each_page');
