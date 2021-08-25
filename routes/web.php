@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\NotBanned;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +24,14 @@ use App\Http\Middleware\Authenticate;
 */
 
 Route::get('/', function () {   return view('frantend.home');})->name('home');
-Route::get('/register_vondeur', [VondeurController::class,'create_vondeur'])->name('login.vondeur');
+Route::get('/register_vondeur', [VondeurController::class,'create_vondeur'])->middleware('guest')->name('login.vondeur');
+Route::get('/Banned_user', [UsersController::class,'banned_user'])->name('banned.user');
 Route::post('/save_vondeur', [VondeurController::class,'Register_vondeur'])->name('create_vondeur');
 
 
 Route::get('shops', [ShopController::class,'index'])->name('shops.index');
 
-Route::middleware([Authenticate::class])->group(function () {
+Route::middleware([Authenticate::class,NotBanned::class])->group(function () {
     Route::get('shops/create', [ShopController::class,'create'])->name('shops.create');
     Route::post('shops/enregistre', [ShopController::class,'save'])->name('shops.save');
     Route::get('shops/enregistre/complete', [ShopController::class,'register_complet'])->name('shops.register_complet');
@@ -39,7 +41,7 @@ Route::middleware([Authenticate::class])->group(function () {
 });
 
 
-Route::prefix('managment')->middleware([Authenticate::class])->group(function () {
+Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->group(function () {
 
     Route::get('control', [ManagmentController::class,'index'])->name('managment.index');
     Route::get('products', [ProductsController::class,'index'])->name('products.index');

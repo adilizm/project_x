@@ -33,5 +33,7 @@ class UsersController extends Controller
         auth()->login($user, true);
         return redirect()->route('home');
     }
-
+    public function banned_user(){
+        return view('frantend.banned_user');
+    }
 }

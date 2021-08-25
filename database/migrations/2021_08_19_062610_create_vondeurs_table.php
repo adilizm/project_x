@@ -15,7 +15,7 @@ class CreateVondeursTable extends Migration
     {
         Schema::create('vondeurs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->unique();
             $table->boolean('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();

@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone');
             $table->foreignId('role_id')->constrained();
+            $table->boolean('is_banned')->default(0);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
