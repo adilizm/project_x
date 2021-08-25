@@ -79,7 +79,7 @@
                                 <div class="w-100 h-100 position-relative">
                                     <img style="margin:2px; padding:2px; border:1px #a4a4a4 solid; border-radius:5px" src="{{'/storage/'.$product->Images()->where('is_main',1)->first()->path}}" id="main_image_preview" width="100" alt="">
                                     <span onclick="Get_main_image()" class="badge badge-danger position-absolute top-2 right-2 cursor-pointer">
-                                        <i class="fas fa-sync "></i>
+                                        <i class="fal fa-sync "></i>
                                     </span>
                                 </div>
                             </div>
@@ -123,7 +123,7 @@
                             <button type="button" id="add_variant_to_this_product" onclick="Adding_variants_to_product()" class="btn btn-secondary btn-sm">Ajouter une variante a ce produit</button>
                         </div>
                         @foreach($options as $option)
-                        @if($option != 'qty' && $option != 'prix')
+                        @if($option != 'qty' && $option != 'prix' && $option != 'image')
                         <script>
                         {{'option'. $loop->index}} = true;
                         </script>
