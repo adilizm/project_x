@@ -16,9 +16,9 @@
     <div class="p-2 d-flex justify-content-between">
       <h3 class="card-title">PRODUCTS</h3>
       <div class="d-flex row">
-      @if(in_array( "products.create", json_decode(Auth::user()->Role->permissions)))
+        @if(in_array( "products.create", json_decode(Auth::user()->Role->permissions)))
         <div class="col-12 d-flex justify-content-end mb-2 d-md-none">
-        <a href="{{ route('vondeur.products.create')}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
+          <a href="{{ route('vondeur.products.create')}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
         </div>
         @endif
         <form class="mx-2" action="{{ route('products.index') }}" method="get">
@@ -35,14 +35,13 @@
             </select>
             <input type="text" class="form-control mr-1" placeholder="tapez et Entrer" name="search" id="search">
             @if(session()->has('100_each_page'))
-            <input type="checkbox" checked  class="d-none" name="delete_100_each_page">
+            <input type="checkbox" checked class="d-none" name="delete_100_each_page">
             <button type="submit" class="btn btn-primary">Annuler le filtre</button>
             @else
             <button type="submit" class="btn btn-primary">Filtrer</button>
             @endif
           </div>
         </form>
-       
       </div>
     </div>
 
@@ -66,6 +65,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                  
                   @foreach($products as $product)
                   <tr>
                     <td>{{$product->id}}</td>
@@ -79,18 +79,27 @@
                     <td>{{$product->name}}</td>
                     <td>{{$product->prix}}</td>
                     <td>0</td>
-                    
+
                     <td>
                       @if($product->status == "new")
                       <span class="badge badge-info">en attente</span>
-                      @elseif($product->status == "draft")
-                      <span class="badge badge-warning">incomplet</span>
-                      @elseif($product->status == "published")
-                      <span class="badge badge-success">publié</span>
-                      @elseif($product->status == "unpublished")
-                      <span class="badge badge-secondary">non publié</span>
+                      
                       @elseif($product->status == "banned")
+                      <span class="badge badge-danger">refusé</span>
+
+                      @else
+                      @if($product->status == "banned")
                       <span class="badge badge-danger">refuser par admin</span>
+                      @endif
+                      <form action="" method="post">
+                        <div class="form-group">
+                          <select class="" name="status" class="form-control">
+                            <option value="published" @if($product->status == "published") selected @endif >publié</option>
+                            <option value="unpublished" @if($product->status == "unpublished") selected @endif >non publié</option>
+                            <option value="draft"  @if($product->status == "draft") selected @endif >incomplet</option>
+                          </select>
+                        </div>
+                      </form>
                       @endif
                     </td>
                     <td>
@@ -124,14 +133,14 @@
         </div>
         {{$products->links()}}
       </div>
-     
+
       <!-- /.card-body -->
     </div>
     @if(in_array( "products.create", json_decode(Auth::user()->Role->permissions)))
-        <div class=" d-flex justify-content-end p-2">
-        <a href="{{ route('vondeur.products.create')}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
-        </div>
-        @endif
+    <div class=" d-flex justify-content-end p-2">
+      <a href="{{ route('vondeur.products.create')}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
+    </div>
+    @endif
   </div>
   <!-- /.card -->
 </section>
