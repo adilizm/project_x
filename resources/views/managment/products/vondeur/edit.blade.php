@@ -136,7 +136,7 @@
                                 </div>
                                 <div class="{{'col-8 option' . $loop->index . 'inpute'}}">
                                     <small class="small-hint">les option doit être séparé par virgule ','</small>
-                                    <input type="text" name="values[]" class="{{'form-control option'.$loop->index}}" onchange="Click_btn_generate_prices()" value="{{$options_values[$loop->index]}}" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="{{'option'.$loop->index.'inpute'}}">
+                                    <input type="text" name="values[]" class="{{'form-control option'.$loop->index}}" value="{{$options_values[$loop->index]}}" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="{{'option'.$loop->index.'inpute'}}">
                                 </div>
                                 <div class="col-1" style="align-self: center;">
                                     <span onclick='removeOption("{{'option'.$loop->index.'inpute'}}")' class="btn btn-danger">X</span>

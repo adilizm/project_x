@@ -65,7 +65,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  
+
                   @foreach($products as $product)
                   <tr>
                     <td>{{$product->id}}</td>
@@ -83,7 +83,7 @@
                     <td>
                       @if($product->status == "new")
                       <span class="badge badge-info">en attente</span>
-                      
+
                       @elseif($product->status == "banned")
                       <span class="badge badge-danger">refusé</span>
 
@@ -92,13 +92,11 @@
                       <span class="badge badge-danger">refuser par admin</span>
                       @endif
                       <form action="" method="post">
-                        <div class="form-group">
-                          <select class="" name="status" class="form-control">
-                            <option value="published" @if($product->status == "published") selected @endif >publié</option>
-                            <option value="unpublished" @if($product->status == "unpublished") selected @endif >non publié</option>
-                            <option value="draft"  @if($product->status == "draft") selected @endif >incomplet</option>
-                          </select>
-                        </div>
+                        <select name="status" class="form-control">
+                          <option value="published" @if($product->status == "published") selected @endif >publié</option>
+                          <option value="unpublished" @if($product->status == "unpublished") selected @endif >non publié</option>
+                          <option value="draft" @if($product->status == "draft") selected @endif >incomplet</option>
+                        </select>
                       </form>
                       @endif
                     </td>
@@ -106,7 +104,12 @@
                       {{$product->created_at}}
                     </td>
                     <td>
-                      <a href="{{ route('vondeur.products.edit',encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit"></i></a>
+                      <a href="{{ route('vondeur.products.edit',encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit text-success"></i></a>
+                      @if(in_array( "products.destroy", json_decode(Auth::user()->Role->permissions)))
+                      <span class="mx-1 cursor-pointer" data-toggle="modal" data-target="{{'#model_delete'.$product->id}}">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                      </span>
+                      @endif
                     </td>
                   </tr>
 
@@ -145,7 +148,34 @@
   <!-- /.card -->
 </section>
 
-<!-- modals for categories -->
+<!-- modals for products -->
+@if(in_array( "products.destroy", json_decode(Auth::user()->Role->permissions)))
+@foreach($products as $product)
+<div class="modal fade" id="{{'model_delete'.$product->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte de suppression</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        êtes-vous sûr de vouloir supprimer le produit <strong>{{$product->name}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <form action="{{ route('vondeur.products.delete')}}" method="post">
+          @csrf
+          <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@endforeach 
+@endif
 @stop
 
 @section('managment_script')

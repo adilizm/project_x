@@ -24,13 +24,13 @@ class ProductsController extends Controller
         if (!in_array("products.index", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
-        if (Auth::user()->role_id == 1) { //1 admin
+        if (Auth::user()->role_id == 1) { //1 admin change this to Role has permition admin 
 
             $products = Product::orderBy('created_at', 'asc')->with('Images');
 
             $date = $request->date;
             $sort_search = null;
-            if ($request->search != null ) {
+            if ($request->search != null) {
                 $sort_search = $request->search;
                 $products = $products->where('name', 'like', '%' . $sort_search . '%');
             }
@@ -38,20 +38,20 @@ class ProductsController extends Controller
                 $products = $products->where('status', $request->status);
             }
             if ($request->confirmation != null && $request->confermed != 'filtrer Des produit') {
-                if($request->confirmation == 1){
+                if ($request->confirmation == 1) {
                     $products = $products->where('confermed', 1);
-                }else{
+                } else {
                     $products = $products->where('confermed', 0);
                 }
             }
-                $products = $products->paginate(10);
-            
+            $products = $products->paginate(10);
+
             return view('managment.products.admin.index', compact('products'));
         } else if (Auth::user()->role_id == 2) { // manager
             return view('managment.products.manager.index');
         } else if (Auth::user()->role_id == 3) { // vondeur
-            if(Auth::user()->Shop()->first() == null){
-                return redirect()->route('shops.create')->with('info','pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique') ;
+            if (Auth::user()->Shop()->first() == null) {
+                return redirect()->route('shops.create')->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
             }
             $products = Product::orderBy('created_at', 'asc')->where('shop_id', Auth::user()->Shop->id)->with('Images');
 
@@ -756,32 +756,45 @@ class ProductsController extends Controller
         if (!in_array("products.edit", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
-        if(Auth::user()->Role->id == 1){ // admin
-            $product= Product::find(decrypt($request->product_id));
+        if (Auth::user()->Role->id == 1) { // admin
+            $product = Product::find(decrypt($request->product_id));
             $product->update([
-                'status'=>$request->status,
+                'status' => $request->status,
             ]);
         }
-        return back()->with('success','les ststut du produit <strong>'. $product->id .'</strong>  a été mis à jour avec succès!');
+        return back()->with('success', 'les ststut du produit <strong>' . $product->id . '</strong>  a été mis à jour avec succès!');
     }
     public function admin_update_confirmation_product(Request $request)
     {
         if (!in_array("products.edit", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
-        if(Auth::user()->Role->id == 1){ // admin
-            $product= Product::find(decrypt($request->product_id));
-            if($request->confermed == 1){
+        if (Auth::user()->Role->id == 1) { // admin
+            $product = Product::find(decrypt($request->product_id));
+            if ($request->confermed == 1) {
                 $product->update([
-                    'confermed'=>1,
+                    'confermed' => 1,
                 ]);
-            }else{
+            } else {
                 $product->update([
-                    'confermed'=>0,
+                    'confermed' => 0,
                 ]);
             }
         }
-        return back()->with('success','le produit <strong>'. $product->id .'</strong>  a été mis à jour avec succès!');
+        return back()->with('success', 'le produit <strong>' . $product->id . '</strong>  a été mis à jour avec succès!');
+    }
+    public function vondeur_delete(Request $request)
+    {
+        if (!in_array("products.destroy", json_decode(Auth::user()->Role->permissions))) {
+            abort(403, 'Unauthorized action.');
+        }
+        $product = Product::where('shop_id', Auth::user()->Shop()->first()->id)->first();
+        if ($product != null) {
+            $product = Product::where('shop_id', Auth::user()->Shop()->first()->id)->first()->delete();
+        } else {
+            return back()->with('danger', 'le produit n\'existe pas !!');
+        }
+        return back()->with('success', 'le produit <strong>' . $product->name . '</strong>  a été supprimer avec succès!');
     }
 
     /**
