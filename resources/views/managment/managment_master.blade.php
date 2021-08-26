@@ -189,8 +189,8 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="/" class="brand-link">
-      <img src="../../dist/img/AdminLTELogo.png" alt="Technopek Ecomm logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Technopek Ecomm</span>
+      <img src="{{'/storage/setting_files/logos/logo_500.png'}}"  alt="Ecomm logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Projet_x</span>
     </a>
 
     <!-- Sidebar -->

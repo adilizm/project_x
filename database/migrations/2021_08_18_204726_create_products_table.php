@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->longText('description')->nullable()->default(null);
             $table->string('prix');
+            $table->string('old_price')->nullable()->default(null);
             $table->string('unite')->nullable()->default(null);
             $table->integer('min_quantity')->default(1);
             $table->text('keywords')->nullable()->default(null);

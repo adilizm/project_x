@@ -61,9 +61,11 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
     /* useres Routes */
     Route::get('users', [UsersController::class, 'index'])->name('users.index');
     Route::get('users/creer', [UsersController::class, 'create'])->name('users.create');
+    Route::get('users/edit/{id}', [UsersController::class, 'edit_user'])->name('users.edit');
     Route::post('users/store', [UsersController::class, 'store'])->name('users.store');
     Route::post('users/change_Role', [UsersController::class, 'change_role'])->name('users.change_Role');
     Route::get('users/login/{id}', [UsersController::class, 'login'])->name('users.login');
+    Route::post('users/update', [UsersController::class, 'update'])->name('users.update');
 
     /* useres Routes */
     Route::get('categorie', [CategoryController::class, 'index'])->name('category.index');
@@ -81,6 +83,7 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
             Route::get('edit/{id}', [ProductsController::class, 'vondeur_edit'])->name('vondeur.products.edit');
             Route::post('store', [ProductsController::class, 'vondeur_store'])->name('vondeur.products.store');
             Route::post('update', [ProductsController::class, 'vondeur_update'])->name('vondeur.products.update');
+            Route::post('delete', [ProductsController::class, 'vondeur_delete'])->name('vondeur.products.delete');
         });
     });
     Route::prefix('admin')->group(function () {

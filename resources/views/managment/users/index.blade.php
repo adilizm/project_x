@@ -55,7 +55,7 @@
                         </form>
                     </td>
                     <td>
-                        <a href="#" class="mx-1" ><i class="fas fa-user-edit"></i></a>
+                        <a href="{{ route('users.edit',encrypt($user->id))}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
                         @if(Auth::user()->id != $user->id)
                         <a href="{{ route('users.login',encrypt($user->id))}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
                         @endif
