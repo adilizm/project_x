@@ -58,7 +58,7 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
     Route::put('roles/update/{id}', [RoleController::class, 'update'])->name('roles.update');
     Route::get('roles/destroy/{id}', [RoleController::class, 'destroy'])->name('roles.destroy');
 
-    /* useres Routes */
+    /* users Routes */
     Route::get('users', [UsersController::class, 'index'])->name('users.index');
     Route::get('users/creer', [UsersController::class, 'create'])->name('users.create');
     Route::get('users/edit/{id}', [UsersController::class, 'edit_user'])->name('users.edit');
@@ -67,11 +67,13 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
     Route::get('users/login/{id}', [UsersController::class, 'login'])->name('users.login');
     Route::post('users/update', [UsersController::class, 'update'])->name('users.update');
 
-    /* useres Routes */
+    /* categorie Routes */
     Route::get('categorie', [CategoryController::class, 'index'])->name('category.index');
     Route::get('categorie/creer', [CategoryController::class, 'create'])->name('category.create');
     Route::post('categorie/store', [CategoryController::class, 'store'])->name('category.store');
 
+    /* shops routes */
+    Route::get('magasins', [ShopController::class, 'index'])->name('shops.index');
 
 
     Route::prefix('vendeur')->group(function () {

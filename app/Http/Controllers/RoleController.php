@@ -53,7 +53,7 @@ class RoleController extends Controller
                 $auth_childs= Autorisation::where('parent_id',$auth_parent->id)->get();
                 $auth_parent['childs']=$auth_childs;
                 array_push($auths,$auth_parent);
-            }            
+            }           
         return view('managment.role.create',compact('auths') );
 
     }

@@ -8,17 +8,26 @@ use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
-    public function index(){
-        
+    public function index()
+    {
+        if (!in_array("products.index", json_decode(Auth::user()->Role->permissions))) {
+            abort(403, 'Unauthorized action.');
+        }
+        if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) { //1 admin change this to Role has permition admin 
+            $shops= Shop::all();
+            return view('managment.shops.admin.index',compact('shops'));
+        }
     }
 
-    public function create(){
-        if(Auth::user()->role_id != 3 && Auth::user()->role_id != 1  ){
+    public function create()
+    {
+        if (Auth::user()->role_id != 3 && Auth::user()->role_id != 1) {
             return redirect()->route('home');
         }
         return view('shop.shop_create');
     }
-    public function save(Request $request){
+    public function save(Request $request)
+    {
         $request->validate([
             'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
             'name' => 'required|max:20',
@@ -27,26 +36,27 @@ class ShopController extends Controller
             'description' => 'required|max:400',
             'lat' => 'required',
             'lng' => 'required',
-            ]); 
-            
-        $fileName = time().'_'.$request->logo->getClientOriginalName();
+        ]);
+
+        $fileName = time() . '_' . $request->logo->getClientOriginalName();
         $filePath = $request->file('logo')->storeAs('shops', $fileName, 'public');
-        
-        $shop= new Shop();
+
+        $shop = new Shop();
         $shop->create([
-          'name'=>$request->name, 
-          'Ville'=>$request->Ville, 
-          'address'=>$request->address, 
-          'description'=>$request->description, 
-          'map_latitude'=>$request->lat, 
-          'map_longitude'=>$request->lng, 
-          'logo_path'=>$filePath, 
-          'user_id'=>Auth::user()->id, 
-      ]);
-    return redirect()->route('shops.register_complet');
+            'name' => $request->name,
+            'Ville' => $request->Ville,
+            'address' => $request->address,
+            'description' => $request->description,
+            'map_latitude' => $request->lat,
+            'map_longitude' => $request->lng,
+            'logo_path' => $filePath,
+            'user_id' => Auth::user()->id,
+        ]);
+        return redirect()->route('shops.register_complet');
     }
-    public function register_complet(){
+    public function register_complet()
+    {
         $shop = Auth::user()->Shop;
-        return view('shop.register_complet',compact('shop'));
+        return view('shop.register_complet', compact('shop'));
     }
 }

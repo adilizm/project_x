@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="/AdminLTE3/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/AdminLTE3/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="/AdminLTE3/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
 @stop
 
 @section('managment_content')
@@ -64,10 +65,10 @@
                   @foreach($products as $product)
                   <tr>
                     <td>{{$product->id}}</td>
-                    <td>
+                    <td >
                       @foreach($product->Images()->get() as $image)
                       @if($image->is_main == 1)
-                      <img src="{{'/storage/'.$image->path}}" width="50" alt="{{$product->name}}">
+                      <img style="border-radius: 4px;" src="{{'/storage/'.$image->path}}"  width="50" alt="{{$product->name}}">
                       @endif
                       @endforeach
                     </td>
@@ -117,20 +118,7 @@
 
 
                 </tbody>
-                <tfoot>
-                  <tr role="row">
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Image</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Nom</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Prix</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Ventes</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Statut</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Confirmation</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Date d'ajout</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">magasin</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Options</th>
-                  </tr>
-                </tfoot>
+                
               </table>
               <div class="d-flex justify-content-end">
               {{

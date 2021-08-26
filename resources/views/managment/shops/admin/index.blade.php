@@ -1,4 +1,3 @@
-
 @extends('managment.managment_master')
 
 @section('managment_head')
@@ -13,9 +12,11 @@
   <!-- Default box -->
   <div class="card">
     <div class="card-header d-flex">
-      <h3 class="card-title">Utilisateurs</h3>
+      <h3 class="card-title">Shops</h3>
     </div>
+
     <div class="card">
+      
       <div class="card-body">
         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
           
@@ -25,49 +26,19 @@
                 <thead>
                   <tr role="row">
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">nom d'utilisateur</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">numéro de téléphone</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">email</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">rôle</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">situation</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">options</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >name</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >description</th>
                   </tr>
                 </thead>
                 <tbody>
                  
-                @foreach( $users as $user)
-                <tr>
-                    <td>{{$user->id}}</td>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->phone}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>
-                        <form action="{{ route('users.change_Role')}}" method="post">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{$user->id}}">
-                            <select onchange="this.form.submit()" class="form-control" name="role">
-                            @foreach($Roles as $key=>$role)
-                            <option @if($user->Role->id == $role->id) selected @endif value="{{$role->id}}">{{$role->name}}</option>
-                            @endforeach
-                            </select>
-                        </form>
-                    </td>
-                    <td>
-                        @if($user->is_banned == 1)
-                        <span class="badge badge-danger">inactif</span>
-                        @else
-                        <span class="badge badge-success">Active</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('users.edit',encrypt($user->id))}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
-                        @if(Auth::user()->id != $user->id)
-                        <a href="{{ route('users.login',encrypt($user->id))}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-
+                 @foreach($shops as $shop)
+                  <tr class="even">
+                    <td class="dtr-control" tabindex="0">{{$shop->id}}</td>
+                    <td>{{$shop->name}}</td>
+                    <td>{{$shop->description}}</td>
+                  </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -80,7 +51,7 @@
   <!-- /.card -->
 </section>
 
-<!-- modals for categories -->
+<!-- modals for shops -->
 @stop
 
 @section('managment_script')

@@ -253,6 +253,14 @@
             </a>
         </li>
         @endif
+        @if( in_array( "shops.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('shops.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Les Magasins</p>
+            </a>
+        </li>
+        @endif
 
         </ul>
       </nav>

@@ -6,10 +6,8 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-
+<link href="/AdminLTE3/plugins/summernote//summernote-bs4.min.css" rel="stylesheet">
+<script src="/AdminLTE3/plugins/summernote/summernote-bs4.min.js"></script>
 <!-- tags_input -->
 <link rel="stylesheet" href="/tagsinput/bootstrap-tagsinput.css">
 <script src="/tagsinput/bootstrap-tagsinput.min.js"></script>
@@ -255,9 +253,12 @@
                                     </td>
                                     <td><input type="text" value="{{$variant['qty']}}" name="qtys[]" class="form-control"></td>
                                     <td><input type="text" value="{{$variant['prix']}}" name="allprices[]" class="form-control"></td>
-                                    <td class="d-flex justify-content-center" ><img style="border-radius: 2px;"  @foreach($options as $option) @if( $option =='image' && $variant[$option] != null )  width="40" src="{{'/storage/'.$variant[$option]}}" /> @endif @endforeach
+                                    <td class="d-flex justify-content-center" ><img style="border-radius: 2px;" id="{{'old_variant_image_'.$loop->index}}"  @foreach($options as $option) @if( $option =='image' && $variant[$option] != null )  width="40" src="{{'/storage/'.$variant[$option]}}" /> @endif @endforeach
                                     </td>
-                                    <td><input type="file" name="{{'v_i_'.$loop->index}}" class="form-control"></td>
+                                    <td><input type="file" id="{{'File_variant_image_'.$loop->index}}"  name="{{'v_i_'.$loop->index}}" class="form-control"></td>
+                                    @if($variant['image'] != null)
+                                   <td> <input type="hidden" id="{{'old_variant_image'.$loop->index}}" name="{{'v_old_i_'.$loop->index}}" value="{{$variant[$option]}}" class="form-control"></td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>
