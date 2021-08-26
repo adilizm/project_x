@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,14 +25,15 @@ class ShopController extends Controller
         if (Auth::user()->role_id != 3 && Auth::user()->role_id != 1) {
             return redirect()->route('home');
         }
-        return view('shop.shop_create');
+        $cities= City::all();
+        return view('shop.shop_create',compact('cities'));
     }
     public function save(Request $request)
     {
         $request->validate([
             'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
             'name' => 'required|max:20',
-            'Ville' => 'required|max:20',
+            'Ville' => 'required',
             'address' => 'required|max:240',
             'description' => 'required|max:400',
             'lat' => 'required',
@@ -40,11 +42,11 @@ class ShopController extends Controller
 
         $fileName = time() . '_' . $request->logo->getClientOriginalName();
         $filePath = $request->file('logo')->storeAs('shops', $fileName, 'public');
-
+        $city=City::find($request->Ville);
         $shop = new Shop();
         $shop->create([
             'name' => $request->name,
-            'Ville' => $request->Ville,
+            'City_id' => $city->id,
             'address' => $request->address,
             'description' => $request->description,
             'map_latitude' => $request->lat,

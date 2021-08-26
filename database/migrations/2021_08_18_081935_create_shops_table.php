@@ -17,7 +17,7 @@ class CreateShopsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('name');
-            $table->string('Ville');
+            $table->foreignId('city_id')->constrained();
             $table->string('address');
             $table->string('map_latitude')->nullable();
             $table->string('map_longitude')->nullable();

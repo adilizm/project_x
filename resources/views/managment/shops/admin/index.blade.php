@@ -27,7 +27,12 @@
                   <tr role="row">
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >name</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >description</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Ville</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Adress</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Total selles</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Situation</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Vendeur</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Option</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -36,7 +41,26 @@
                   <tr class="even">
                     <td class="dtr-control" tabindex="0">{{$shop->id}}</td>
                     <td>{{$shop->name}}</td>
-                    <td>{{$shop->description}}</td>
+                    <td>{{$shop->City()->first()->name}}</td>
+                    <td>{{$shop->address}}
+                      <a class="mx-1" target="_blank" href="{{'https://www.google.com/maps/?q='.$shop->map_latitude . ','.$shop->map_longitude}}"><i class="fas fa-map-marked-alt"></i></a>
+                    </td>
+                    <td>0</td>
+                    <td>
+                      @if($shop->is_published == 1)
+                      <span class="badge badge-success">active</span>
+                      @else
+                      <span class="badge badge-danger">inactive</span>
+                      @endif
+                    </td>
+                    <td>
+                      <span>
+                      <strong> Nom : </strong>{{$shop->User()->first()->name}}<br>
+                      <strong> Tel : </strong>{{$shop->User()->first()->phone}}<br>
+                      <strong> Email:</strong>{{$shop->User()->first()->email}}
+                      </span>
+                    </td>
+                    <td></td>
                   </tr>
                   @endforeach
                 </tbody>

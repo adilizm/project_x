@@ -48,7 +48,7 @@ class ProductsController extends Controller
             return view('managment.products.admin.index', compact('products'));
         } else if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) { // manager
             return view('managment.products.manager.index');
-        } else if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) { // vondeur
+        } else if (in_array("Vondeur", json_decode(Auth::user()->Role->permissions))) { // vondeur
             if (Auth::user()->Shop()->first() == null) {
                 return redirect()->route('shops.create')->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
             }
@@ -221,15 +221,19 @@ class ProductsController extends Controller
 
                     $variant = [];
                     $variant[$request->options[0]] = $value0;
-                    if ($request->qtys[$Counter] == null) {
-                        $variant['qty'] = null;
-                    } else {
+                    if ($request->has('qtys')) {
                         $variant['qty'] = $request->qtys[$Counter];
-                    }
-                    if ($request->allprices[$Counter] == null) {
-                        $variant['prix'] = null;
                     } else {
-                        $variant['prix'] = $request->allprices[$Counter];
+                        $variant['qty'] = null;
+                    }
+                    if ($request->has('allprices')){
+                        if($request->allprices[$Counter] != null){
+                            $variant['prix'] = $request->allprices[$Counter];
+                        }else {
+                            $variant['prix'] = null;
+                        }
+                    } else {
+                        $variant['prix'] = null;
                     }
                     if ($request['v_i_' . $Counter] != null) {
                         $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
@@ -352,7 +356,7 @@ class ProductsController extends Controller
             'status' => $status,
             'confermed' => 0,
             'keywords' => $keywords,
-            'min_quantity' => $min_qty,
+            'min_quantity' => 1,
             'variants' => $variants_saved,
         ]);
         $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();

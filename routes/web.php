@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
@@ -74,6 +75,11 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
 
     /* shops routes */
     Route::get('magasins', [ShopController::class, 'index'])->name('shops.index');
+   
+    /* Cities routes */
+    
+    Route::get('villes', [CitiesController::class, 'index'])->name('cities.index');
+    Route::post('villes/save', [CitiesController::class, 'store'])->name('cities.store');
 
 
     Route::prefix('vendeur')->group(function () {
