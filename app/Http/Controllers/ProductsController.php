@@ -24,8 +24,7 @@ class ProductsController extends Controller
         if (!in_array("products.index", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
-        if (Auth::user()->role_id == 1) { //1 admin change this to Role has permition admin 
-
+        if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) { //1 admin change this to Role has permition admin 
             $products = Product::orderBy('created_at', 'asc')->with('Images');
 
             $date = $request->date;
@@ -47,9 +46,9 @@ class ProductsController extends Controller
             $products = $products->paginate(10);
 
             return view('managment.products.admin.index', compact('products'));
-        } else if (Auth::user()->role_id == 2) { // manager
+        } else if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) { // manager
             return view('managment.products.manager.index');
-        } else if (Auth::user()->role_id == 3) { // vondeur
+        } else if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) { // vondeur
             if (Auth::user()->Shop()->first() == null) {
                 return redirect()->route('shops.create')->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
             }
@@ -78,7 +77,7 @@ class ProductsController extends Controller
 
             return view('managment.products.vondeur.index', compact('products'));
         } else {
-            abort(403);
+            abort(404);
         }
     }
 
@@ -445,7 +444,7 @@ class ProductsController extends Controller
         ]);
         if ($request->main_image != null) {
             $request->validate([
-                'main_image' => 'required|mimes:png,jpg,jpeg|max:2048',
+                'main_image' => 'mimes:png,jpg,jpeg|max:2048',
             ]);
         }
 
@@ -470,7 +469,8 @@ class ProductsController extends Controller
         unset($values[count($values) - 1]);
 
         $Counter = 0;
-
+        $Counter_img = 0;
+        // dd($request);
         $variants = [];
         if ($request->options[0] != null) {
             foreach ($values[0] as $value0) {
@@ -488,19 +488,17 @@ class ProductsController extends Controller
                                     var_dump($Counter, $value0, $value1, $value2, $request->allprices[$Counter]);
                                     $variant['prix'] = $request->allprices[$Counter];
                                 }
-                                if ($request['v_i_' . $Counter] != null) {
-                                    $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
-                                    $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
-                                    $variant['image'] = $filePath;
+                                if ($request->qtys == null) {
+                                    $variant['qty'] = null;
                                 } else {
-                                    $variant['image'] = null;
+                                    $variant['qty'] = $request->qtys[$Counter];
                                 }
                                 if ($request['v_i_' . $Counter] != null) {
                                     $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
                                     $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
                                     $variant['image'] = $filePath;
                                 } else {
-                                    $variant['image'] = null;
+                                    $value['image'] = null;
                                 }
                                 array_push($variants, $variant);
                                 //dd($Counter , $request->allprices ,$values,$request);
@@ -521,18 +519,23 @@ class ProductsController extends Controller
                             } else {
                                 $variant['prix'] = $request->allprices[$Counter];
                             }
-                            if ($request['v_i_' . $Counter] != null) {
-                                $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
-                                $filePath = $request->file('v_i_' . $Counter)->storeAs('variants_pic', $fileName, 'public');
+
+                            if ($request['v_i_' . $Counter_img] != null) {
+                                $fileName = time() . '_' . $request->name . '_' . $Counter_img . '.' . $request['v_i_' . $Counter_img]->guessExtension();
+                                $filePath = $request->file('v_i_' . $Counter_img)->storeAs('variants_pic', $fileName, 'public');
                                 $variant['image'] = $filePath;
+                            } else if ($request['v_old_i_' . $Counter_img] != null) {
+                                $variant['image'] = $request['v_old_i_' . $Counter_img];
                             } else {
                                 $variant['image'] = null;
                             }
+                            if ($Counter_img == 2) {
+                            }
                             array_push($variants, $variant);
                             $Counter++;
+                            $Counter_img++;
                         }
                     }
-                    $Counter = 0;
                 } else if ($request->options[2] != null) {
                     foreach ($values[2] as $value2) {
                         $variant = [];
@@ -584,6 +587,7 @@ class ProductsController extends Controller
                     $Counter++;
                 }
             }
+
             $Counter = 0;
         } else if ($request->options[1] != null) {
             foreach ($values[1] as $value1) {
@@ -705,8 +709,8 @@ class ProductsController extends Controller
         if ($request->main_image != null) {
             $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
             $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
-            $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first;
-            unlink('/storage/' . $product_image->path);
+            $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first();
+            unlink('storage/' . $product_image->path);
             $product_image->update([
                 'path' => $filePath,
             ]);

@@ -54,16 +54,7 @@
                     @endif
                   </tr>
                   @endforeach
-
                 </tbody>
-                <tfoot>
-                  <tr>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">name</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">description</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">category mére</th>
-                  </tr>
-                </tfoot>
               </table>
             </div>
           </div>
