@@ -24,6 +24,7 @@ class CreateShopsTable extends Migration
             $table->string('logo_path');
             $table->text('description');
             $table->boolean('is_published')->default(0);
+            $table->boolean('request_activation')->default(1); // request avtivation 
             $table->timestamps();
             $table->softDeletes();
         });
