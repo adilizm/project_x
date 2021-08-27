@@ -248,8 +248,15 @@
         @if( in_array( "products.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
             <a href="{{route('products.index')}}" class="nav-link">
+            
             <i class="far fa-circle nav-icon"></i>
             <p>Les produits</p>
+            @if( in_array( "Admin", json_decode(Auth::user()->Role->permissions)))
+              @php 
+                $count=\App\Models\Product::where('confermed','0')->where('status','new')->count();
+              @endphp
+            <span class="badge badge-warning float-right">{{$count}}</span>
+            @endif
             </a>
         </li>
         @endif
@@ -258,6 +265,14 @@
             <a href="{{route('shops.index')}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Les Magasins</p>
+            </a>
+        </li>
+        @endif
+        @if( in_array( "cities.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('cities.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Les Ville</p>
             </a>
         </li>
         @endif

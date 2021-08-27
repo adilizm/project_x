@@ -72,7 +72,13 @@
 
             <div class="form-group my-1">
                 <label>Ville <span class="text-danger">*</span></label>
-                <input type="text" name="Ville" class="form-control" id="Ville" placeholder="Ex: Agadir">
+                <select name="Ville" class="form-control" onChange="get_the_city(this);" id="Ville">
+                    <option>choisire votre ville</option>
+                    @foreach($cities as $city)
+                    <option value="{{$city->id}}">{{$city->name}}</option>
+                    @endforeach
+                </select>
+               
             </div> <!-- form-group end.// -->
             <div class="form-group my-1">
                 <label>Adresse <span class="text-danger">*</span></label>
@@ -87,7 +93,7 @@
             </div>
             <div class="form-group " style="margin-top:2.5rem">
                 <label>Description <span class="text-danger">*</span></label>
-                <textarea name="description" class="form-control" id="address" cols="30" rows="3"></textarea>
+                <textarea name="description" class="form-control" id="description" cols="30" rows="3"></textarea>
             </div> <!-- form-group end.// -->
             <input type="hidden" name="lat" id="lat">
             <input type="hidden" name="lng" id="lng">
@@ -137,13 +143,16 @@
 </script>
 <script>
     //call the Geocod() function 
-
+var ville='';
+function get_the_city(sel) {
+  ville=sel.options[sel.selectedIndex].text;
+}
     function Geocod() {
-        if (document.getElementById('Ville').value.length < 2 || document.getElementById('address').value.length < 5) {
-            console.log('this should break');
+        if ( document.getElementById('address').value.length < 5) {
         } else {
             var map_container = document.getElementById('map_container').setAttribute("style", "height:300px !important")
-            var location = document.getElementById('Ville').value + ', ' + document.getElementById('address').value;
+            var location = ville + ', ' + document.getElementById('address').value;
+            console.log('location = ',location);
             axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
                 params: {
                     address: location,
@@ -152,6 +161,8 @@
             }).then(function(responce) {
 
                 var formatedaddress = responce.data.results[0].formatted_address;
+                console.log('formatedaddress = ',formatedaddress);
+
                 // change addres to formated address 
                 // document.getElementById('address').value = formatedaddress;
                 // get the lat and lng of address

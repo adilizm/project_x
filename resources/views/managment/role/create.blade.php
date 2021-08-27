@@ -22,17 +22,19 @@
           <label for="name">nom de rôle</label>
           <input type="text" class="form-control" id="name" name="name" required placeholder="nom de rôle">
         </div>
+        <div class="row">
         @foreach($auths as $auth)
-        <div class="form-group">
+        <div class="form-group col-sm-12 col-md-6 ">
             <label for="name">{{ $auth->name}}</label>
             @foreach($auth->childs as $child)
             <div class="form-check">
-                <input type="checkbox" class="form-check-input" name="permissions[]" value={{ $child->autorisation_key }} id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">{{ $child->autorisation_description }}</label>
+                <input type="checkbox" class="form-check-input" name="permissions[]" value={{ $child->autorisation_key }} >
+                <label class="form-check-label" >{{ $child->autorisation_description }}</label>
             </div>
             @endforeach
         </div>
         @endforeach
+        </div>
         <div class=" w-100 float-right">
             <button type="submit" class="btn bg-gradient-primary btn-sm float-right">ajouter un role</a>
         </div>
