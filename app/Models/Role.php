@@ -10,7 +10,7 @@ class Role extends Model
 {
     use HasFactory,SoftDeletes;
 
-protected $guarded=['id'];
+    protected $guarded=['id'];
 
     public function users()
     {

@@ -137,7 +137,7 @@
 </section>
 
 <!-- modals for products -->
-@if(in_array( "products.destroy", json_decode(Auth::user()->Role->permissions)))
+
 @foreach($products as $product)
 <div class="modal fade" id="{{'model_delete'.$product->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -163,7 +163,6 @@
   </div>
 </div>
 @endforeach 
-@endif
 @stop
 
 @section('managment_script')

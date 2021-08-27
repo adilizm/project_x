@@ -21,14 +21,35 @@
 @section('managment_content')
 <section class="content">
     <!-- Default box -->
+    <form action="{{ route('admin.products.update')}}" method="post" enctype="multipart/form-data">
+                @csrf
     <div class="card">
-        <div class="card-header d-flex">
+        <div class="px-3 py-2 d-flex border-bottom justify-content-between align-items-center">
             <h3 class="card-title">Edition d'un produit</h3>
+            <div class="row">
+                    <div class="px-2">
+                        <label for=""> Statut :</label>
+                    <select name="status" class="form-control " style="width: fit-content;padding-right: 25px;">
+                            <option value="new" @if($product->status == "new") selected @endif >En attente</option>
+                            <option value="published" @if($product->status == "published") selected @endif >publié</option>
+                            <option value="unpublished" @if($product->status == "unpublished") selected @endif >non publié</option>
+                            <option value="draft" @if($product->status == "draft") selected @endif >incomplet</option>
+                            <option value="banned" @if($product->status == "banned") selected @endif >refusé</option>
+                          </select>
+                    </div>
+                    <div class=" px-2">
+                    <label for=""> Confirmation :</label>
+                    <select name="confermed" class="form-control" style="width: fit-content;padding-right: 25px;">
+                            <option value="1" @if($product->confermed == 1) selected @endif >confirmé</option>
+                            <option value="0" @if($product->confermed == 0) selected @endif >non confirmé</option>
+                          </select> 
+                    </div>
+                </div>
         </div>
         <div class="card-body">
-            <form action="{{ route('vondeur.products.update')}}" method="post" enctype="multipart/form-data">
-                @csrf
+           
                 <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
+               
                 <div class="row">
                     <div class="col-sm-12 col-md-8">
                         <div class="form-group ">
@@ -62,12 +83,6 @@
                         <div class="form-group ">
                             <label for="unite">unite</label>
                             <input type="text" value="{{ $product->unite }}" class="form-control" name="unite" id="unite">
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" @if($product->status == 'draft') checked @endif name="save_as_draft" class="custom-control-input" id="customSwitch1">
-                                <label class="custom-control-label" for="customSwitch1">enregistrer comme brouillon</label>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -274,7 +289,7 @@
                 <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-info">Enregistrer le produit</button>
                 </div>
-            </form>
+           
         </div>
 
         <script>
@@ -285,6 +300,7 @@
             });
         </script>
     </div>
+    </form>
     <!-- /.card -->
 </section>
 

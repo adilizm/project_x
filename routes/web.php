@@ -97,8 +97,11 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
     Route::prefix('admin')->group(function () {
 
         Route::prefix('products')->group(function () {
-            Route::post('update', [ProductsController::class, 'admin_update_status'])->name('admin.products.admin_update_status');
+            Route::post('update_status', [ProductsController::class, 'admin_update_status'])->name('admin.products.admin_update_status');
             Route::post('update_confirmation', [ProductsController::class, 'admin_update_confirmation_product'])->name('admin.products.admin_update_confirmation_product');
+            Route::get('edit/{id}', [ProductsController::class, 'admin_edit'])->name('admin.products.edit');
+            Route::post('update', [ProductsController::class, 'admin_update'])->name('admin.products.update');
+            Route::post('delete', [ProductsController::class, 'admin_delete'])->name('admin.products.delete');
         });
     });
 });
