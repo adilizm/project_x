@@ -16,7 +16,6 @@
       <h3 class="card-title">Villes</h3>
       <div class="d-flex row">
         @if(in_array( "cities.create", json_decode(Auth::user()->Role->permissions)))
-
         <div class="col-12 d-flex justify-content-end mb-2">
           <span class="btn bg-gradient-primary btn-sm cursor-pointer" data-toggle="modal" data-target="#add_city">ajouter une ville</span>
         </div>

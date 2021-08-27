@@ -111,8 +111,10 @@
                       </a>
                     </td>
                     <td>
-                      <a href="{{ route('vondeur.products.edit',encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit"></i></a>
-                    </td>
+                      <a href="{{ route('admin.products.edit',encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit"></i></a>
+                      <span class="mx-1 cursor-pointer" data-toggle="modal" data-target="{{'#model_delete'.$product->id}}">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                      </span>                    </td>
                   </tr>
                   @endforeach
 
@@ -134,7 +136,33 @@
   <!-- /.card -->
 </section>
 
-<!-- modals for categories -->
+<!-- modals for products to delet  -->
+
+@foreach($products as $product)
+<div class="modal fade" id="{{'model_delete'.$product->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Alerte de suppression</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        êtes-vous sûr de vouloir supprimer le produit <strong>{{$product->name}}</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        <form action="{{ route('admin.products.delete')}}" method="post">
+          @csrf
+          <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
+          <button type="submit" class="btn btn-danger">Supprimer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@endforeach 
 @stop
 
 @section('managment_script')

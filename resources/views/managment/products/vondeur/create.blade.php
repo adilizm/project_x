@@ -48,7 +48,11 @@
                         </div>
                         <div class="form-group ">
                             <label for="unite">Prix standard</label>
-                            <input type="number" class="form-control" name="standar_prix" id="unite">
+                            <input type="number" required class="form-control" name="standar_prix" id="unite">
+                        </div>
+                        <div class="form-group ">
+                            <label for="unite">Ancien prix</label>
+                            <input type="number" class="form-control" name="old_price">
                         </div>
                         <div class="form-group ">
                             <label for="unite">unite</label>
@@ -102,7 +106,7 @@
                         </div>
                         <div class="form-group ">
                             <label >Quantité minimum</label>
-                            <input type="number" name="min_qty" class="form-control"  >
+                            <input type="number" value="1" name="min_qty" class="form-control"  >
                         </div>
                     </div>
                     
