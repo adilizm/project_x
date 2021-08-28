@@ -11,8 +11,28 @@
 <section class="content">
   <!-- Default box -->
   <div class="card">
-    <div class="card-header d-flex">
+    <div class=" p-3 d-flex justify-content-between">
       <h3 class="card-title">Shops</h3>
+      <div class="d-flex row justify-content-flex-end">
+        <form class="mx-2" action="{{ route('shops.index') }}" method="get">
+          @csrf
+          <div class="d-flex justify-content-end">
+            <select name="city_id" class="form-control mr-1">
+              <option>filtrer par ville</option>
+              @foreach($cities as $city)
+                <option value="{{$city->id}}">{{$city->name}}</option>
+              @endforeach
+            </select>
+            <select name="confirmation" class="form-control mr-1" id="">
+              <option>filtrer par situation</option>
+              <option value="1">vérifié</option>
+              <option value="0">non vérifié</option>
+            </select>
+            <input type="text" class="form-control mr-1" placeholder="tapez et Entrer" name="search" id="search">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <div class="card">
@@ -48,9 +68,9 @@
                     <td>0</td>
                     <td>
                       @if($shop->is_published == 1)
-                      <span class="badge badge-success">active</span>
+                      <span class="badge badge-success">vérifié</span>
                       @else
-                      <span class="badge badge-danger">inactive</span>
+                      <span class="badge badge-danger">non vérifié</span>
                       @endif
                     </td>
                     <td>
@@ -60,11 +80,15 @@
                       <strong> Email:</strong>{{$shop->User()->first()->email}}
                       </span>
                     </td>
-                    <td></td>
+                    <td>
+                    <a href="{{ route('admin.shops.admin_edit_shop',encrypt($shop->id)) }}"><i class="fas fa-edit"></i></a>
+
+                    </td>
                   </tr>
                   @endforeach
                 </tbody>
               </table>
+              {{ $shops->links()}}
             </div>
           </div>
         </div>

@@ -30,10 +30,6 @@ Route::get('/register_vondeur', [VondeurController::class,'create_vondeur'])->mi
 Route::get('/Banned_user', [UsersController::class,'banned_user'])->name('banned.user');
 Route::post('/save_vondeur', [VondeurController::class,'Register_vondeur'])->name('create_vondeur');
 
-
-
-Route::get('shops', [ShopController::class, 'index'])->name('shops.index');
-
 Route::middleware([Authenticate::class,NotBanned::class])->group(function () {
     Route::get('shops/create', [ShopController::class,'create'])->name('shops.create');
     Route::post('shops/enregistre', [ShopController::class,'save'])->name('shops.save');
@@ -77,7 +73,6 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
     Route::get('magasins', [ShopController::class, 'index'])->name('shops.index');
    
     /* Cities routes */
-    
     Route::get('villes', [CitiesController::class, 'index'])->name('cities.index');
     Route::post('villes/save', [CitiesController::class, 'store'])->name('cities.store');
 
@@ -103,6 +98,12 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
             Route::post('update', [ProductsController::class, 'admin_update'])->name('admin.products.update');
             Route::post('delete', [ProductsController::class, 'admin_delete'])->name('admin.products.delete');
         });
+        Route::prefix('shops')->group(function () {
+            Route::get('edit/{id}', [ShopController::class, 'admin_edit_shop'])->name('admin.shops.admin_edit_shop');
+            Route::post('update', [ShopController::class, 'admin_update_shop'])->name('admin.shops.admin_update_shop');
+            });
+
+
     });
 });
 
