@@ -3,27 +3,47 @@
 @section('head')
 @yield('frant_head')
 <style>
-  .item{
+  .item {
     width: 60vw;
     background-color: beige;
     height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border:1px chartreuse solid;
+    border: 1px chartreuse solid;
   }
 </style>
 <link rel="stylesheet" href="OwlCarousel/assets/owlcarousel/assets/owl.carousel.min.css">
 <script src="OwlCarousel/assets/owlcarousel/owl.carousel.js"></script>
 @stop
 
+@php
+ $disktop_top_annonce = \App\Models\Businesssetting::where('name','disktop_top_annonce')->first();
+ $tablet_top_annonce = \App\Models\Businesssetting::where('name','tablet_top_annonce')->first();
+ $phone_top_annonce = \App\Models\Businesssetting::where('name','phone_top_annonce')->first();
+@endphp
+
 @section('content')
 <header class="section-header">
-  <nav class="navbar navbar-main navbar-expand-md navbar-light">
-    <div class="container">
+  <div class="container">
+    <div class="alert alert-dismissible fade show position-relative p-0" style="width: 100%;margin: 0px;border: 0px;" role="alert">
+      <a class="d-none d-lg-block" style="width: 100%;"  href="{{$disktop_top_annonce->link}}">
+      <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$disktop_top_annonce->value}}" alt="">
+      </a>
+      <a  class=" d-none d-sm-block d-lg-none" style="width: 100%;" href="{{$tablet_top_annonce->link}}">
+      <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$tablet_top_annonce->value}}" alt="">
+      </a>
+      <a  class=" d-sm-none" style="width: 100%;" href="{{$phone_top_annonce->link}}">
+      <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$phone_top_annonce->value}}" alt="">
+      </a>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <nav class="navbar navbar-main navbar-expand-md navbar-light">
       <div class="d-flex">
         <span class="px-2 d-md-none" style="align-self: center;" data-toggle="collapse" data-target="#main_nav2" aria-expanded="false" aria-label="Toggle navigation">
-          <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
+          <svg xmlns="http://www.w3.org/2000/svg" style="height: 30px;" class="ionicon" viewBox="0 0 512 512">
             <title>List</title>
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M160 144h288M160 256h288M160 368h288" />
             <circle cx="80" cy="144" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -37,7 +57,7 @@
         @auth
         <div class="position-relative d-md-none" style="margin-right: 13px; align-self: center;">
           <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>
-          <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
+          <svg xmlns="http://www.w3.org/2000/svg" style="height: 27px;" class="ionicon" viewBox="0 0 512 512">
             <title>Cart</title>
             <circle cx="176" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
             <circle cx="400" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -46,22 +66,29 @@
           </svg>
         </div>
         @endauth
+        <div class="dropdown">
+          <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href=""></a>
+            <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
+              <title>Mon profil</title>
+              <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
+              <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+            </svg>
+          </span>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
+            <a href="{{ route('login') }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
+            <div class="dropdown-divider"></div>
+            <a href="{{ route('register') }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
+          </div>
+        </div>
 
-        <span class="d-md-none">
-          <a href=""></a>
-          <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
-            <title>Mon profil</title>
-            <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
-            <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
-          </svg>
-        </span>
       </div>
       <div class="collapse navbar-collapse  justify-content-md-between" id="main_nav2">
 
-        <form action="#" method="get" class="d-none d-md-flex">
+        <form action="#" method="get" class="d-none d-md-flex ml-auto" style="width: 60%;">
           @csrf
-          <input type="text" name="shearch" class="form-control" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px;">
-          <button class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px;" type="submit"><svg xmlns="http://www.w3.org/2000/svg" style="height: 20px;" class="ionicon" viewBox="0 0 512 512">
+          <input type="text" name="shearch" placeholder="Cherchez un produit, une marque ou une catégorie" class="form-control" style="padding-right: 51px;">
+          <button class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; margin-left: -48px;" type="submit"><svg xmlns="http://www.w3.org/2000/svg" style="height: 20px;" class="ionicon" viewBox="0 0 512 512">
               <title>Search</title>
               <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448" />
@@ -109,59 +136,12 @@
             </li>
             @else
             <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-            @if (Route::has('register'))
             <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
-            @endif
             @endauth
           </ul>
         </div>
-        <div class="d-flex d-md-none">
-          <div class="home-demo">
-            <div class="row">
-              <div class="large-12 columns">
-                <h3>Demo</h3>
-                <div class="owl-carousel">
-                  <div class="item">
-                    <h2>Swipe</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Drag</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Responsive</h2>
-                  </div>
-                  <div class="item">
-                    <h2>CSS3</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Fast</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Easy</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Free</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Upgradable</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Tons of options</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Infinity</h2>
-                  </div>
-                  <div class="item">
-                    <h2>Auto Width</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
       </div>
-    </div>
+  </div>
   </nav>
 </header>
 @yield('frant_content')
@@ -297,22 +277,22 @@
 
 @section('script')
 <script>
-      var owl = $('.owl-carousel');
-      owl.owlCarousel({
-        margin: 10,
-        loop: true,
-        responsive: {
-          0: {
-            items: 1
-          },
-          600: {
-            items: 2
-          },
-          1000: {
-            items: 3
-          }
-        }
-      })
-    </script>
+  var owl = $('.owl-carousel');
+  owl.owlCarousel({
+    margin: 10,
+    loop: true,
+    responsive: {
+      0: {
+        items: 1
+      },
+      600: {
+        items: 2
+      },
+      1000: {
+        items: 3
+      }
+    }
+  })
+</script>
 @yield('frant_script')
 @stop

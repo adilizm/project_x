@@ -276,6 +276,14 @@
             </a>
         </li>
         @endif
+        @if( in_array( "Admin", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('marketing.index')}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Marketing</p>
+            </a>
+        </li>
+        @endif
 
         </ul>
       </nav>

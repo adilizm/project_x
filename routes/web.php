@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\ManagmentController;
+use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VondeurController;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\NotBanned;
+use App\Models\Slider;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +27,9 @@ use App\Http\Middleware\NotBanned;
 */
 
 
-Route::get('/', function () {   return view('frantend.home');})->name('home');
+Route::get('/', function () {  
+        $sliders = Slider::all();
+    return view('frantend.home',compact('sliders'));})->name('home');
 Route::get('/register_vondeur', [VondeurController::class,'create_vondeur'])->middleware('guest')->name('login.vondeur');
 Route::get('/Banned_user', [UsersController::class,'banned_user'])->name('banned.user');
 Route::post('/save_vondeur', [VondeurController::class,'Register_vondeur'])->name('create_vondeur');
@@ -75,7 +79,8 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
     /* Cities routes */
     Route::get('villes', [CitiesController::class, 'index'])->name('cities.index');
     Route::post('villes/save', [CitiesController::class, 'store'])->name('cities.store');
-
+    
+    
 
     Route::prefix('vendeur')->group(function () {
         //this route may neot be important check it 
@@ -102,6 +107,12 @@ Route::prefix('managment')->middleware([Authenticate::class,NotBanned::class])->
             Route::get('edit/{id}', [ShopController::class, 'admin_edit_shop'])->name('admin.shops.admin_edit_shop');
             Route::post('update', [ShopController::class, 'admin_update_shop'])->name('admin.shops.admin_update_shop');
             });
+
+        /* marketing routes */
+        Route::get('marketing', [MarketingController::class, 'index'])->name('marketing.index');
+        Route::post('marketing/update', [MarketingController::class, 'set_top_annonces'])->name('marketing.update.top_annonces');
+        Route::post('marketing/create_slider', [MarketingController::class, 'create_new_slider'])->name('marketing.create_new_slider');
+        Route::post('marketing/update_slider', [MarketingController::class, 'update_slider'])->name('marketing.update_slider');
 
 
     });
