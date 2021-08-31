@@ -49,18 +49,23 @@ class ShopController extends Controller
     public function save(Request $request)
     {
         $request->validate([
-            'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
-            'name' => 'required|max:20',
-            'Ville' => 'required',
-            'address' => 'required|max:240',
+            'logo'        => 'required|mimes:png,jpg,jpeg|max:2048',
+            'banner'      => 'required|mimes:png,jpg,jpeg|max:2048',
+            'name'        => 'required|max:20',
+            'Ville'       => 'required',
+            'address'     => 'required|max:240',
             'description' => 'required|max:400',
-            'lat' => 'required',
-            'lng' => 'required',
+            'lat'         => 'required',
+            'lng'         => 'required',
         ]);
 
         $fileName = time() . '_' . $request->logo->getClientOriginalName();
-        $filePath = $request->file('logo')->storeAs('shops', $fileName, 'public');
+        $logo_filePath = $request->file('logo')->storeAs('shops', $fileName, 'public');
+        $fileName = time() . '_' . $request->banner->getClientOriginalName();
+        $banner_filePath = $request->file('banner')->storeAs('shops', $fileName, 'public');
+        
         $city = City::find($request->Ville);
+        
         $shop = new Shop();
         $shop->create([
             'name' => $request->name,
@@ -69,7 +74,8 @@ class ShopController extends Controller
             'description' => $request->description,
             'map_latitude' => $request->lat,
             'map_longitude' => $request->lng,
-            'logo_path' => $filePath,
+            'logo_path' => $logo_filePath,
+            'banner_path' => $banner_filePath,
             'user_id' => Auth::user()->id,
             'request_activation' => 1,
         ]);

@@ -16,7 +16,6 @@ class CreateSlidersTable extends Migration
         Schema::create('sliders', function (Blueprint $table) {
             $table->id();
             $table->string('laptop_path');
-            $table->string('mobile_path');
             $table->string('link');
             $table->integer('position');
             $table->string('click_counter'); // how many times clicked
