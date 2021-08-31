@@ -7,6 +7,8 @@ use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Image;
 
 class MarketingController extends Controller
@@ -117,5 +119,11 @@ class MarketingController extends Controller
         ]);   
         return redirect()->route('marketing.index')->with('success','le curseur est met à jour');
      
+    }
+    public function delete_slider(Request $request){
+        Gate::authorize('Admin');
+        
+        $slider= Slider::FindOrFail($request->slider_id)->delete();
+        return back()->with('success','le curseur est supprimer');
     }
 }

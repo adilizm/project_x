@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 
 class RoleController extends Controller
 {
@@ -23,9 +25,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if( !in_array( "role.index", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('role.index');
         $roles=[];
         $rolestemp=Role::All();
         foreach($rolestemp as $role){
@@ -44,9 +44,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        if( !in_array( "role.create", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.create');
         $auths=[];
         $autorisation_parents= Autorisation::where('is_parent','1')->get();
             foreach($autorisation_parents as $auth_parent){
@@ -54,7 +52,7 @@ class RoleController extends Controller
                 $auth_parent['childs']=$auth_childs;
                 array_push($auths,$auth_parent);
             }           
-        return view('managment.role.create',compact('auths') );
+        return view('managment.role.create',compact('auths'));
 
     }
 
@@ -66,9 +64,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        if( !in_array( "role.edit", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.edit');
         $role= new Role();
         $role->name= $request->name;
         $permitions= [];
@@ -100,10 +96,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {   
-
-        if( !in_array( "role.edit", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.edit');
         $role=Role::find(decrypt($id));
         $auths=[];
         $autorisation_parents= Autorisation::where('is_parent','1')->get();
@@ -125,9 +118,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if( !in_array( "role.edit", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('role.edit');
         $role=Role::find(decrypt($id));
         $role->name= $request->name;
         $permitions= [];
@@ -150,9 +141,7 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        if( !in_array( "role.destroy", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.destroy');
         $role=Role::find(decrypt($id));
 
         $users_with_role= User::where('role_id',$role->id)->get();
