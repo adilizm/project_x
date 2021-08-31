@@ -120,10 +120,6 @@
                             <small>image en Pc au Tablet (724px * 350px) </small>
                             <input type="file" name="picture_pc" class="form-control">
                           </div>
-                          <div class="col-12 col-md-6">
-                            <small>image en Tel (660px * 330px) </small>
-                            <input type="file" name="picture_mobile" class="form-control">
-                          </div>
                         </div>
                       </div>
                       <div class="modal-footer">
@@ -149,12 +145,6 @@
                   <input type="file" name="picture_pc">
                   <img width="100" loading=lazy src="{{'/storage/'.$slider->laptop_path}}" alt="">
                   <input type="hidden" name="old_picture_pc" value="{{ $slider->laptop_path}}">
-                </div>
-                <div class="col-12 col-md-6">
-                  <small>image en Tel (660px * 330px) </small>
-                  <input type="file" name="picture_mobile" class="form-control">
-                  <img width="100" loading=lazy src="{{'/storage/'.$slider->mobile_path}}" alt="">
-                  <input type="hidden" name="old_picture_mobile" value="{{ $slider->mobile_path}}">
                 </div>
               </div>
               <div class="row d-flex justify-content-end">

@@ -7,7 +7,7 @@ use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-
+use Image;
 
 class MarketingController extends Controller
 {
@@ -70,20 +70,22 @@ class MarketingController extends Controller
         }
         $request->validate([
             'picture_pc'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'picture_mobile'=>'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link'=>'required',
         ]);
 
         $fileName = time() .'laptop_path'. '.' . $request['picture_pc']->guessExtension();
         $laptop_path = $request->file('picture_pc')->storeAs('sliders_pc', $fileName, 'public');
 
-        $fileName = time() .'mobile_path'. '.' . $request['picture_mobile']->guessExtension();
-        $mobile_path = $request->file('picture_mobile')->storeAs('sliders_mobile', $fileName, 'public');
+        /* resize the slider image if not with recomanded size */
+        $data=getimagesize('storage/'.$laptop_path);
+        if($data[0] != 712 || $data[1] != 384){
+            $img = Image::make('storage/'.$laptop_path);
+            $img->resize(712,384)->save('storage/'.$laptop_path,100);
+        }
 
         $slider= new Slider();
         $slider->create([
             'laptop_path'=>$laptop_path,
-            'mobile_path'=>$mobile_path,
             'link'=>$request->link,
             'click_counter'=>0,
         ]);
@@ -102,17 +104,15 @@ class MarketingController extends Controller
         if($request->picture_pc != null){
             $fileName = time() .'laptop_path'. '.' . $request['picture_pc']->guessExtension();
             $laptop_path = $request->file('picture_pc')->storeAs('sliders_pc', $fileName, 'public');
-        }
-
-        $mobile_path=$request->old_picture_mobile;
-        if($request->picture_mobile != null){
-            $fileName = time() .'mobile_path'. '.' . $request['picture_mobile']->guessExtension();
-            $mobile_path = $request->file('picture_mobile')->storeAs('sliders_mobile', $fileName, 'public');
+            $data=getimagesize('storage/'.$laptop_path);
+            if($data[0] != 712 || $data[1] != 384){
+                $img = Image::make('storage/'.$laptop_path);
+                $img->resize(712,384)->save('storage/'.$laptop_path,100);
+            }
         }
 
         $slider->update([
             'laptop_path'=>$laptop_path,
-            'mobile_path'=>$mobile_path,
             'link'=>$link,
         ]);   
         return redirect()->route('marketing.index')->with('success','le curseur est met à jour');

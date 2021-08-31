@@ -69,7 +69,15 @@
             <div>
                 <img id="target" style="width: 100%; max-height: 350px;" />
             </div>
-
+            <div class="custom-file my-1">
+                <label>banner de la boutique <span class="text-danger">*</span></label>
+                <input type="file" class="custom-file-input" name="banner" id="bannerFile">
+                <label class="custom-file-label" for="bannerFile">banner de la boutique</label>
+            </div>
+            <div>
+                <img id="targetbanner" style="width: 100%; max-height: 350px;" />
+            </div>
+            
             <div class="form-group my-1">
                 <label>Ville <span class="text-danger">*</span></label>
                 <select name="Ville" class="form-control" onChange="get_the_city(this);" id="Ville">
@@ -123,6 +131,12 @@
         //replace the "Choose a file" label
         $(this).next('.custom-file-label').html(fileName);
     })
+    $('#bannerFile').on('change', function() {
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
 </script>
 <script>
     function showImage(src, target) {
@@ -140,6 +154,9 @@
     var src = document.getElementById("customFile");
     var target = document.getElementById("target");
     showImage(src, target);
+    var srcbanner = document.getElementById("bannerFile");
+    var targetbanner = document.getElementById("targetbanner");
+    showImage(srcbanner, targetbanner);
 </script>
 <script>
     //call the Geocod() function 

@@ -13,8 +13,7 @@
     border: 1px chartreuse solid;
   }
 </style>
-<link rel="stylesheet" href="OwlCarousel/assets/owlcarousel/assets/owl.carousel.min.css">
-<script src="OwlCarousel/assets/owlcarousel/owl.carousel.js"></script>
+
 @stop
 
 @php
@@ -25,8 +24,7 @@
 
 @section('content')
 <header class="section-header">
-  <div class="container">
-    <div class="alert alert-dismissible fade show position-relative p-0" style="width: 100%;margin: 0px;border: 0px;" role="alert">
+<div class="alert alert-dismissible fade show position-relative p-0" style="width: 100%;margin: 0px;border: 0px;" role="alert">
       <a class="d-none d-lg-block" style="width: 100%;"  href="{{$disktop_top_annonce->link}}">
       <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$disktop_top_annonce->value}}" alt="">
       </a>
@@ -40,7 +38,9 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <nav class="navbar navbar-main navbar-expand-md navbar-light">
+  <div class="container">
+    
+    <nav class="navbar navbar-main navbar-expand-md navbar-light px-0 py-2" style="min-width: 300;">
       <div class="d-flex">
         <span class="px-2 d-md-none" style="align-self: center;" data-toggle="collapse" data-target="#main_nav2" aria-expanded="false" aria-label="Toggle navigation">
           <svg xmlns="http://www.w3.org/2000/svg" style="height: 30px;" class="ionicon" viewBox="0 0 512 512">
@@ -276,23 +276,6 @@
 
 
 @section('script')
-<script>
-  var owl = $('.owl-carousel');
-  owl.owlCarousel({
-    margin: 10,
-    loop: true,
-    responsive: {
-      0: {
-        items: 1
-      },
-      600: {
-        items: 2
-      },
-      1000: {
-        items: 3
-      }
-    }
-  })
-</script>
+
 @yield('frant_script')
 @stop

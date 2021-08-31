@@ -22,6 +22,7 @@ class CreateShopsTable extends Migration
             $table->string('map_latitude')->nullable();
             $table->string('map_longitude')->nullable();
             $table->string('logo_path');
+            $table->string('banner_path');
             $table->text('description');
             $table->boolean('is_published')->default(0);
             $table->boolean('request_activation')->default(1); // request avtivation 
