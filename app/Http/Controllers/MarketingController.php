@@ -90,6 +90,7 @@ class MarketingController extends Controller
             'laptop_path'=>$laptop_path,
             'link'=>$request->link,
             'click_counter'=>0,
+            'position'=>0,
         ]);
         return redirect()->route('marketing.index')->with('success','le curseur est créé avec succès');
     }

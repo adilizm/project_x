@@ -85,7 +85,7 @@
       </div>
       <div class="collapse navbar-collapse  justify-content-md-between" id="main_nav2">
 
-        <form action="#" method="get" class="d-none d-md-flex ml-auto" style="width: 60%;">
+        <form action="#" method="get" class="d-none d-md-flex m-0" style="width: 60%;">
           @csrf
           <input type="text" name="shearch" placeholder="Cherchez un produit, une marque ou une catégorie" class="form-control" style="padding-right: 51px;">
           <button class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; margin-left: -48px;" type="submit"><svg xmlns="http://www.w3.org/2000/svg" style="height: 20px;" class="ionicon" viewBox="0 0 512 512">
