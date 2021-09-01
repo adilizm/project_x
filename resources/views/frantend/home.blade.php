@@ -78,11 +78,12 @@
         box-shadow: 0 .2rem .55rem rgba(0, 0, 0, .2) !important;
         z-index: 10;
     }
-    .product-card1:hover{
+
+    .product-card1:hover {
         transform: scale(1.029);
         box-shadow: 0 0.25em 0.5em 0 rgb(0 0 0 / 10%);
 
-    }   
+    }
 </style>
 @section('frant_head')
 
@@ -90,38 +91,30 @@
 @section('frant_content')
 <div class="row ">
     <!-- categoreis panel -->
-    <div class=" d-none d-md-block col-md-3 pr-0 col-lg-2 pt-1">
-
-        <div id="super_marche" class="category_name d-flex justify-content-center align-items-center py-1 pr-2 position-relative">
-            <a href="#" class="text-dark">
-                <i class="fas fa-home me-3 mx-1" style="width: 20px; height: 20px; text-align: center; align-self: center;padding-top: 2px;"></i>
-                <span>Super marche</span>
-            </a>
-        </div>
-
-        <div id="Sport_et_loisire" class="category_name d-flex justify-content-center align-items-center py-1 pr-2 position-relative">
-            <a href="#" class="text-dark">
-                <i class="fas fa-home me-3 mx-1" style="width: 20px; height: 20px; text-align: center; align-self: center;padding-top: 2px;"></i>
-                <span>Sport et loisire</span>
-            </a>
-        </div>
-
-        <div class="category_name d-flex justify-content-center align-items-center py-1 pr-2 position-relative">
-            <a href="#" class="text-dark">
-                <i class="fas fa-home me-3 mx-1" style="width: 20px; height: 20px; text-align: center; align-self: center;padding-top: 2px;"></i>
-                <span>Beauté & Santé</span>
-            </a>
-        </div>
-
-        <div class="category_name d-flex justify-content-center align-items-center py-1 pr-2 position-relative">
-            <a href="#" class="text-dark">
-                <i class="fas fa-home me-3 mx-1" style="width: 20px; height: 20px; text-align: center; align-self: center;padding-top: 2px;"></i>
-                <span>Super marche</span>
-            </a>
-        </div>
-
-    </div>
-
+    <aside class="d-none d-md-block col-md-3 col-lg-2">
+        <nav class="card" style="box-shadow: 0rem 0.1rem .2rem rgb(0 0 0 / 20%) !important;">
+            <ul class="menu-category" style="font-size: smaller;">
+                <li><a href="#">Best clothes</a></li>
+                <li><a href="#">Automobiles</a></li>
+                <li><a href="#">Home interior</a></li>
+                <li><a href="#">Home interior</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Technologies</a></li>
+                <li><a href="#">Technologies</a></li>
+                <li><a href="#">Digital goods</a></li>
+                <li class="has-submenu"><a href="#">More items</a>
+                    <ul class="submenu">
+                        <li><a href="#">Submenu name</a></li>
+                        <li><a href="#">Great submenu</a></li>
+                        <li><a href="#">Another menu</a></li>
+                        <li><a href="#">Some others</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
     <!-- sliders panel -->
     <div class="col-md-9 col-lg-8 position-relative p-0 rounded  ">
         <!-- super marche categories -->
@@ -198,7 +191,8 @@
                     @endforeach
                 </ul>
                 <div class="glide__arrows" data-glide-el="controls">
-                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">< </button>
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                        < </button>
                             <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
                 </div>
                 <div class="glide__bullets" data-glide-el="controls[nav]">
@@ -210,13 +204,23 @@
 
             </div>
         </div>
-
+        <div class="bg-warning d-none d-lg-flex d-xl-none">
+            p
+        </div>
+        <div class=" d-md-flex d-lg-none row m-0 justify-content-around  ">
+            <div class="bg-danger card col-5 d-flex justify-content-center px-1" style="height: 124px;min-width: 48% !important;">
+                <strong style="align-self: center;">Annonce 1</strong>
+            </div>
+            <div class="bg-success card col-5 d-flex justify-content-center px-1 " style="height: 124px;min-width: 48% !important;">
+                <strong style="align-self: center;">Annonce 2</strong>
+            </div>
+        </div>
     </div>
     <div class="d-none d-lg-block col-0 col-lg-2">
-        <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100">
+        <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100" style="height: 45% ;margin:2.5%">
             <strong style="align-self: center;">Annonce 1</strong>
         </div>
-        <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100">
+        <div class="bg-success d-flex justify-content-center alighn-items-center h-40 w-100" style="height: 45% ;margin:2.5%">
             <strong style="align-self: center;">Annonce 2</strong>
         </div>
     </div>
@@ -245,10 +249,12 @@
         </div>
         <div class="d-flex flex-column ">
             <span style="font-size: 1rem;font-weight: 600;">60 Dhs</span>
-<!--             <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">560 Dhs</span>
- -->        </div>
-<!--         <span class="position-absoute top-0" style="    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-17%</span>
- -->    </div>
+            <!--             <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">560 Dhs</span>
+ -->
+        </div>
+        <!--         <span class="position-absoute top-0" style="    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-17%</span>
+ -->
+    </div>
     <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
         <div style="width: 100%;padding: 1px;">
             <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/64/233014/1.jpg?7766" alt="" style="width: 100%;">
