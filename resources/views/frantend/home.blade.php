@@ -4,10 +4,11 @@
 <!-- Optional Theme Stylesheet -->
 <link rel="stylesheet" href="/glide/css/glide.theme.min.css">
 <style>
-    body{
-        font-family: Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    body {
+        font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         font-size: 0.75rem;
     }
+
     .menu_categories_big_category {
         color: black;
         font-size: revert;
@@ -70,12 +71,18 @@
     .glide__arrow:hover {
         opacity: 1;
     }
-    .categoreis_panel{
+
+    .categoreis_panel {
         height: 100%;
         width: 100%;
         box-shadow: 0 .2rem .55rem rgba(0, 0, 0, .2) !important;
         z-index: 10;
     }
+    .product-card1:hover{
+        transform: scale(1.029);
+        box-shadow: 0 0.25em 0.5em 0 rgb(0 0 0 / 10%);
+
+    }   
 </style>
 @section('frant_head')
 
@@ -191,8 +198,8 @@
                     @endforeach
                 </ul>
                 <div class="glide__arrows" data-glide-el="controls">
-                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><</button>
-                    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
+                    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">< </button>
+                            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
                 </div>
                 <div class="glide__bullets" data-glide-el="controls[nav]">
                     @foreach($sliders as $slider)
@@ -206,13 +213,57 @@
 
     </div>
     <div class="d-none d-lg-block col-0 col-lg-2">
-       <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100">
-           <strong style="align-self: center;">Annonce 1</strong>
-       </div>
-       <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100">
-           <strong style="align-self: center;">Annonce 2</strong>
-       </div>
+        <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100">
+            <strong style="align-self: center;">Annonce 1</strong>
+        </div>
+        <div class="bg-danger d-flex justify-content-center alighn-items-center h-40 w-100">
+            <strong style="align-self: center;">Annonce 2</strong>
+        </div>
     </div>
+
+    <!-- product card -->
+    <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
+        <div style="width: 100%;padding: 1px;">
+            <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/70/594614/1.jpg?5694" alt="" style="width: 100%;">
+        </div>
+        <div>
+            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 173px; text-overflow: ellipsis; padding-left: 3px;">Mouse and keyboard only for gamers like me adil pls by this pack </div>
+        </div>
+        <div class="d-flex flex-column ">
+            <span style="font-size: 1rem;font-weight: 600;">115.56 Dhs</span>
+            <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">170 Dhs</span>
+        </div>
+        <span class="position-absoute top-0" style="
+    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+    </div>
+    <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
+        <div style="width: 100%;padding: 1px;">
+            <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/75/140143/1.jpg?5765" alt="" style="width: 100%;">
+        </div>
+        <div>
+            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 173px; text-overflow: ellipsis; padding-left: 3px;">Taktouka ljabaliya dakchi dyal jbel</div>
+        </div>
+        <div class="d-flex flex-column ">
+            <span style="font-size: 1rem;font-weight: 600;">60 Dhs</span>
+<!--             <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">560 Dhs</span>
+ -->        </div>
+<!--         <span class="position-absoute top-0" style="    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-17%</span>
+ -->    </div>
+    <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
+        <div style="width: 100%;padding: 1px;">
+            <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/64/233014/1.jpg?7766" alt="" style="width: 100%;">
+        </div>
+        <div>
+            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 173px; text-overflow: ellipsis; padding-left: 3px;">Lanchoun kayowsel derya finma bghiti</div>
+        </div>
+        <div class="d-flex flex-column ">
+            <span style="font-size: 1rem;font-weight: 600;">115.56 Dhs</span>
+            <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">700 Dhs</span>
+        </div>
+        <span class="position-absoute top-0" style="
+    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+    </div>
+    <!-- end product card -->
 </div>
 
 @stop

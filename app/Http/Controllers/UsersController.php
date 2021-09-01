@@ -6,23 +6,19 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UsersController extends Controller
 {
     public function index(){
-        if( !in_array( "users.index", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+         Gate::authorize('users.index');
         $users= User::all();
         $Roles= Role::all();
-       
         return view('managment.users.index', compact('users','Roles'));
     }
 
     public function change_role(Request $request){
-        if( !in_array( "users.edit", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.edit');
         $user= User::FindOrFail($request->user_id);
         $user->update(['role_id'=>$request->role]);
         return back()->with('success','le rôle de l\'utilisateur <strong>'. $user->name .'</strong> a été mis à jour avec succès');
@@ -37,18 +33,14 @@ class UsersController extends Controller
         return view('frantend.banned_user');
     }
     public function edit_user($id){
-        if( !in_array( "users.edit", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.edit');
         $user= User::find(decrypt($id));
         $roles= Role::all();
         return view('managment.users.edit',compact('user','roles'));
     }
     public function update(Request $request)
     {
-        if( !in_array( "users.edit", json_decode(Auth::user()->Role->permissions))){
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('users.edit');
         $user = User::Find(decrypt($request->user_id));
         $is_banned = 0;
         if($request->is_banned == "1"){
