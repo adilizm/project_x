@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\MarketingController;
 use App\Http\Controllers\RoleController;
@@ -106,6 +107,7 @@ Route::prefix('managment')->middleware([Authenticate::class, NotBanned::class])-
             Route::get('edit/{id}', [ShopController::class, 'admin_edit_shop'])->name('admin.shops.admin_edit_shop');
             Route::post('update', [ShopController::class, 'admin_update_shop'])->name('admin.shops.admin_update_shop');
         });
+        
 
         /* marketing routes */
         Route::get('marketing', [MarketingController::class, 'index'])->name('marketing.index');
@@ -113,6 +115,13 @@ Route::prefix('managment')->middleware([Authenticate::class, NotBanned::class])-
         Route::post('marketing/create_slider', [MarketingController::class, 'create_new_slider'])->name('marketing.create_new_slider');
         Route::post('marketing/update_slider', [MarketingController::class, 'update_slider'])->name('marketing.update_slider');
         Route::post('marketing/delete_slider', [MarketingController::class, 'delete_slider'])->name('marketing.delete_slider');
+        
+        /* languages routes */
+        Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
+        Route::post('languages/update/default', [LanguageController::class, 'update_default'])->name('languages.update_default');
+        Route::get('languages/edit/{id}', [LanguageController::class, 'language_edit'])->name('languages.language_edit');
+       
+
     });
 });
 
