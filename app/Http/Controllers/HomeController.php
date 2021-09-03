@@ -7,7 +7,10 @@ use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Http\Response;class HomeController extends Controller
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
+
+class HomeController extends Controller
 {
     public function index(){
         $sliders = Slider::all();

@@ -12,7 +12,7 @@ function translate($key, $lang = null){
     $translation_def = Translation::where('lang', $lang )->where('lang_key', $key)->first();
     if($translation_def == null){
         $translation_def = new Translation();
-        $translation_def->lang = 'en';
+        $translation_def->lang = $lang;
         $translation_def->lang_key = $key;
         $translation_def->lang_value = $key;
         $translation_def->save();

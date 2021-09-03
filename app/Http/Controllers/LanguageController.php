@@ -16,6 +16,8 @@ class LanguageController extends Controller
 {
     public function index()
     {
+       
+
         Gate::authorize('Admin');
         $languages = Language::all();
         $default_lang = Businesssetting::where('name', 'default_language')->first();

@@ -81,7 +81,7 @@
                       </span>
                     </td>
                     <td>
-                    <a href="{{ route('admin.shops.admin_edit_shop',app()->getLocale(),encrypt($shop->id)) }}"><i class="fas fa-edit"></i></a>
+                    <a href="{{ route('admin.shops.admin_edit_shop',['language'=>app()->getLocale(),'id'=>encrypt($shop->id)])}}"><i class="fas fa-edit"></i></a>
 
                     </td>
                   </tr>

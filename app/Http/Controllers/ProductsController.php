@@ -768,7 +768,7 @@ class ProductsController extends Controller
 
         return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
     }
-    public function admin_edit($id)
+    public function admin_edit($language,$id)
     {
         if (!in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');

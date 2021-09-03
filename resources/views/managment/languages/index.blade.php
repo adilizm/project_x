@@ -12,7 +12,7 @@
         </div>
         <div class="row p-3">
             <div class=" card col-12 col-md-6 p-3 ">
-                <form class="form-horizontal" action="{{ route('languages.update_default,app()->getLocale()')}}" method="POST">
+                <form class="form-horizontal" action="{{ route('languages.update_default',app()->getLocale())}}" method="POST">
                     @csrf
                     <div class="form-group row">
                         <div class="col-lg-3">
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="row my-2">
-        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
+            <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
                 <thead>
                     <th>#</th>
                     <th>name</th>
@@ -48,7 +48,7 @@
                     <th>option</th>
                 </thead>
                 <tbody>
-                @foreach($languages as $language)
+                    @foreach($languages as $language)
                     <tr>
                         <td>
                             {{ $language->id }}
@@ -60,11 +60,11 @@
                             {{ $language->key }}
                         </td>
                         <td>
-                           <a href="{{ route('languages.language_edit',app()->getLocale(),encrypt($language->id)) }}"  title="modifier des mots" ><i class="mx-1 fas fa-language"></i></a>
-                           <a href="#" title="delete" ><i class=" mx-1 text-danger fas fa-trash"></i></a>
+                            <a href="{{ route('languages.language_edit',['language'=>app()->getLocale(),'id'=>encrypt($language->id)]) }}" title="modifier des mots"><i class="mx-1 fas fa-language"></i></a>
+                            <a href="#" title="delete"><i class=" mx-1 text-danger fas fa-trash"></i></a>
                         </td>
                     </tr>
-                @endforeach
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -81,8 +81,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form action="" method="post">
+                <form action="" method="post">
+                    <div class="modal-body">
                         @csrf
                         <div class=" row">
                             <div class="col-12 col-md-6">
@@ -101,12 +101,13 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

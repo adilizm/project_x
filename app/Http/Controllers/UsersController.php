@@ -23,7 +23,7 @@ class UsersController extends Controller
         $user->update(['role_id'=>$request->role]);
         return back()->with('success','le rôle de l\'utilisateur <strong>'. $user->name .'</strong> a été mis à jour avec succès');
     }
-    public function login($id)
+    public function login($language,$id)
     {
         $user = User::findOrFail(decrypt($id));
         auth()->login($user, true);
@@ -32,7 +32,7 @@ class UsersController extends Controller
     public function banned_user(){
         return view('frantend.banned_user');
     }
-    public function edit_user($id){
+    public function edit_user($language,$id){
         Gate::authorize('users.edit');
         $user= User::find(decrypt($id));
         $roles= Role::all();

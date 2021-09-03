@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class Setlanguage
 {
@@ -17,6 +18,13 @@ class Setlanguage
     public function handle(Request $request, Closure $next)
     {
         \App::setlocale($request->language);
+
+        if ($request->language == null) {
+            if (Cookie::get('user_lang') != null) {
+                App::getLocale()
+                return redirect()->route('home');
+            }
+        }
         return $next($request);
     }
 }

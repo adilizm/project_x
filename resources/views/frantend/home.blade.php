@@ -234,7 +234,7 @@
 
     @if(count($top_10_requested_products)>1)
     <div class="glide_top_products container">
-        <div style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">Les plus demandés</div>
+        <div style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">{{ translate('Most requested')}}</div>
         <div class="glide__track " data-glide-el="track">
             <ul class="glide__slides ">
                 @foreach($top_10_requested_products as $product)
@@ -300,19 +300,27 @@
     })
 </script>
 <script src="/glide/glide.min.js"></script>
-
+    @php
+        $language = \App\Models\Language::where('key',app()->getLocale())->first();
+    @endphp
 <script>
     new Glide('.glide', {
         type: 'carousel',
+        @if($language->rtl == 1)
+        direction:'rtl' ,
+        @endif
         gap: 0,
         autoplay: 4000,
         hoverpause: true,
     }).mount()
-
+   
     new Glide('.glide_top_products', {
         type: 'carousel',
         gap: 0,
         perView: 7.5,
+        @if($language->rtl == 1)
+        direction:'rtl' ,
+        @endif
         autoplay: 6500,
         hoverpause: true,
         breakpoints: {

@@ -17,7 +17,7 @@
     @endif
   </div>
   <div class="card-body p-0">
- <form action="{{ route('users.update',app()->getLocale()) }}" method="post" class="p-3">
+ <form action="{{ route('users.update',app()->getLocale())}}" method="post" class="p-3">
      @csrf
      <input type="hidden" name="user_id" value="{{encrypt($user->id)}}">
      <div class="row px-3">

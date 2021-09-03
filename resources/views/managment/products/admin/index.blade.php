@@ -15,7 +15,7 @@
     <div class="p-3 d-flex justify-content-between" style="content: none ">
       <h3 class="card-title">PRODUITS</h3>
       <div class="d-flex  row">
-        <form class="mx-2" action="{{ route('products.index,app()->getLocale()') }}" method="get">
+        <form class="mx-2" action="{{ route('products.index',app()->getLocale()) }}" method="get">
           @csrf
           <div class="d-flex justify-content-end">
             <select name="status" class="form-control mr-1" id="">
@@ -76,7 +76,7 @@
                     <td>{{$product->prix}}</td>
                     <td>0</td>
                     <td>
-                      <form action="{{ route('admin.products.admin_update_status,app()->getLocale()')}}" method="post">
+                      <form action="{{ route('admin.products.admin_update_status',app()->getLocale())}}" method="post">
                         @csrf
                         <div class="form-group">
                           <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
@@ -91,7 +91,7 @@
                       </form>
                     </td>
                     <td>
-                      <form action="{{ route('admin.products.admin_update_confirmation_product,app()->getLocale()')}}" method="post">
+                      <form action="{{ route('admin.products.admin_update_confirmation_product',app()->getLocale())}}" method="post">
                         @csrf
                         <div class="form-group">
                           <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
@@ -111,7 +111,7 @@
                       </a>
                     </td>
                     <td>
-                      <a href="{{ route('admin.products.edit',app()->getLocale(),encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit"></i></a>
+                      <a href="{{ route('admin.products.edit',['language'=>app()->getLocale(),'id'=>encrypt($product->id)]) }}" class="mx-1"><i class="fas fa-edit"></i></a>
                       <span class="mx-1 cursor-pointer" data-toggle="modal" data-target="{{'#model_delete'.$product->id}}">
                         <i class="fas fa-trash-alt text-danger"></i>
                       </span>                    </td>
@@ -153,7 +153,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <form action="{{ route('admin.products.delete,app()->getLocale()')}}" method="post">
+        <form action="{{ route('admin.products.delete',app()->getLocale())}}" method="post">
           @csrf
           <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
           <button type="submit" class="btn btn-danger">Supprimer</button>

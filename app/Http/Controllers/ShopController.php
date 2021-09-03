@@ -86,7 +86,7 @@ class ShopController extends Controller
         $shop = Auth::user()->Shop;
         return view('shop.register_complet', compact('shop'));
     }
-    public function admin_edit_shop($id)
+    public function admin_edit_shop($language,$id)
     {
         if (!in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');

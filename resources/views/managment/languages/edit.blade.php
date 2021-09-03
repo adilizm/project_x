@@ -9,40 +9,43 @@
     <div class="card-body">
         <div class="d-flex justify-content-between ">
             <h4>{{translate('languages')}} </h4>
-            <form action="#" method="get">
+            <form action="#" method="get" class="my-2 w-75 ">
                 @csrf
-                <input type="text" name="search" class="form-control" placeholder="Type & Enter">
+                <input type="text" name="search" class="form-control w-100 " placeholder="Type & Enter">
+                <input type="text" value="{{ $language->key }}" name="lang_key" class="d-none" placeholder="Type & Enter">
             </form>
         </div>
-
-        <div class="row my-2">
-        <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
+        <form action="{{ route('Translation.update',app()->getLocale())}}" method="post">
+            @csrf
+            <table id="example1" class="table table-bordered ">
                 <thead>
                     <th>#</th>
                     <th>key</th>
                     <th>value</th>
                 </thead>
                 <tbody>
-                @foreach($words as $word)
+                    <input type="text" name="lang_key" value="{{ $language->key }}" class="d-none" placeholder="Type & Enter">
+                    @foreach($words as $word)
                     <tr>
                         <td>
                             {{ $word->id }}
                         </td>
                         <td>
-                            {{ $word->ang_key }}
+                            {{ $word->lang_key }}
                         </td>
                         <td>
-                            {{ $word->lang_value }}
-                        </td>
-                        <td>
-                           <a href="#"  title="modifier des mots" ><i class="mx-1 fas fa-language"></i></a>
-                           <a href="#" title="delete" ><i class=" mx-1 text-danger fas fa-trash"></i></a>
+                            <input class="form-control" name="words[]" value=" {{ $word->lang_value }}" type="text">
+                            <input class="d-none" name="keys[]" value="{{ $word->lang_key }}" type="text">
                         </td>
                     </tr>
-                @endforeach
+                    @endforeach
                 </tbody>
             </table>
-        </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" type="submit">{{translate('update')}}</button>
+            </div>
+        </form>
+{{ $words->links()}}
     </div>
 </div>
 @stop

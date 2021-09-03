@@ -96,7 +96,7 @@ $languages= \App\Models\Language::all();
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448" />
             </svg></button>
         </form>
-        <div class="d-none d-md-flex   ml-auto">
+        <div class="d-none d-md-flex ">
           @auth
           <div class="position-relative" style="align-self: center;">
             <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>

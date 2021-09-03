@@ -60,9 +60,9 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('users.edit',app()->getLocale(),encrypt($user->id))}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
+                        <a href="{{ route('users.edit',['language'=>app()->getLocale(),'id'=>encrypt($user->id)])}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
                         @if(Auth::user()->id != $user->id)
-                        <a href="{{ route('users.login',app()->getLocale(),encrypt($user->id))}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
+                        <a href="{{ route('users.login',['language'=>app()->getLocale(),'id'=>encrypt($user->id)])}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
                         @endif
                     </td>
                 </tr>

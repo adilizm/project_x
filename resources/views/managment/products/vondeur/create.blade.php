@@ -23,7 +23,7 @@
             <h3 class="card-title">Creation d'un produit</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('vondeur.products.store,app()->getLocale()')}}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('vondeur.products.store',app()->getLocale())}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-sm-12 col-md-8">

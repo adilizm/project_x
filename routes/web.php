@@ -13,12 +13,11 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
-use App\Http\Middleware\admin;
+use App\Http\Controllers\TranslationController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\NotBanned;
 use Illuminate\Support\Facades\App;
-use App\Models\Language;
-use App\Models\Slider;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -131,6 +130,10 @@ Route::prefix('managment')->middleware([Authenticate::class, NotBanned::class])-
         Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
         Route::post('languages/update/default', [LanguageController::class, 'update_default'])->name('languages.update_default');
         Route::get('languages/edit/{id}', [LanguageController::class, 'language_edit'])->name('languages.language_edit');
+
+        /* Translation routes */
+        Route::post('translation/update', [TranslationController::class, 'update'])->name('Translation.update');
+
     });
 });
 

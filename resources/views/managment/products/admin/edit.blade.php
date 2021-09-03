@@ -21,7 +21,7 @@
 @section('managment_content')
 <section class="content">
     <!-- Default box -->
-    <form action="{{ route('admin.products.update,app()->getLocale()')}}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('admin.products.update',app()->getLocale())}}" method="post" enctype="multipart/form-data">
                 @csrf
     <div class="card">
         <div class="px-3 py-2 d-flex border-bottom justify-content-between align-items-center">
