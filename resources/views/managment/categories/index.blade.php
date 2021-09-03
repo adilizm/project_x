@@ -15,7 +15,7 @@
       <h3 class="card-title">CATÉGORIES</h3>
       @if(in_array( "category.create", json_decode(Auth::user()->Role->permissions)))
       <div class=" w-100 float-right">
-        <a href="{{ route('category.create')}}" class="btn bg-gradient-primary btn-sm float-right">ajouter une catégorie</a>
+        <a href="{{ route('category.create,app()->getLocale()')}}" class="btn bg-gradient-primary btn-sm float-right">ajouter une catégorie</a>
       </div>
       @endif
     </div>

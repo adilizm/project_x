@@ -80,7 +80,7 @@ class CategoryController extends Controller
         }
            
       
-        return redirect()->Route('category.index')->with('success','La Categorie: <strong>'.$category->name.'</strong> est ajoutée!');
+        return redirect()->Route('category.index',app()->getLocale())->with('success','La Categorie: <strong>'.$category->name.'</strong> est ajoutée!');
 
     }
 

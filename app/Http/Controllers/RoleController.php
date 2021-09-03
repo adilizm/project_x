@@ -73,7 +73,7 @@ class RoleController extends Controller
         }
         $role->permissions=json_encode($permitions);
         $role->save();
-        return redirect()->Route('roles.index')->with('success','le Role: <strong>'.$role->name.'</strong> a été enregistré !');
+        return redirect()->Route('roles.index',app()->getLocale())->with('success','le Role: <strong>'.$role->name.'</strong> a été enregistré !');
 
     }
 
@@ -94,7 +94,7 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($language,$id)
     {   
         Gate::authorize('users.edit');
         $role=Role::find(decrypt($id));
@@ -116,7 +116,7 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$language,$id)
     {
         Gate::authorize('role.edit');
         $role=Role::find(decrypt($id));
@@ -129,7 +129,7 @@ class RoleController extends Controller
         } 
         $role->permissions=json_encode($permitions);
         $role->save();
-        return redirect()->Route('roles.index')->with('success','le Role: <strong>'.$role->name.'</strong> a été modifier!');
+        return redirect()->Route('roles.index',app()->getLocale())->with('success','le Role: <strong>'.$role->name.'</strong> a été modifier!');
 
     }
 
@@ -139,7 +139,7 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($language,$id)
     {
         Gate::authorize('users.destroy');
         $role=Role::find(decrypt($id));
@@ -149,6 +149,6 @@ class RoleController extends Controller
             $user->update(['role_id'=>5]);            
         }
         $role->destroy($role->id);
-        return  redirect()->route('roles.index')->with('success','le Role: <strong>'.$role->name.'</strong> est supprimer!');
+        return  redirect()->route('roles.index',app()->getLocale())->with('success','le Role: <strong>'.$role->name.'</strong> est supprimer!');
     }
 }

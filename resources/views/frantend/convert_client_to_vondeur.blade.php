@@ -18,7 +18,7 @@
 					<p>en devenant vendeur, vous acceptez nos <strong> <a href="#">politiques de vente</a></strong> </p>
 				</figcaption>
 			</figure> <!-- iconbox // -->
-            <form class="d-flex justify-content-end my-3" action="{{ route('client_to_vondeur')}}" method="post">
+            <form class="d-flex justify-content-end my-3" action="{{ route('client_to_vondeur',app()->getLocale())}}" method="post">
                 @csrf
                 <button class="btn btn-primary" type="submit">Être vendeur</button>
             </form>

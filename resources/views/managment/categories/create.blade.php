@@ -13,7 +13,7 @@
     <h3 class="card-title">Création d'une catégorie</h3>
   </div>
   <div class="card-body p-0">
-    <form action="{{ route('category.store')}}" method="post" class="p-3" enctype="multipart/form-data">
+    <form action="{{ route('category.store,app()->getLocale()')}}" method="post" class="p-3" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
           <label for="name">Nom</label>

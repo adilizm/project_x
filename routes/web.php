@@ -10,10 +10,14 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\VondeurController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LanguageController;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\NotBanned;
+use Illuminate\Support\Facades\App;
+use App\Models\Language;
 use App\Models\Slider;
 
 /*
@@ -27,8 +31,11 @@ use App\Models\Slider;
 |
 */
 
+Route::redirect('/','/'.App::getLocale());
+Route::get('change_language/{key}',[LanguageController::class,'language_changer'])->name('change_languageyy');
+Route::group(['prefix'=>'{language}'], function(){
 
-Route::get('/', [HomeController::class,'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/register_vondeur', [VondeurController::class, 'create_vondeur'])->middleware('guest')->name('login.vondeur');
 Route::get('/Banned_user', [UsersController::class, 'banned_user'])->name('banned.user');
 Route::post('/save_vondeur', [VondeurController::class, 'Register_vondeur'])->name('create_vondeur');
@@ -95,6 +102,12 @@ Route::prefix('managment')->middleware([Authenticate::class, NotBanned::class])-
     });
     Route::prefix('admin')->group(function () {
 
+        Route::prefix('site')->group(function () {
+            Route::get('index', [WebsiteController::class, 'index'])->name('website.management.index');
+            Route::get('home_page', [WebsiteController::class, 'edit_home_page'])->name('website.management.edit_home_page');
+            Route::post('update_10_top_requested_products_home_page_', [WebsiteController::class, 'update_10_top_requested_products'])->name('website.management.update_10_top_requested_products');
+        });
+
         Route::prefix('products')->group(function () {
             Route::post('update_status', [ProductsController::class, 'admin_update_status'])->name('admin.products.admin_update_status');
             Route::post('update_confirmation', [ProductsController::class, 'admin_update_confirmation_product'])->name('admin.products.admin_update_confirmation_product');
@@ -113,6 +126,11 @@ Route::prefix('managment')->middleware([Authenticate::class, NotBanned::class])-
         Route::post('marketing/create_slider', [MarketingController::class, 'create_new_slider'])->name('marketing.create_new_slider');
         Route::post('marketing/update_slider', [MarketingController::class, 'update_slider'])->name('marketing.update_slider');
         Route::post('marketing/delete_slider', [MarketingController::class, 'delete_slider'])->name('marketing.delete_slider');
+
+        /* languages routes */
+        Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
+        Route::post('languages/update/default', [LanguageController::class, 'update_default'])->name('languages.update_default');
+        Route::get('languages/edit/{id}', [LanguageController::class, 'language_edit'])->name('languages.language_edit');
     });
 });
 
@@ -121,3 +139,4 @@ Route::get('/index', function () {
 })->middleware(['auth'])->name('index');
 
 require __DIR__ . '/auth.php';
+});

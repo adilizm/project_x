@@ -18,10 +18,10 @@
       <div class="d-flex row">
         @if(in_array( "products.create", json_decode(Auth::user()->Role->permissions)))
         <div class="col-12 d-flex justify-content-end mb-2 d-md-none">
-          <a href="{{ route('vondeur.products.create')}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
+          <a href="{{ route('vondeur.products.create',app()->getLocale())}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
         </div>
         @endif
-        <form class="mx-2" action="{{ route('products.index') }}" method="get">
+        <form class="mx-2" action="{{ route('products.index',app()->getLocale()) }}" method="get">
           @csrf
           <div class="d-flex justify-content-end">
             <select name="status" class="form-control mr-1" id="">
@@ -104,7 +104,7 @@
                       {{$product->created_at}}
                     </td>
                     <td>
-                      <a href="{{ route('vondeur.products.edit',encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit text-success"></i></a>
+                      <a href="{{ route('vondeur.products.edit',app()->getLocale(),encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit text-success"></i></a>
                       @if(in_array( "products.destroy", json_decode(Auth::user()->Role->permissions)))
                       <span class="mx-1 cursor-pointer" data-toggle="modal" data-target="{{'#model_delete'.$product->id}}">
                         <i class="fas fa-trash-alt text-danger"></i>
@@ -129,7 +129,7 @@
     </div>
     @if(in_array( "products.create", json_decode(Auth::user()->Role->permissions)))
     <div class=" d-flex justify-content-end p-2">
-      <a href="{{ route('vondeur.products.create')}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
+      <a href="{{ route('vondeur.products.create',app()->getLocale())}}" class="btn bg-gradient-primary btn-sm ">ajouter un produit</a>
     </div>
     @endif
   </div>
@@ -153,7 +153,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <form action="{{ route('vondeur.products.delete')}}" method="post">
+        <form action="{{ route('vondeur.products.delete',app()->getLocale())}}" method="post">
           @csrf
           <input type="hidden" name="product_id" value="{{encrypt($product->id)}}">
           <button type="submit" class="btn btn-danger">Supprimer</button>

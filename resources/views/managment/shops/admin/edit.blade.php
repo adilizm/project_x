@@ -11,7 +11,7 @@
             <h3 class="card-title">edit shop</h3>
         </div>
 
-        <form action="{{ route('admin.shops.admin_update_shop')}}" method="post"> 
+        <form action="{{ route('admin.shops.admin_update_shop',app()->getLocale())}}" method="post"> 
             @csrf
             <div class="card">
                 <input type="hidden" name="shop_id" value="{{$shop->id}}">

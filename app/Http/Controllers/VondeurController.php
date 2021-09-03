@@ -17,7 +17,7 @@ class VondeurController extends Controller
             }
 
             if (Auth::user()->role_id == 3) {
-                return redirect()->route('home');
+                return redirect()->route('home',app()->getLocale());
             }
         }
         
@@ -52,14 +52,14 @@ class VondeurController extends Controller
         ]);
 
         auth()->login($user, true);
-        return redirect()->route('shops.create');
+        return redirect()->route('shops.create',app()->getLocale());
     }
 
     public function VondeurController(Request $request){
         Auth::user()->update([
             'role_id'=>3
         ]);
-      return redirect()->route('shops.create');
+      return redirect()->route('shops.create',app()->getLocale());
 
     }
 

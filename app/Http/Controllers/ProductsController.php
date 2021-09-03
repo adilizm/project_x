@@ -50,7 +50,7 @@ class ProductsController extends Controller
             return view('managment.products.manager.index');
         } else if (in_array("Vondeur", json_decode(Auth::user()->Role->permissions))) { // vondeur
             if (Auth::user()->Shop()->first() == null) {
-                return redirect()->route('shops.create')->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
+                return redirect()->route('shops.create',app()->getLocale())->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
             }
             $products = Product::orderBy('created_at', 'asc')->where('shop_id', Auth::user()->Shop->id)->with('Images');
 
@@ -390,7 +390,7 @@ class ProductsController extends Controller
             }
         }
 
-        return redirect()->Route('products.index')->with('success', 'le produit : <strong>' . $product->name . '</strong> a été Ajouter!');
+        return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> a été Ajouter!');
     }
     public function vondeur_edit($id)
     {
@@ -732,7 +732,7 @@ class ProductsController extends Controller
             $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
             $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
             $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first();
-            unlink('storage/' . $product_image->path);
+           // unlink('storage/' . $product_image->path);
             $product_image->update([
                 'path' => $filePath,
             ]);
@@ -746,7 +746,7 @@ class ProductsController extends Controller
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->get();
 
             foreach ($images as $image) {
-                unlink('storage/' . $image->path);
+           //     unlink('storage/' . $image->path);
             }
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->delete();
             $Counter = 0;
@@ -766,7 +766,7 @@ class ProductsController extends Controller
             }
         }
 
-        return redirect()->Route('products.index')->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
+        return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
     }
     public function admin_edit($id)
     {
@@ -1108,7 +1108,7 @@ class ProductsController extends Controller
             $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
             $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
             $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first();
-            unlink('storage/' . $product_image->path);
+           // unlink('storage/' . $product_image->path);
             $product_image->update([
                 'path' => $filePath,
             ]);
@@ -1119,7 +1119,7 @@ class ProductsController extends Controller
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->get();
 
             foreach ($images as $image) {
-                unlink('storage/' . $image->path);
+            //    unlink('storage/' . $image->path);
             }
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->delete();
             $Counter = 0;
@@ -1139,7 +1139,7 @@ class ProductsController extends Controller
             }
         }
 
-        return redirect()->Route('products.index')->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
+        return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
     }
     public function admin_update_status(Request $request)
     {

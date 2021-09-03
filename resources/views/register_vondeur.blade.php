@@ -23,7 +23,7 @@
 		<span class="text"> Enregistrement complet </span>
 	</div> <!-- step.// -->
 </div>
-<form action="{{ route('create_vondeur')}}" method="post">
+<form action="{{ route('create_vondeur',app()->getLocale())}}" method="post">
     @csrf
     @if ($errors->any())
     <div class="alert alert-danger" role="alert">
@@ -70,7 +70,7 @@
     <p class="text-muted">En cliquant sur le bouton « S'inscrire », vous confirmez que vous acceptez nos conditions d'utilisation et notre politique de confidentialité.</p>                                          
 </form>
 <hr>
-<p class="text-center">Avoir un compte? <a href="{{ route('login')}}">Connexion</a></p>
+<p class="text-center">Avoir un compte? <a href="{{ route('login',app()->getLocale())}}">Connexion</a></p>
 </article> <!-- card-body end .// -->
 </div>
 @stop

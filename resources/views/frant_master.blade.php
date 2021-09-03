@@ -17,29 +17,31 @@
 @stop
 
 @php
- $disktop_top_annonce = \App\Models\Businesssetting::where('name','disktop_top_annonce')->first();
- $tablet_top_annonce = \App\Models\Businesssetting::where('name','tablet_top_annonce')->first();
- $phone_top_annonce = \App\Models\Businesssetting::where('name','phone_top_annonce')->first();
+$disktop_top_annonce = \App\Models\Businesssetting::where('name','disktop_top_annonce')->first();
+$tablet_top_annonce = \App\Models\Businesssetting::where('name','tablet_top_annonce')->first();
+$phone_top_annonce = \App\Models\Businesssetting::where('name','phone_top_annonce')->first();
+$languages= \App\Models\Language::all();
 @endphp
+
 
 @section('content')
 <header class="section-header">
-<div class="alert alert-dismissible fade show position-relative p-0" style="width: 100%;margin: 0px;border: 0px;" role="alert">
-      <a class="d-none d-lg-block" style="width: 100%;"  href="{{$disktop_top_annonce->link}}">
+  <div class="alert alert-dismissible fade show position-relative p-0" style="width: 100%;margin: 0px;border: 0px;" role="alert">
+    <a class="d-none d-lg-block" style="width: 100%;" href="{{$disktop_top_annonce->link}}">
       <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$disktop_top_annonce->value}}" alt="">
-      </a>
-      <a  class=" d-none d-sm-block d-lg-none" style="width: 100%;" href="{{$tablet_top_annonce->link}}">
+    </a>
+    <a class=" d-none d-sm-block d-lg-none" style="width: 100%;" href="{{$tablet_top_annonce->link}}">
       <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$tablet_top_annonce->value}}" alt="">
-      </a>
-      <a  class=" d-sm-none" style="width: 100%;" href="{{$phone_top_annonce->link}}">
+    </a>
+    <a class=" d-sm-none" style="width: 100%;" href="{{$phone_top_annonce->link}}">
       <img class="alert-dismissible fade show" style="width: 100%; padding:0px;" src="{{'/storage/'.$phone_top_annonce->value}}" alt="">
-      </a>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+    </a>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <div class="container">
-    
+
     <nav class="navbar navbar-main navbar-expand-md navbar-light px-0 py-2" style="min-width: 300;">
       <div class="d-flex">
         <span class="px-2 d-md-none" style="align-self: center;" data-toggle="collapse" data-target="#main_nav2" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,9 +78,9 @@
             </svg>
           </span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
-            <a href="{{ route('login') }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
+            <a href="{{ route('login',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
             <div class="dropdown-divider"></div>
-            <a href="{{ route('register') }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
+            <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
           </div>
         </div>
 
@@ -108,6 +110,18 @@
           </div>
           @endauth
           <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              @foreach($languages as $language)
+                @if($language->key == App::getLocale())
+                  <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> <img src="{{ 'storage/'.$language->image_path }}"  alt=""> </a>
+                @endif
+              @endforeach
+              <ul class="dropdown-menu dropdown-menu-right">
+                @foreach($languages as $language)
+                <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',$language->key) }}"> {{ $language->name }} <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a></li>
+                @endforeach
+              </ul>
+            </li>
             @auth
             <li class="nav-item dropdown">
               <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> {{ Auth::user()->name}} </a>
@@ -115,18 +129,18 @@
                 <li><a class="dropdown-item" href="#"> Mon profil </a></li>
                 <li><a class="dropdown-item" href="#"> Ma carte </a></li>
                 @if(Auth::user()->role_id == 1)
-                <li><a class="dropdown-item" href="{{ route('managment.index')}}"> Admin managment </a></li>
+                <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a></li>
                 @elseif(Auth::user()->role_id == 2)
-                <li><a class="dropdown-item" href="#"> manager managment </a></li>
+                <li><a class="dropdown-item" href="#"> {{ translate('manager managment')}} </a></li>
                 @elseif(Auth::user()->role_id == 3)
-                <li><a class="dropdown-item" href="{{ route('managment.index')}}"> vendor managment </a></li>
+                <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> vendor managment </a></li>
                 @elseif(Auth::user()->role_id == 4)
                 <li><a class="dropdown-item" href="#"> livreur managment </a></li>
                 @endif
                 <li>
-                  <form method="POST" action="{{ route('logout') }}">
+                  <form method="POST" action="{{ route('logout',app()->getLocale()) }}">
                     @csrf
-                    <x-dropdown-link class="dropdown-item" :href="route('logout')" onclick="event.preventDefault();
+                    <x-dropdown-link class="dropdown-item" :href="route('logout',app()->getLocale())" onclick="event.preventDefault();
                                                         this.closest('form').submit();">
                       {{ __('Log Out') }}
                     </x-dropdown-link>
@@ -135,8 +149,8 @@
               </ul>
             </li>
             @else
-            <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
-            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
+            <a href="{{ route('login',app()->getLocale()) }}" class="text-sm text-gray-700 underline">Log in</a>
+            <a href="{{ route('register',app()->getLocale()) }}" class="ml-4 text-sm text-gray-700 underline">{{ translate('Register')}}</a>
             @endauth
           </ul>
         </div>
@@ -229,7 +243,7 @@
             Useful links
           </h6>
           <p>
-            <a href="{{route('login.vondeur')}}" class="text-reset">Devenir vendeur</a>
+            <a href="{{route('login.vondeur',app()->getLocale())}}" class="text-reset">Devenir vendeur</a>
           </p>
           <p>
             <a href="#!" class="text-reset">Settings</a>

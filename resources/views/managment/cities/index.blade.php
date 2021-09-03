@@ -28,7 +28,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form action="{{ route('cities.store')}}" method="post">
+              <form action="{{ route('cities.store,app()->getLocale()')}}" method="post">
                 @csrf
                 <div class="modal-body">
                   <div class="form-group">

@@ -45,6 +45,10 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `creat
 (1, 'Test1', 'test1', 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest', 'categories/1629814314_Screenshot (15).png', '2021-08-24 13:11:55', '2021-08-24 13:11:55', NULL, NULL),
 (2, 'TestCategory2', 'testcategory2', 'TestCategory2 Description', 'categories/1629814372_Screenshot (21).png', '2021-08-24 13:12:52', '2021-08-24 13:12:52', NULL, NULL);
 
+INSERT INTO `languages`(`id`, `name`, `key`, `rtl`, `image_path`) VALUES 
+('1','english','en','0','-'),
+('2','francais','fr','0','-'),
+('3','العربية','ar','1','-')
 
 INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'admin', '[\"role.index\",\"role.create\",\"role.edit\",\"role.destroy\",\"users.index\",\"users.edit\",\"users.create\",\"users.destroy\",\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Admin\",\"shops.index\",\"shops.create\",\"shops.destroy\",\"shops.edit\"]', '2021-07-27 02:03:22', '2021-08-26 14:14:20', NULL),
