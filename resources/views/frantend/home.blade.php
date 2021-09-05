@@ -101,17 +101,10 @@
     <aside class="d-none d-md-block col-md-3 col-lg-2">
         <nav class="card" style="box-shadow: 0rem 0.1rem .2rem rgb(0 0 0 / 20%) !important;">
             <ul class="menu-category" style="font-size: smaller;">
-                <li><a href="#">Best clothes</a></li>
-                <li><a href="#">Automobiles</a></li>
-                <li><a href="#">Home interior</a></li>
-                <li><a href="#">Home interior</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Technologies</a></li>
-                <li><a href="#">Technologies</a></li>
-                <li><a href="#">Digital goods</a></li>
-                <li class="has-submenu"><a href="#">More items</a>
+            @foreach($parent_categoreis as $parent_categorei)
+                <li><a href="{{ route('category.page',['language'=>app()->getLocale(),'slug'=>$parent_categorei->slug]) }}">{{$parent_categorei->name}}</a></li>
+            @endforeach
+                <li class="has-submenu"><a href="#">{{translate('More Categoreis')}}</a>
                     <ul class="submenu">
                         <li><a href="#">Submenu name</a></li>
                         <li><a href="#">Great submenu</a></li>
@@ -121,7 +114,7 @@
                 </li>
             </ul>
         </nav>
-    </aside>
+    </aside> 
     <!-- sliders panel -->
     <div class="col-md-9 col-lg-8 position-relative p-0 rounded  ">
         <!-- super marche categories -->
@@ -206,7 +199,6 @@
                     @foreach($sliders as $slider)
                     <button class="glide__bullet" data-glide-dir="={{$loop->index}}"></button>
                     @endforeach
-
                 </div>
 
             </div>
@@ -234,7 +226,7 @@
 
     @if(count($top_10_requested_products)>1)
     <div class="glide_top_products container">
-        <div style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">{{ translate('Most requested')}}</div>
+        <div class="d-flex" style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">{{ translate('Most requested')}}</div>
         <div class="glide__track " data-glide-el="track">
             <ul class="glide__slides ">
                 @foreach($top_10_requested_products as $product)

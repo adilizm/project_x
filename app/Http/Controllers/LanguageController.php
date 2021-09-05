@@ -31,15 +31,15 @@ class LanguageController extends Controller
         ]);
         return back()->with('success', 'the default language is updated');
     }
-    public function language_edit($id)
+    public function language_edit($language,$id)
     {
         Gate::authorize('Admin');
         $language = Language::find(decrypt($id));
-        $words = Translation::orderBy('updated_at', 'asc')->where('lang_key', $language->key)->paginate(20);
+        $words = Translation::orderBy('updated_at', 'asc')->where('lang', $language->key)->paginate(20);
         return view('managment.languages.edit', compact('language', 'words'));
     }
 
-    public function language_changer($key)
+    public function language_changer($language,$key)
     {
         $url = url()->previous();
         $route = collect(\Route::getRoutes())->first(function ($route) use ($url) {

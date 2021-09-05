@@ -1,5 +1,9 @@
 @extends('master')
-
+<style>
+  .glide__arrow {
+    border-radius: 50% !important;
+  }
+</style>
 @section('head')
 @yield('frant_head')
 <style>
@@ -12,8 +16,15 @@
     align-items: center;
     border: 1px chartreuse solid;
   }
+  .li-login:hover{
+    background-color: #d3d3d3;
+    color: white;
+  }
 </style>
-
+<!-- Required Core Stylesheet -->
+<link rel="stylesheet" href="/glide/css/glide.core.min.css">
+<!-- Optional Theme Stylesheet -->
+<link rel="stylesheet" href="/glide/css/glide.theme.min.css">
 @stop
 
 @php
@@ -53,9 +64,9 @@ $languages= \App\Models\Language::all();
             <circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
           </svg>
         </span>
-        <a class="navbar-brand" href="#"><img src="bootstrap_ecom/images/logo.png" class="logo"></a>
+        <a class="navbar-brand" href="#"><img src="/bootstrap_ecom/images/logo.png" class="logo"></a>
       </div>
-      <div class="d-flex p-1">
+      <div class="d-flex p-1" style="align-items: center;">
         @auth
         <div class="position-relative d-md-none" style="margin-right: 13px; align-self: center;">
           <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>
@@ -68,7 +79,7 @@ $languages= \App\Models\Language::all();
           </svg>
         </div>
         @endauth
-        <div class="dropdown">
+        <div class="dropdown px-2">
           <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <a href=""></a>
             <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
@@ -83,6 +94,20 @@ $languages= \App\Models\Language::all();
             <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
           </div>
         </div>
+        <ul class="d-md-none navbar-nav align-items-center">
+          <li class="nav-item dropdown ">
+            @foreach($languages as $language)
+            @if($language->key == App::getLocale())
+            <a class="nav-link  dropdown-toggle dropdown-toggle_lang" href="#" data-toggle="dropdown"> <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a>
+            @endif
+            @endforeach
+            <ul class="dropdown-menu dropdown-menu-right">
+              @foreach($languages as $language)
+              <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',['language'=>app()->getLocale(),'key'=>$language->key]) }}"> {{ $language->name }} <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a></li>
+              @endforeach
+            </ul>
+          </li>
+        </ul>
 
       </div>
       <div class="collapse navbar-collapse  justify-content-md-between" id="main_nav2">
@@ -109,7 +134,7 @@ $languages= \App\Models\Language::all();
             </svg>
           </div>
           @endauth
-          <ul class="navbar-nav">
+            <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown">
               @foreach($languages as $language)
                 @if($language->key == App::getLocale())
@@ -118,14 +143,15 @@ $languages= \App\Models\Language::all();
               @endforeach
               <ul class="dropdown-menu dropdown-menu-right">
                 @foreach($languages as $language)
-                <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',$language->key) }}"> {{ $language->name }} <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a></li>
+                <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',['language'=>app()->getLocale(),'key'=>$language->key]) }}"> {{ $language->name }} <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a></li>
                 @endforeach
               </ul>
             </li>
+          <ul class="navbar-nav align-items-center">
             @auth
             <li class="nav-item dropdown">
               <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> {{ Auth::user()->name}} </a>
-              <ul class="dropdown-menu dropdown-menu-right">
+              <ul class="dropdown-menu dropdown-menu-right align-items-center">
                 <li><a class="dropdown-item" href="#"> Mon profil </a></li>
                 <li><a class="dropdown-item" href="#"> Ma carte </a></li>
                 @if(Auth::user()->role_id == 1)
@@ -149,9 +175,19 @@ $languages= \App\Models\Language::all();
               </ul>
             </li>
             @else
-            <a href="{{ route('login',app()->getLocale()) }}" class="text-sm text-gray-700 underline">Log in</a>
-            <a href="{{ route('register',app()->getLocale()) }}" class="ml-4 text-sm text-gray-700 underline">{{ translate('Register')}}</a>
-            @endauth
+            <li class="nav-item dropdown">
+            <div class="dropdown">
+          <span class="" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <span style="font-weight: 600;    cursor: pointer;">{{ translate('log in') }}</span>
+          </span>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
+            <a href="{{ route('login',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
+            <div class="dropdown-divider"></div>
+            <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
+          </div>
+        </div>
+            </li>
+              @endauth
           </ul>
         </div>
       </div>

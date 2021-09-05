@@ -21,8 +21,11 @@ class Setlanguage
 
         if ($request->language == null) {
             if (Cookie::get('user_lang') != null) {
-                App::getLocale()
-                return redirect()->route('home');
+                \App::setlocale(Cookie::get('user_lang'));
+                return redirect()->route('home',['language'=>\App::getlocale()]);
+            }else{
+                $cookie = Cookie::make('user_lang','fr', 60 * 24 * 365);
+                return redirect()->route('home',['language'=>'fr'])->cookie($cookie);
             }
         }
         return $next($request);

@@ -34,6 +34,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">name</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">description</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">category mére</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">options</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,9 @@
                     @else
                       <td>-</td>
                     @endif
+                    <td>
+                      <a href="{{ route('category.edit',['language'=>app()->getLocale(),'id'=>encrypt($category->id)])}}" title="{{ translate('edit') }}"><i class="mx-1 fas fa-language"></i></a>
+                    </td>
                   </tr>
                   @endforeach
                 </tbody>

@@ -41,14 +41,11 @@ INSERT INTO `autorisations` (`id`, `name`, `autorisation_key`, `autorisation_des
 (39, '', 'cities.destroy', 'supprimer villes', 0, 36, '2021-08-24 14:19:14', '2021-08-24 14:19:14', NULL),
 (40, '', 'cities.edit', 'modifier info des villes', 0, 36, '2021-08-24 14:19:14', '2021-08-24 14:19:14', NULL);
 
-INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `created_at`, `updated_at`, `deleted_at`, `parent_id`) VALUES
-(1, 'Test1', 'test1', 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest', 'categories/1629814314_Screenshot (15).png', '2021-08-24 13:11:55', '2021-08-24 13:11:55', NULL, NULL),
-(2, 'TestCategory2', 'testcategory2', 'TestCategory2 Description', 'categories/1629814372_Screenshot (21).png', '2021-08-24 13:12:52', '2021-08-24 13:12:52', NULL, NULL);
 
 INSERT INTO `languages`(`id`, `name`, `key`, `rtl`, `image_path`) VALUES 
 ('1','english','en','0','-'),
 ('2','francais','fr','0','-'),
-('3','العربية','ar','1','-')
+('3','العربية','ar','1','-');
 
 INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'admin', '[\"role.index\",\"role.create\",\"role.edit\",\"role.destroy\",\"users.index\",\"users.edit\",\"users.create\",\"users.destroy\",\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Admin\",\"shops.index\",\"shops.create\",\"shops.destroy\",\"shops.edit\"]', '2021-07-27 02:03:22', '2021-08-26 14:14:20', NULL),
@@ -57,6 +54,12 @@ INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `d
 (4, 'livreur', '[\"Livreur\"]', '2021-07-27 02:03:22', '2021-08-26 08:13:06', NULL),
 (5, 'client', '[]', '2021-07-27 02:03:22', '2021-07-27 02:03:22', NULL),
 (6, 'voircategorie', '[\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\"]', '2021-08-18 20:46:39', '2021-08-18 20:46:39', NULL);
+
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `created_at`, `updated_at`, `deleted_at`, `parent_id`) VALUES
+(1, 'Test1', 'test1', 'testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest', 'categories/1629814314_Screenshot (15).png', '2021-08-24 12:11:55', '2021-08-24 12:11:55', NULL, NULL),
+(2, 'TestCategory2', 'testcategory2', 'TestCategory2 Description', 'categories/1629814372_Screenshot (21).png', '2021-08-24 12:12:52', '2021-08-24 12:12:52', NULL, 1),
+(3, 'child2', 'child-2', 'this is category child', '-', NULL, NULL, NULL, 1),
+(4, 'child3', 'child-3', 'this is category child3', '-', NULL, NULL, NULL, 1);
 
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `role_id`, `remember_token`, `is_banned`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -100,3 +103,9 @@ INSERT INTO `vondeurs` (`id`, `user_id`, `is_active`, `deleted_at`, `created_at`
 (2, 5, 1, NULL, '2021-08-25 09:10:38', '2021-08-25 09:10:38'),
 (3, 6, 1, NULL, '2021-08-25 09:26:08', '2021-08-25 09:26:08'),
 (4, 7, 1, NULL, '2021-08-25 09:32:16', '2021-08-25 09:32:16');
+
+INSERT INTO `businesssettings` (`id`, `name`, `value`, `is_active`, `from`, `to`, `link`, `created_at`, `updated_at`) VALUES
+(1, 'top_10_requested_products', '[]', 1, '', '', '', '0000-00-00 00:00:00', '2021-09-04 17:52:28'),
+(2, 'disktop_top_annonce', 'top_anonces_barrs/1630781548top_barr.png', 0, '', '', '-',  '2021-09-04 17:52:38', '2021-09-04 17:52:28'),
+(3, 'tablet_top_annonce', 'top_anonces_barrs/1630781558top_barr.png', 0, '', '', '-',  '2021-09-04 17:52:38', '2021-09-04 17:52:38'),
+(4, 'phone_top_annonce', 'top_anonces_barrs/1630781569top_barr.png', 0, '', '', '-',  '2021-09-04 17:52:38', '2021-09-04 17:52:49');

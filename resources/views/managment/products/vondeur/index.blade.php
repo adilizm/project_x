@@ -104,7 +104,7 @@
                       {{$product->created_at}}
                     </td>
                     <td>
-                      <a href="{{ route('vondeur.products.edit',app()->getLocale(),encrypt($product->id)) }}" class="mx-1"><i class="fas fa-edit text-success"></i></a>
+                      <a href="{{ route('vondeur.products.edit',['language'=>app()->getLocale(),'id'=>encrypt($product->id)]) }}" class="mx-1"><i class="fas fa-edit text-success"></i></a>
                       @if(in_array( "products.destroy", json_decode(Auth::user()->Role->permissions)))
                       <span class="mx-1 cursor-pointer" data-toggle="modal" data-target="{{'#model_delete'.$product->id}}">
                         <i class="fas fa-trash-alt text-danger"></i>
