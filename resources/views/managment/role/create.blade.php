@@ -12,11 +12,11 @@
   <div class="card-header d-flex">
     <h3 class="card-title">Roles</h3>
     <div class=" w-100 float-right">
-        <a href="{{ route('roles.create')}}" class="btn bg-gradient-primary btn-sm float-right">ajouter un role</a>
+        <a href="{{ route('roles.create',app()->getLocale())}}" class="btn bg-gradient-primary btn-sm float-right">ajouter un role</a>
     </div>
   </div>
   <div class="card-body p-0">
-    <form action="{{ route('roles.store')}}" method="post" class="p-3">
+    <form action="{{ route('roles.store',app()->getLocale())}}" method="post" class="p-3">
         @csrf
         <div class="form-group">
           <label for="name">nom de rôle</label>

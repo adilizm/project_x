@@ -10,37 +10,38 @@
 <!-- Default box -->
 <div class="card">
   <div class="card-header d-flex">
-    <h3 class="card-title">Création d'une catégorie</h3>
+    <h3 class="card-title">{{ translate('Editing a category')}}</h3>
   </div>
   <div class="card-body p-0">
-    <form action="{{ route('category.store',app()->getLocale())}}" method="post" class="p-3" enctype="multipart/form-data">
+    <form action="{{ route('category.update',app()->getLocale())}}" method="post" class="p-3" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="category_id" value="{{encrypt($category->id)}}">
         <div class="form-group">
           <label for="name">Nom</label>
-          <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required placeholder="">
+          <input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}" required >
         </div>
     
         <div class="form-group">
           <label for="name">Description</label>
-          <textarea type="text" class="form-control" name="description" required>{{ old('description') }}</textarea>
+          <textarea type="text" class="form-control" name="description" required>{{ $category->description}}</textarea>
         </div>
-        
 
         <div class="form-group">
         <label for="name">catégorie mére</label>
                   <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"  tabindex="-1" aria-hidden="true" name="parent_id" >
                    <option value="0">selectioner une catégorie</option>
                   @foreach($parent_categories as $parent_category)
-                    <option value="{{$parent_category->id}}">{{$parent_category->name}}</option>
+                    <option @if($parent_category->id == $category->parent_id && $category->parent_id != null )  selected   @endif value="{{$parent_category->id}}">{{$parent_category->name}}</option>
                     @endforeach
                   </select>
                  </div>
         <div class="custom-file">
-            <input type="file" class="custom-file-input" name="logo" required id="customFile">
+            <input type="file" class="custom-file-input" name="logo" id="customFile">
+            <input type="hidden" class="custom-file-input" name="old_logo" >
             <label class="custom-file-label" for="customFile">Choose file</label>
         </div>
         <div>
-            <img id="target" style=" max-height: 350px;" />
+            <img id="target" src="{{ '/storage/'.$category->picture}}" style=" max-height: 350px;" />
         </div>
       
         

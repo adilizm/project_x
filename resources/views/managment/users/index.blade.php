@@ -42,7 +42,7 @@
                     <td>{{$user->phone}}</td>
                     <td>{{$user->email}}</td>
                     <td>
-                        <form action="{{ route('users.change_Role')}}" method="post">
+                        <form action="{{ route('users.change_Role',app()->getLocale())}}" method="post">
                             @csrf
                             <input type="hidden" name="user_id" value="{{$user->id}}">
                             <select onchange="this.form.submit()" class="form-control" name="role">
@@ -60,9 +60,9 @@
                         @endif
                     </td>
                     <td>
-                        <a href="{{ route('users.edit',encrypt($user->id))}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
+                        <a href="{{ route('users.edit',['language'=>app()->getLocale(),'id'=>encrypt($user->id)])}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
                         @if(Auth::user()->id != $user->id)
-                        <a href="{{ route('users.login',encrypt($user->id))}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
+                        <a href="{{ route('users.login',['language'=>app()->getLocale(),'id'=>encrypt($user->id)])}}" class="mx-1"  ><i class="fas fa-sign-in-alt"></i></a>
                         @endif
                     </td>
                 </tr>

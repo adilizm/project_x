@@ -14,7 +14,7 @@
     <div class=" p-3 d-flex justify-content-between">
       <h3 class="card-title">Shops</h3>
       <div class="d-flex row justify-content-flex-end">
-        <form class="mx-2" action="{{ route('shops.index') }}" method="get">
+        <form class="mx-2" action="{{ route('shops.index',app()->getLocale()) }}" method="get">
           @csrf
           <div class="d-flex justify-content-end">
             <select name="city_id" class="form-control mr-1">
@@ -81,7 +81,7 @@
                       </span>
                     </td>
                     <td>
-                    <a href="{{ route('admin.shops.admin_edit_shop',encrypt($shop->id)) }}"><i class="fas fa-edit"></i></a>
+                    <a href="{{ route('admin.shops.admin_edit_shop',['language'=>app()->getLocale(),'id'=>encrypt($shop->id)])}}"><i class="fas fa-edit"></i></a>
 
                     </td>
                   </tr>

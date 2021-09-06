@@ -92,7 +92,7 @@ class MarketingController extends Controller
             'click_counter'=>0,
             'position'=>0,
         ]);
-        return redirect()->route('marketing.index')->with('success','le curseur est créé avec succès');
+        return redirect()->route('marketing.index',app()->getLocale())->with('success','le curseur est créé avec succès');
     }
     public function update_slider(Request $request){
         if( !in_array( "Admin", json_decode(Auth::user()->Role->permissions))){
@@ -118,7 +118,7 @@ class MarketingController extends Controller
             'laptop_path'=>$laptop_path,
             'link'=>$link,
         ]);   
-        return redirect()->route('marketing.index')->with('success','le curseur est met à jour');
+        return redirect()->route('marketing.index',app()->getLocale())->with('success','le curseur est met à jour');
      
     }
     public function delete_slider(Request $request){

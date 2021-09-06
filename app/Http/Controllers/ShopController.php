@@ -41,7 +41,7 @@ class ShopController extends Controller
     public function create()
     {
         if (Auth::user()->role_id != 3 && Auth::user()->role_id != 1) {
-            return redirect()->route('home');
+            return redirect()->route('home',app()->getLocale());
         }
         $cities = City::all();
         return view('shop.shop_create', compact('cities'));
@@ -79,14 +79,14 @@ class ShopController extends Controller
             'user_id' => Auth::user()->id,
             'request_activation' => 1,
         ]);
-        return redirect()->route('shops.register_complet');
+        return redirect()->route('shops.register_complet',app()->getLocale());
     }
     public function register_complet()
     {
         $shop = Auth::user()->Shop;
         return view('shop.register_complet', compact('shop'));
     }
-    public function admin_edit_shop($id)
+    public function admin_edit_shop($language,$id)
     {
         if (!in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
@@ -130,6 +130,6 @@ class ShopController extends Controller
             'is_published'=>$is_published,
             'name'=>$name,
         ]);
-        return redirect()->route('shops.index')->with('success','le magasin a ete mise a jour');
+        return redirect()->route('shops.index',app()->getLocale())->with('success','le magasin a ete mise a jour');
     }
 }

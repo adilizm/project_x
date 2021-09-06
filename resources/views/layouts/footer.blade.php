@@ -81,7 +81,7 @@
             Useful links
           </h6>
           <p>
-            <a href="{{route('login.vondeur')}}" class="text-reset">Devenir vendeur</a>
+            <a href="{{route('login.vondeur',app()->getLocale())}}" class="text-reset">Devenir vendeur</a>
           </p>
           <p>
             <a href="#!" class="text-reset">Settings</a>

@@ -82,7 +82,14 @@
     .product-card1:hover {
         transform: scale(1.029);
         box-shadow: 0 0.25em 0.5em 0 rgb(0 0 0 / 10%);
-
+        display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.37rem;
     }
 </style>
 @section('frant_head')
@@ -94,17 +101,10 @@
     <aside class="d-none d-md-block col-md-3 col-lg-2">
         <nav class="card" style="box-shadow: 0rem 0.1rem .2rem rgb(0 0 0 / 20%) !important;">
             <ul class="menu-category" style="font-size: smaller;">
-                <li><a href="#">Best clothes</a></li>
-                <li><a href="#">Automobiles</a></li>
-                <li><a href="#">Home interior</a></li>
-                <li><a href="#">Home interior</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Electronics</a></li>
-                <li><a href="#">Technologies</a></li>
-                <li><a href="#">Technologies</a></li>
-                <li><a href="#">Digital goods</a></li>
-                <li class="has-submenu"><a href="#">More items</a>
+            @foreach($parent_categoreis as $parent_categorei)
+                <li><a href="{{ route('category.page',['language'=>app()->getLocale(),'slug'=>$parent_categorei->slug]) }}">{{$parent_categorei->name}}</a></li>
+            @endforeach
+                <li class="has-submenu"><a href="#">{{translate('More Categoreis')}}</a>
                     <ul class="submenu">
                         <li><a href="#">Submenu name</a></li>
                         <li><a href="#">Great submenu</a></li>
@@ -114,7 +114,7 @@
                 </li>
             </ul>
         </nav>
-    </aside>
+    </aside> 
     <!-- sliders panel -->
     <div class="col-md-9 col-lg-8 position-relative p-0 rounded  ">
         <!-- super marche categories -->
@@ -199,13 +199,12 @@
                     @foreach($sliders as $slider)
                     <button class="glide__bullet" data-glide-dir="={{$loop->index}}"></button>
                     @endforeach
-
                 </div>
 
             </div>
         </div>
         <div class="bg-warning d-none d-lg-flex d-xl-none">
-            p
+            place for some info
         </div>
         <div class=" d-md-flex d-lg-none row m-0 justify-content-around  ">
             <div class="bg-danger card col-5 d-flex justify-content-center px-1" style="height: 124px;min-width: 48% !important;">
@@ -225,51 +224,32 @@
         </div>
     </div>
 
-    <!-- product card -->
-    <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
-        <div style="width: 100%;padding: 1px;">
-            <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/70/594614/1.jpg?5694" alt="" style="width: 100%;">
+    @if(count($top_10_requested_products)>1)
+    <div class="glide_top_products container">
+        <div class="d-flex" style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">{{ translate('Most requested')}}</div>
+        <div class="glide__track " data-glide-el="track">
+            <ul class="glide__slides ">
+                @foreach($top_10_requested_products as $product)
+                <li class="glide__slide   product-card1 position-relative p-1 m-1" style="overflow: hidden;padding-left: 2px;padding-right: 2px;">
+                    <div style="width: 100%;padding: 1px;">
+                        <img src="{{'storage/'.$product->Images()->where('is_main','1')->first()->path}}" alt="" style="width: 100%;">
+                    </div>
+                    <div>
+                        <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 170px; text-overflow: ellipsis; padding-left: 3px;">{{ $product->name }}</div>
+                    </div>
+                    <div class="d-flex flex-column ">
+                        <span style="font-size: 1rem;font-weight: 600;">{{ $product->prix}}</span>
+                        @if($product->old_price != null)
+                        <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">{{$product->old_price}}</span>
+                        @endif
+                    </div>
+                    <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+                </li>
+                @endforeach
+            </ul>
         </div>
-        <div>
-            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 173px; text-overflow: ellipsis; padding-left: 3px;">Mouse and keyboard only for gamers like me adil pls by this pack </div>
-        </div>
-        <div class="d-flex flex-column ">
-            <span style="font-size: 1rem;font-weight: 600;">115.56 Dhs</span>
-            <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">170 Dhs</span>
-        </div>
-        <span class="position-absoute top-0" style="
-    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
     </div>
-    <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
-        <div style="width: 100%;padding: 1px;">
-            <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/75/140143/1.jpg?5765" alt="" style="width: 100%;">
-        </div>
-        <div>
-            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 173px; text-overflow: ellipsis; padding-left: 3px;">Taktouka ljabaliya dakchi dyal jbel</div>
-        </div>
-        <div class="d-flex flex-column ">
-            <span style="font-size: 1rem;font-weight: 600;">60 Dhs</span>
-            <!--             <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">560 Dhs</span>
- -->
-        </div>
-        <!--         <span class="position-absoute top-0" style="    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-17%</span>
- -->
-    </div>
-    <div class=" product-card1 position-relative" style="max-width: 173px;overflow: hidden;padding-left: 2px;padding-right: 2px;">
-        <div style="width: 100%;padding: 1px;">
-            <img src="https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/64/233014/1.jpg?7766" alt="" style="width: 100%;">
-        </div>
-        <div>
-            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 173px; text-overflow: ellipsis; padding-left: 3px;">Lanchoun kayowsel derya finma bghiti</div>
-        </div>
-        <div class="d-flex flex-column ">
-            <span style="font-size: 1rem;font-weight: 600;">115.56 Dhs</span>
-            <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">700 Dhs</span>
-        </div>
-        <span class="position-absoute top-0" style="
-    position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
-    </div>
-    <!-- end product card -->
+    @endif
 </div>
 
 @stop
@@ -312,13 +292,41 @@
     })
 </script>
 <script src="/glide/glide.min.js"></script>
-
+    @php
+        $language = \App\Models\Language::where('key',app()->getLocale())->first();
+    @endphp
 <script>
     new Glide('.glide', {
         type: 'carousel',
+        @if($language->rtl == 1)
+        direction:'rtl' ,
+        @endif
         gap: 0,
         autoplay: 4000,
         hoverpause: true,
+    }).mount()
+   
+    new Glide('.glide_top_products', {
+        type: 'carousel',
+        gap: 0,
+        perView: 7.5,
+        @if($language->rtl == 1)
+        direction:'rtl' ,
+        @endif
+        autoplay: 6500,
+        hoverpause: true,
+        breakpoints: {
+            800: {
+                perView: 3.5
+            },
+            410: {
+                perView: 2.5
+            
+            },
+            200: {
+                perView: 1.5
+            },
+        }
     }).mount()
 </script>
 

@@ -223,7 +223,7 @@
 
         @if( in_array( "role.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('roles.index')}}" class="nav-link">
+            <a href="{{route('roles.index',app()->getLocale())}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>les rôles</p>
             </a>
@@ -231,7 +231,7 @@
         @endif
         @if( in_array( "users.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('users.index')}}" class="nav-link">
+            <a href="{{route('users.index',app()->getLocale())}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>les utilisateurs</p>
             </a>
@@ -239,7 +239,7 @@
         @endif
         @if( in_array( "category.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('category.index')}}" class="nav-link">
+            <a href="{{route('category.index',app()->getLocale())}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Les categories</p>
             </a>
@@ -247,7 +247,7 @@
         @endif
         @if( in_array( "products.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('products.index')}}" class="nav-link">
+            <a href="{{route('products.index',app()->getLocale())}}" class="nav-link">
             
             <i class="far fa-circle nav-icon"></i>
             <p>Les produits</p>
@@ -262,7 +262,7 @@
         @endif
         @if( in_array( "shops.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('shops.index')}}" class="nav-link">
+            <a href="{{route('shops.index',app()->getLocale())}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Les Magasins</p>
             </a>
@@ -270,7 +270,7 @@
         @endif
         @if( in_array( "cities.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('cities.index')}}" class="nav-link">
+            <a href="{{route('cities.index',app()->getLocale())}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Les Ville</p>
             </a>
@@ -278,9 +278,25 @@
         @endif
         @if( in_array( "Admin", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
-            <a href="{{route('marketing.index')}}" class="nav-link">
+            <a href="{{route('marketing.index',app()->getLocale())}}" class="nav-link">
             <i class="far fa-circle nav-icon"></i>
             <p>Marketing</p>
+            </a>
+        </li>
+        @endif
+        @if( in_array( "Admin", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('website.management.index',app()->getLocale())}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Gestion du site Web</p>
+            </a>
+        </li>
+        @endif
+        @if( in_array( "Admin", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('languages.index',app()->getLocale())}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>languages</p>
             </a>
         </li>
         @endif

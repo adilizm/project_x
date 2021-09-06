@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+    @php
+    $language = \App\Models\Language::where('key',app()->getLocale())->first();
+    @endphp
+
+<html lang="{{ $language->key }} " @if($language->rtl == 1) dir="rtl"  @endif >
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

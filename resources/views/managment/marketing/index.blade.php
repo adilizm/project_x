@@ -26,7 +26,7 @@
             <div class="container">
               <div class="row">
                 <div class="col-12">
-                  <form action="{{ route('marketing.update.top_annonces')}}" method="post" enctype="multipart/form-data">
+                  <form action="{{ route('marketing.update.top_annonces',app()->getLocale())}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                       <label for="">Pc barre (1170px X 60px) </label>
@@ -47,7 +47,7 @@
                       <button class="btn btn-primary" type="submit">enregistrer</button>
                     </div>
                   </form>
-                  <form action="{{ route('marketing.update.top_annonces')}}" method="post" enctype="multipart/form-data">
+                  <form action="{{ route('marketing.update.top_annonces',app()->getLocale())}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                       <label for="">Tablet barre (700px X 60px)</label>
@@ -68,7 +68,7 @@
                       <button class="btn btn-primary" type="submit">enregistrer</button>
                     </div>
                   </form>
-                  <form action="{{ route('marketing.update.top_annonces')}}" method="post" enctype="multipart/form-data">
+                  <form action="{{ route('marketing.update.top_annonces',app()->getLocale())}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                       <label for="">Téléphone barre (400px X 60px)</label>
@@ -111,7 +111,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <form action="{{ route('marketing.create_new_slider')}}" method="post" class="my-2" enctype="multipart/form-data">
+                    <form action="{{ route('marketing.create_new_slider',app()->getLocale())}}" method="post" class="my-2" enctype="multipart/form-data">
                       @csrf
                       <div class="modal-body">
                         <div class=" row px-3">
@@ -136,7 +136,7 @@
               </div>
             </div>
             @foreach($sliders as $slider)
-            <form action="{{ route('marketing.update_slider') }}" method="post" class="my-3 border-bottom rounded" enctype="multipart/form-data">
+            <form action="{{ route('marketing.update_slider',app()->getLocale()) }}" method="post" class="my-3 border-bottom rounded" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="slider_id" value="{{ $slider->id }}">
               <div class="row" style="place-content: center;">
@@ -159,7 +159,7 @@
                 <button class="btn btn-primary m-2" type="submit">mise a jour</button>
               </div>
             </form>
-            <form action="{{ route('marketing.delete_slider') }}" id="{{'form_delete_slider'.$loop->index}}" method="post">
+            <form action="{{ route('marketing.delete_slider',app()->getLocale()) }}" id="{{'form_delete_slider'.$loop->index}}" method="post">
               @csrf
               <input type="hidden" name="slider_id" value="{{$slider->id}}">
             </form>

@@ -23,16 +23,16 @@ class UsersController extends Controller
         $user->update(['role_id'=>$request->role]);
         return back()->with('success','le rôle de l\'utilisateur <strong>'. $user->name .'</strong> a été mis à jour avec succès');
     }
-    public function login($id)
+    public function login($language,$id)
     {
         $user = User::findOrFail(decrypt($id));
         auth()->login($user, true);
-        return redirect()->route('home');
+        return redirect()->route('home',app()->getLocale());
     }
     public function banned_user(){
         return view('frantend.banned_user');
     }
-    public function edit_user($id){
+    public function edit_user($language,$id){
         Gate::authorize('users.edit');
         $user= User::find(decrypt($id));
         $roles= Role::all();
@@ -53,6 +53,6 @@ class UsersController extends Controller
             "is_banned" => $is_banned,
             "phone" => $request->phone,
         ]);
-        return redirect()->route('users.index')->with('success','les informations de l\'utilisateur '. $user->name .' ont été mises à jour');
+        return redirect()->route('users.index',app()->getLocale())->with('success','les informations de l\'utilisateur '. $user->name .' ont été mises à jour');
     }
 }

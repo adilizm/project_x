@@ -47,7 +47,7 @@
                 <span class="text"> Enregistrement complet </span>
             </div> <!-- step.// -->
         </div>
-        <form action="{{ route('shops.save')}}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('shops.save',app()->getLocale())}}" method="post" enctype="multipart/form-data">
             @csrf
 
             @if ($errors->any())
