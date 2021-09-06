@@ -392,17 +392,19 @@ class ProductsController extends Controller
 
         return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> a été Ajouter!');
     }
-    public function vondeur_edit($id)
+    public function vondeur_edit($language,$id)
     {
+       
         if (!in_array("products.edit", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
-        $product = Product::Find(decrypt($id));
+        
+        $product = Product::find(decrypt($id));
         $categreis = Category::All();
         $keywords = implode(",", json_decode($product->keywords));
         $variants = json_decode($product->variants);
         $options = [];
-
+       
         foreach ($variants as $option) {
             array_push($options,  $option);
         }

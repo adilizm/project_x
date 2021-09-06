@@ -79,7 +79,7 @@ class HomeController extends Controller
             }
         }
         
-        $products=Product::whereIn('category_id', $category_and_sub_catigory_ids)->paginate(10);
+        $products=Product::whereIn('category_id', $category_and_sub_catigory_ids)->where(['confermed'=>1,'status'=>'published'])->paginate(10);
 
       //  dd($category->id,$category_and_sub_catigory_ids,$products);
 

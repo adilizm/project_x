@@ -19,6 +19,14 @@
         box-shadow: rgb(149 157 133 / 20%) 0px 0px 11px;
         border-radius: 5px;
     }
+    .card{
+        background-color: white;
+        border-radius: 8px;
+        padding-top: 11px;
+    }
+    #wrap{
+        background-color: #e9ecef;
+    }
 </style>
 @stop
 @section('frant_content')
@@ -32,7 +40,7 @@
     </ol>
 </nav>
 @if(count($category->Child_categoreis) > 0 )
-<div class="glide container my_card my-1 ">
+<div class="glide card container my_card my-1 ">
     <div class="glide__track " data-glide-el="track">
         <ul class="glide__slides ">
             @foreach($category->Child_categoreis as $child_category)
@@ -42,7 +50,7 @@
                         <img src="{{'/storage/'.$child_category->picture}}" alt="" style="width: 100%;">
                     </div>
                     <div>
-                        <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 170px; text-overflow: ellipsis; padding-left: 3px;">{{ $child_category->name }}</div>
+                        <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 170px; text-overflow: ellipsis; padding-left: 3px;font-weight: 700;text-align: center;">{{ $child_category->name }}</div>
                     </div>
                 </a>
             </li>
@@ -251,7 +259,7 @@
         </div> <!-- card.// -->
 
     </aside> <!-- col.// -->
-    <main class="col-md-9">
+    <main class="card col-md-9">
 
         <header class="border-bottom mb-4 pb-3">
             <div class="form-inline">
@@ -291,7 +299,7 @@
                     <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">{{$product->old_price}}</span>
                     @endif
                 </div>
-                <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+                <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #da8611;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
             </div>
             @endforeach
             @else
@@ -300,7 +308,7 @@
                 <div class="row">    
                 <div class="col-4  position-relative d-flex justify-content-center align-items-center" style="padding: 1px;">
                     <img src="{{'/storage/'.$product->Images()->where('is_main','1')->first()->path}}" alt="" style="width: 100%;max-width: 200px;">
-                    <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+                    <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #da8611;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
 
                 </div>
                 <div class="col-8">
