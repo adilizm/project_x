@@ -18,7 +18,7 @@ class CreateLanguagesTable extends Migration
             $table->string('name');
             $table->string('key');
             $table->boolean('rtl')->default(0);
-            $table->boolean('image_path');
+            $table->string('image_path');
             $table->timestamps();
             $table->softDeletes();
         });

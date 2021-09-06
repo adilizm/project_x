@@ -98,7 +98,7 @@ $languages= \App\Models\Language::all();
           <li class="nav-item dropdown ">
             @foreach($languages as $language)
             @if($language->key == App::getLocale())
-            <a class="nav-link  dropdown-toggle dropdown-toggle_lang" href="#" data-toggle="dropdown"> <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a>
+            <a class="nav-link  dropdown-toggle dropdown-toggle_lang" href="#" data-toggle="dropdown"> <img src="{{ '/storage/'.$language->image_path }}" alt=""> </a>
             @endif
             @endforeach
             <ul class="dropdown-menu dropdown-menu-right">
@@ -138,7 +138,7 @@ $languages= \App\Models\Language::all();
             <li class="nav-item dropdown">
               @foreach($languages as $language)
                 @if($language->key == App::getLocale())
-                  <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> <img src="{{ 'storage/'.$language->image_path }}"  alt=""> </a>
+                  <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> <img src="{{ '/storage/'.$language->image_path }}"  alt=""> </a>
                 @endif
               @endforeach
               <ul class="dropdown-menu dropdown-menu-right">

@@ -17,7 +17,7 @@
     }
 
     .menu_categories_big_category:hover {
-        color: #11bfda;
+        color: #da8611;
         font-weight: 700;
     }
 
@@ -30,7 +30,7 @@
     }
 
     .menu_categories_child_category:hover {
-        color: #11bfda;
+        color: #da8611;
         font-weight: 700;
         font-size: small;
     }
@@ -38,7 +38,7 @@
 
     .category_name:hover {
         font-weight: 700;
-        color: #11bfda;
+        color: #da8611;
     }
 
     .embla {
@@ -243,7 +243,7 @@
                         <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">{{$product->old_price}}</span>
                         @endif
                     </div>
-                    <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #11bfda;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+                    <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #da8611;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
                 </li>
                 @endforeach
             </ul>
