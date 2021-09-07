@@ -1,8 +1,7 @@
 @extends('frant_master')
 
 @section('frant_head')
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
 <style>
     .gm-style .gm-style-iw-t::after {
         background: linear-gradient(45deg, crimson 50%, rgba(255, 255, 255, 0) 51%, rgba(255, 255, 255, 0) 100%);

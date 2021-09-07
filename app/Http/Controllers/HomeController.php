@@ -91,4 +91,9 @@ class HomeController extends Controller
         
         return view('frantend.category.category_index',compact('category','products','subcategoreis','view_grid'));
     }
+    public function search(Request $request){
+        dd('nice');
+       return '1';
+
+    }
 }

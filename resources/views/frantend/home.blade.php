@@ -306,6 +306,7 @@
         hoverpause: true,
     }).mount()
    
+    @if(count($top_10_requested_products)>1)
     new Glide('.glide_top_products', {
         type: 'carousel',
         gap: 0,
@@ -328,6 +329,7 @@
             },
         }
     }).mount()
+    @endif
 </script>
 
 
