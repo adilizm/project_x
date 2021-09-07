@@ -30,7 +30,7 @@ class UsersController extends Controller
         return redirect()->route('home',app()->getLocale());
     }
     public function banned_user(){
-        return view('frantend.banned_user');
+        return view('frontend.banned_user');
     }
     public function edit_user($language,$id){
         Gate::authorize('users.edit');

@@ -339,12 +339,17 @@ $languages= \App\Models\Language::all();
   function search() {
     axios.post('{{route('search',app()->getlocale())}}', {
         params: {
-          key: 'AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE'
+          keyword:document.getElementById('search').value,
         }
       }).then(function(responce) {
-        document.getElementById('search_result').innerHTML =responce.data;
-       console.log(responce.data)
+        if(responce.data == '0'){
+          document.getElementById('search_result').innerHTML = null;
+          console.log('null');
+        }else {
+           document.getElementById('search_result').innerHTML =responce.data;
+           console.log('kayna data');
 
+        }
     }).catch(function(err) {
       console.log(err);
     })
@@ -352,6 +357,7 @@ $languages= \App\Models\Language::all();
 
   function search_typing() {
     var keyword=document.getElementById('search').value;
+    document.getElementById('search_result').innerHTML ='';
     if(keyword.length >2){
       search();
     }
