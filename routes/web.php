@@ -43,6 +43,9 @@ Route::group(['prefix' => '{language}'], function () {
     /* public category */
     Route::get('/categorie/{slug}',[HomeController::class,'Category'])->name('category.page');
 
+    /* search */
+    Route::post('search', [HomeController::class, 'search'])->name('search');
+
 
     Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
         Route::get('shops/create', [ShopController::class, 'create'])->name('shops.create');

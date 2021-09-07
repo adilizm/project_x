@@ -1,4 +1,6 @@
 @extends('master')
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <style>
   .glide__arrow {
     border-radius: 50% !important;
@@ -16,7 +18,8 @@
     align-items: center;
     border: 1px chartreuse solid;
   }
-  .li-login:hover{
+
+  .li-login:hover {
     background-color: #d3d3d3;
     color: white;
   }
@@ -112,14 +115,18 @@ $languages= \App\Models\Language::all();
       </div>
       <div class="collapse navbar-collapse  justify-content-md-between" id="main_nav2">
 
-        <form action="#" method="get" class="d-none d-md-flex m-0" style="width: 60%;">
+        <form action="#" method="get" class="d-none d-md-block m-0 position-relative" style="width: 60%;">
           @csrf
-          <input type="text" name="shearch" placeholder="Cherchez un produit, une marque ou une catégorie" class="form-control" style="padding-right: 51px;">
-          <button class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; margin-left: -48px;" type="submit"><svg xmlns="http://www.w3.org/2000/svg" style="height: 20px;" class="ionicon" viewBox="0 0 512 512">
-              <title>Search</title>
-              <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448" />
-            </svg></button>
+          <div class="d-none d-md-flex m-0 position-relative">
+            <input type="text"  onkeyup="search_typing()" id="search" placeholder="Cherchez un produit, une marque ou une catégorie" class="form-control" style="padding-right: 51px;">
+            <button class="btn btn-primary" style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; margin-left: -48px;" type="submit"><svg xmlns="http://www.w3.org/2000/svg" style="height: 20px;" class="ionicon" viewBox="0 0 512 512">
+                <title>Search</title>
+                <path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448" />
+              </svg></button>
+          </div>
+          <div class="position-absolute bg-danger w-100 " style="z-index: 1000;" id="search_result"> </div>
+
         </form>
         <div class="d-none d-md-flex ">
           @auth
@@ -134,12 +141,12 @@ $languages= \App\Models\Language::all();
             </svg>
           </div>
           @endauth
-            <ul class="navbar-nav align-items-center">
+          <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown">
               @foreach($languages as $language)
-                @if($language->key == App::getLocale())
-                  <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> <img src="{{ '/storage/'.$language->image_path }}"  alt=""> </a>
-                @endif
+              @if($language->key == App::getLocale())
+              <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> <img src="{{ '/storage/'.$language->image_path }}" alt=""> </a>
+              @endif
               @endforeach
               <ul class="dropdown-menu dropdown-menu-right">
                 @foreach($languages as $language)
@@ -147,48 +154,48 @@ $languages= \App\Models\Language::all();
                 @endforeach
               </ul>
             </li>
-          <ul class="navbar-nav align-items-center">
-            @auth
-            <li class="nav-item dropdown">
-              <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> {{ Auth::user()->name}} </a>
-              <ul class="dropdown-menu dropdown-menu-right align-items-center">
-                <li><a class="dropdown-item" href="#"> Mon profil </a></li>
-                <li><a class="dropdown-item" href="#"> Ma carte </a></li>
-                @if(Auth::user()->role_id == 1)
-                <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a></li>
-                @elseif(Auth::user()->role_id == 2)
-                <li><a class="dropdown-item" href="#"> {{ translate('manager managment')}} </a></li>
-                @elseif(Auth::user()->role_id == 3)
-                <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> vendor managment </a></li>
-                @elseif(Auth::user()->role_id == 4)
-                <li><a class="dropdown-item" href="#"> livreur managment </a></li>
-                @endif
-                <li>
-                  <form method="POST" action="{{ route('logout',app()->getLocale()) }}">
-                    @csrf
-                    <x-dropdown-link class="dropdown-item" :href="route('logout',app()->getLocale())" onclick="event.preventDefault();
+            <ul class="navbar-nav align-items-center">
+              @auth
+              <li class="nav-item dropdown">
+                <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> {{ Auth::user()->name}} </a>
+                <ul class="dropdown-menu dropdown-menu-right align-items-center">
+                  <li><a class="dropdown-item" href="#"> Mon profil </a></li>
+                  <li><a class="dropdown-item" href="#"> Ma carte </a></li>
+                  @if(Auth::user()->role_id == 1)
+                  <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a></li>
+                  @elseif(Auth::user()->role_id == 2)
+                  <li><a class="dropdown-item" href="#"> {{ translate('manager managment')}} </a></li>
+                  @elseif(Auth::user()->role_id == 3)
+                  <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> vendor managment </a></li>
+                  @elseif(Auth::user()->role_id == 4)
+                  <li><a class="dropdown-item" href="#"> livreur managment </a></li>
+                  @endif
+                  <li>
+                    <form method="POST" action="{{ route('logout',app()->getLocale()) }}">
+                      @csrf
+                      <x-dropdown-link class="dropdown-item" :href="route('logout',app()->getLocale())" onclick="event.preventDefault();
                                                         this.closest('form').submit();">
-                      {{ __('Log Out') }}
-                    </x-dropdown-link>
-                  </form>
-                </li>
-              </ul>
-            </li>
-            @else
-            <li class="nav-item dropdown">
-            <div class="dropdown">
-          <span class="" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           <span style="font-weight: 600;    cursor: pointer;">{{ translate('log in') }}</span>
-          </span>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
-            <a href="{{ route('login',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
-            <div class="dropdown-divider"></div>
-            <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
-          </div>
-        </div>
-            </li>
+                        {{ __('Log Out') }}
+                      </x-dropdown-link>
+                    </form>
+                  </li>
+                </ul>
+              </li>
+              @else
+              <li class="nav-item dropdown">
+                <div class="dropdown">
+                  <span class="" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span style="font-weight: 600;    cursor: pointer;">{{ translate('log in') }}</span>
+                  </span>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
+                    <a href="{{ route('login',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
+                  </div>
+                </div>
+              </li>
               @endauth
-          </ul>
+            </ul>
         </div>
       </div>
   </div>
@@ -327,5 +334,29 @@ $languages= \App\Models\Language::all();
 
 @section('script')
 
+<script>
+ 
+  function search() {
+    axios.post('{{route('search',app()->getlocale())}}', {
+        params: {
+          key: 'AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE'
+        }
+      }).then(function(responce) {
+        document.getElementById('search_result').innerHTML =responce.data;
+       console.log(responce.data)
+
+    }).catch(function(err) {
+      console.log(err);
+    })
+  }
+
+  function search_typing() {
+    var keyword=document.getElementById('search').value;
+    if(keyword.length >2){
+      search();
+    }
+    
+  }
+</script>
 @yield('frant_script')
 @stop
