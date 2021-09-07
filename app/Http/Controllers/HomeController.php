@@ -125,12 +125,6 @@ class HomeController extends Controller
             array_push($variables,$variable);
         }
 
-        
-
-       
-
-
-
         if ($product != null) {
             return view('frontend.product.product_index', compact('product','variants','options','variables'));
         } else {
