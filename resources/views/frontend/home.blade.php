@@ -231,19 +231,21 @@
             <ul class="glide__slides ">
                 @foreach($top_10_requested_products as $product)
                 <li class="glide__slide   product-card1 position-relative p-1 m-1" style="overflow: hidden;padding-left: 2px;padding-right: 2px;">
-                    <div style="width: 100%;padding: 1px;">
-                        <img src="{{'storage/'.$product->Images()->where('is_main','1')->first()->path}}" alt="" style="width: 100%;">
-                    </div>
-                    <div>
-                        <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 170px; text-overflow: ellipsis; padding-left: 3px;">{{ $product->name }}</div>
-                    </div>
-                    <div class="d-flex flex-column ">
-                        <span style="font-size: 1rem;font-weight: 600;">{{ $product->prix}}</span>
-                        @if($product->old_price != null)
-                        <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">{{$product->old_price}}</span>
-                        @endif
-                    </div>
-                    <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #da8611;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+                    <a href="{{route('product.index',['language'=>app()->getLocale(),'slug'=>$product->slug])}}">
+                        <div style="width: 100%;padding: 1px;">
+                            <img src="{{'storage/'.$product->Images()->where('is_main','1')->first()->path}}" alt="" style="width: 100%;">
+                        </div>
+                        <div>
+                            <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 170px; text-overflow: ellipsis; padding-left: 3px;">{{ $product->name }}</div>
+                        </div>
+                        <div class="d-flex flex-column ">
+                            <span style="font-size: 1rem;font-weight: 600;">{{ $product->prix}}</span>
+                            @if($product->old_price != null)
+                            <span style="font-size: .75rem;font-weight: 400;color:#75757a;text-decoration-line: line-through;">{{$product->old_price}}</span>
+                            @endif
+                        </div>
+                        <span class="position-absoute top-0" style=" position: absolute;    top: 10px;    right: 14px;    background-color: #da8611;    border-radius: 5px;    color: white;    font-size: 0.8rem;    font-weight: 600;    padding-right: 4px;    padding-left: 4px;">-33%</span>
+                    </a>
                 </li>
                 @endforeach
             </ul>

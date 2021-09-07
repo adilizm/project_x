@@ -43,6 +43,10 @@ Route::group(['prefix' => '{language}'], function () {
     /* public category */
     Route::get('/categorie/{slug}',[HomeController::class,'Category'])->name('category.page');
 
+    /* public products */
+    Route::get('/produit/{slug}',[HomeController::class,'Product'])->name('product.index');
+
+
     /* search */
     Route::post('search', [HomeController::class, 'search'])->name('search');
 
