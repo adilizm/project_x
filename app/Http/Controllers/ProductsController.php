@@ -147,7 +147,7 @@ class ProductsController extends Controller
                                 $variant[$request->options[1]] = $value1;
                                 $variant[$request->options[2]] = $value2;
                                 if ($request->allprices == null) {
-                                    $variant['prix'] = null;
+                                    $variant['prix'] = $request->standar_prix;
                                 } else {
                                     $variant['prix'] = $request->allprices[$Counter];
                                 }
@@ -176,7 +176,7 @@ class ProductsController extends Controller
                                 $variant['qty'] = $request->qtys[$Counter];
                             }
                             if ($request->allprices == null) {
-                                $variant['prix'] = null;
+                                $variant['prix'] = $request->standar_prix;
                             } else {
                                 $variant['prix'] = $request->allprices[$Counter];
                             }
@@ -203,7 +203,7 @@ class ProductsController extends Controller
                             $variant['qty'] = $request->qtys[$Counter];
                         }
                         if ($request->allprices == null) {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         } else {
                             $variant['prix'] = $request->allprices[$Counter];
                         }
@@ -230,10 +230,10 @@ class ProductsController extends Controller
                         if ($request->allprices[$Counter] != null) {
                             $variant['prix'] = $request->allprices[$Counter];
                         } else {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         }
                     } else {
-                        $variant['prix'] = null;
+                        $variant['prix'] = $request->standar_prix;
                     }
                     if ($request['v_i_' . $Counter] != null) {
                         $fileName = time() . '_' . $request->name . '_' . $Counter . '.' . $request['v_i_' . $Counter]->guessExtension();
@@ -259,7 +259,7 @@ class ProductsController extends Controller
                             $variant['qty'] = $request->qtys[$Counter];
                         }
                         if ($request->allprices == null) {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         } else {
                             $variant['prix'] = $request->allprices[$Counter];
                         }
@@ -282,7 +282,7 @@ class ProductsController extends Controller
                         $variant['qty'] = $request->qtys[$Counter];
                     }
                     if ($request->allprices == null) {
-                        $variant['prix'] = null;
+                        $variant['prix'] = $request->standar_prix;
                     } else {
                         $variant['prix'] = $request->allprices[$Counter];
                     }
@@ -307,7 +307,7 @@ class ProductsController extends Controller
                     $variant['qty'] = $request->qtys[$Counter];
                 }
                 if ($request->allprices == null) {
-                    $variant['prix'] = null;
+                    $variant['prix'] = $request->standar_prix;
                 } else {
                     $variant['prix'] = $request->allprices[$Counter];
                 }
@@ -494,7 +494,7 @@ class ProductsController extends Controller
                                 $variant[$request->options[1]] = $value1;
                                 $variant[$request->options[2]] = $value2;
                                 if ($request->allprices == null) {
-                                    $variant['prix'] = null;
+                                    $variant['prix'] = $request->standar_prix;
                                 } else {
                                     var_dump($Counter, $value0, $value1, $value2, $request->allprices[$Counter]);
                                     $variant['prix'] = $request->allprices[$Counter];
@@ -527,7 +527,7 @@ class ProductsController extends Controller
                                 $variant['qty'] = $request->qtys[$Counter];
                             }
                             if ($request->allprices == null) {
-                                $variant['prix'] = null;
+                                $variant['prix'] = $request->standar_prix;
                             } else {
                                 $variant['prix'] = $request->allprices[$Counter];
                             }
@@ -558,7 +558,7 @@ class ProductsController extends Controller
                             $variant['qty'] = $request->qtys[$Counter];
                         }
                         if ($request->allprices == null) {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         } else {
                             $variant['prix'] = $request->allprices[$Counter];
                         }
@@ -584,7 +584,7 @@ class ProductsController extends Controller
                         $variant['qty'] = $request->qtys[$Counter];
                     }
                     if ($request->allprices[$Counter] == null) {
-                        $variant['prix'] = null;
+                        $variant['prix'] = $request->standar_prix;
                     } else {
                         $variant['prix'] = $request->allprices[$Counter];
                     }
@@ -615,7 +615,7 @@ class ProductsController extends Controller
                             $variant['qty'] = $request->qtys[$Counter];
                         }
                         if ($request->allprices == null) {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         } else {
                             $variant['prix'] = $request->allprices[$Counter];
                         }
@@ -641,7 +641,7 @@ class ProductsController extends Controller
                         $variant['qty'] = $request->qtys[$Counter];
                     }
                     if ($request->allprices == null) {
-                        $variant['prix'] = null;
+                        $variant['prix'] = $request->standar_prix;
                     } else {
                         $variant['prix'] = $request->allprices[$Counter];
                     }
@@ -669,7 +669,7 @@ class ProductsController extends Controller
                     $variant['qty'] = $request->qtys[$Counter];
                 }
                 if ($request->allprices == null) {
-                    $variant['prix'] = null;
+                    $variant['prix'] = $request->standar_prix;
                 } else {
                     $variant['prix'] = $request->allprices[$Counter];
                 }
@@ -871,7 +871,7 @@ class ProductsController extends Controller
                                 $variant[$request->options[1]] = $value1;
                                 $variant[$request->options[2]] = $value2;
                                 if ($request->allprices == null) {
-                                    $variant['prix'] = null;
+                                    $variant['prix'] = $request->standar_prix;
                                 } else {
                                     var_dump($Counter, $value0, $value1, $value2, $request->allprices[$Counter]);
                                     $variant['prix'] = $request->allprices[$Counter];
@@ -904,7 +904,7 @@ class ProductsController extends Controller
                                 $variant['qty'] = $request->qtys[$Counter];
                             }
                             if ($request->allprices == null) {
-                                $variant['prix'] = null;
+                                $variant['prix'] = $request->standar_prix;
                             } else {
                                 $variant['prix'] = $request->allprices[$Counter];
                             }
@@ -935,7 +935,7 @@ class ProductsController extends Controller
                             $variant['qty'] = $request->qtys[$Counter];
                         }
                         if ($request->allprices == null) {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         } else {
                             $variant['prix'] = $request->allprices[$Counter];
                         }
@@ -961,7 +961,7 @@ class ProductsController extends Controller
                         $variant['qty'] = $request->qtys[$Counter];
                     }
                     if ($request->allprices[$Counter] == null) {
-                        $variant['prix'] = null;
+                        $variant['prix'] = $request->standar_prix;
                     } else {
                         $variant['prix'] = $request->allprices[$Counter];
                     }
@@ -992,7 +992,7 @@ class ProductsController extends Controller
                             $variant['qty'] = $request->qtys[$Counter];
                         }
                         if ($request->allprices == null) {
-                            $variant['prix'] = null;
+                            $variant['prix'] = $request->standar_prix;
                         } else {
                             $variant['prix'] = $request->allprices[$Counter];
                         }
@@ -1018,7 +1018,7 @@ class ProductsController extends Controller
                         $variant['qty'] = $request->qtys[$Counter];
                     }
                     if ($request->allprices == null) {
-                        $variant['prix'] = null;
+                        $variant['prix'] = $request->standar_prix;
                     } else {
                         $variant['prix'] = $request->allprices[$Counter];
                     }
@@ -1046,7 +1046,7 @@ class ProductsController extends Controller
                     $variant['qty'] = $request->qtys[$Counter];
                 }
                 if ($request->allprices == null) {
-                    $variant['prix'] = null;
+                    $variant['prix'] = $request->standar_prix;
                 } else {
                     $variant['prix'] = $request->allprices[$Counter];
                 }
@@ -1190,5 +1190,19 @@ class ProductsController extends Controller
         }
         $product = Product::where('shop_id', Auth::user()->Shop()->first()->id)->FindOrFail(decrypt($request->product_id))->delete();
         return back()->with('success', 'le produit a été supprimer avec succès!');
+    }
+    public function add_to_cart(Request $request){
+      
+        $cart=[];
+        $cart=$request->session()->get('cart');
+
+        $product=[];
+        $product['product_id']=$request->params['product_id'];
+        $product['variant_info']=$request->params['selected_variant'];
+        $product['quantity']=$request->params['quantity'];
+
+        array_push($cart,$product);
+        $request->session()->put('cart', $cart);
+        return $request;
     }
 }

@@ -45,6 +45,7 @@ Route::group(['prefix' => '{language}'], function () {
 
     /* public products */
     Route::get('/produit/{slug}',[HomeController::class,'Product'])->name('product.index');
+    Route::post('/produit/add_to_cart',[ProductsController::class,'add_to_cart'])->name('add_to_cart');
 
 
     /* search */

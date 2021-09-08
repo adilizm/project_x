@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-
+        dd($request);
         $sliders = Slider::all();
 
         /* Top 10 requested products */
@@ -120,11 +120,15 @@ class HomeController extends Controller
             $variable=[];  
             foreach($variants as $variant){
                 array_push($variable,$variant[$option]);
-                $variable=array_unique($variable);
+                if($option!='qty' && $option != 'prix' && $option != 'image'){
+                    $variable=array_unique($variable);
+                }
             }
             array_push($variables,$variable);
         }
 
+/*         dd($variants,$options,$variables);
+ */        
         if ($product != null) {
             return view('frontend.product.product_index', compact('product','variants','options','variables'));
         } else {
