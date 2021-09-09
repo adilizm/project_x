@@ -1192,10 +1192,13 @@ class ProductsController extends Controller
         return back()->with('success', 'le produit a été supprimer avec succès!');
     }
     public function add_to_cart(Request $request){
-      
+      /* $request->session()->forget('cart');
+      return 'ok'; */
+       
         $cart=[];
-        $cart=$request->session()->get('cart');
-
+        if($request->session()->get('cart') != null){
+            $cart=$request->session()->get('cart');
+        }
         $product=[];
         $product['product_id']=$request->params['product_id'];
         $product['variant_info']=$request->params['selected_variant'];

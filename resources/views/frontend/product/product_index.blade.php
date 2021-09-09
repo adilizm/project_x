@@ -44,7 +44,7 @@
         <div class="d-flex align-items-center my-3">
             <div class="d-flex">
                 <button class="form-control" id="decreas_qty" >-</button>
-                <input class="form-control" value="{{$product->min_quantity}}" min="{{$product->min_quantity}}" type="number" name="qty_wanted" id="qty_wanted">
+                <input class="form-control" value="{{$product->min_quantity}}"  min="{{$product->min_quantity}}" type="number" id="qty_wanted">
                 <button class="form-control"  id="encreas_qty" >+</button>
             </div>
         </div>
@@ -59,7 +59,7 @@
     var variant_selected=null;
     const  product_id_ = {{$product->id}};
     var qty_wanted={{$product->min_quantity}};
-    const min_qty_wanted={{$product->min_quantity}};
+    const min_qty={{$product->min_quantity}};
     const  variants=@JSON($variants);
     
         @foreach($options as $option)
@@ -131,6 +131,8 @@
                         }
             }).then(function(responce) {
                 console.log(responce);
+                nbr_products_in_cart++;
+                increas_nbr_products();
             }).catch(function(err) {
 
             console.log(err);
@@ -139,20 +141,26 @@
            }
 
         })
-       
+       function increas_nbr_products(){
+        document.querySelectorAll('.card_product_number').forEach(element => {
+            element.innerHTML=nbr_products_in_cart;
+            });
+       }
         document.querySelectorAll('.click').forEach(element => {
                 element.click();
             });
         document.getElementById('decreas_qty').addEventListener('click',()=>{
-            qty_wanted--;
-            if(qty_wanted < min_qty_wanted ){
-                qty_wanted = min_qty_wanted
+            qty_wanted = qty_wanted - 1;
+            if(qty_wanted < min_qty ){
+                qty_wanted = min_qty
+                console.log('min is ',min_qty)
             }
-            document.getElementById('qty_wanted').value = qty_wanted;
+            document.getElementById('qty_wanted').value =parseInt(qty_wanted);
         })
-        document.getElementById('decreas_qty').addEventListener('click',()=>{
+        document.getElementById('encreas_qty').addEventListener('click',()=>{
             qty_wanted++;
             document.getElementById('qty_wanted').value = qty_wanted;
         })
-    </script>
+       
+        </script>
 @stop

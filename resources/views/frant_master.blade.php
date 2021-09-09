@@ -35,6 +35,44 @@ $disktop_top_annonce = \App\Models\Businesssetting::where('name','disktop_top_an
 $tablet_top_annonce = \App\Models\Businesssetting::where('name','tablet_top_annonce')->first();
 $phone_top_annonce = \App\Models\Businesssetting::where('name','phone_top_annonce')->first();
 $languages= \App\Models\Language::all();
+
+if(session()->get('cart') != null){
+           $products_in_cart=[];
+            foreach(session()->get('cart') as $product_selected){
+                $product=\App\Models\Product::find($product_selected['product_id']);
+                if($product->variants != '[]'){
+                    $options=[];
+                    $selected_variant=[];
+                    $options= array_keys(get_object_vars( json_decode($product->variants)[0])); 
+                    /* dd($options); */ 
+                    //dd($product_selected); 
+
+                    foreach( $options as $option ){
+                        if($option != 'qty' && $option != 'image' && $option != 'prix'){
+                            $selected_variant[$option]=$product_selected['variant_info'][$option];
+                        }
+                        /* get the min qty */
+                   }
+                   $max_qty=$product_selected['variant_info']['qty'];
+                }else{
+                    dd('makayninch variants');
+                }
+                $quantity=$product_selected['quantity'];
+                if($quantity > $max_qty){
+                    $quantity=$max_qty;
+                }
+                $prod=[];
+                $prod['selected_variants']=$selected_variant;
+                $prod['options']=$options;
+                $prod['max_qty']=$max_qty;
+                $prod['quantity']=$quantity;
+                $prod['product']=$product;
+                array_push($products_in_cart,$prod);
+                 //dd($selected_variant,$options,$max_qty,$quantity,$product);
+                 //dd($products_in_cart);
+                
+            }
+       }
 @endphp
 
 
@@ -70,9 +108,9 @@ $languages= \App\Models\Language::all();
         <a class="navbar-brand" href="#"><img src="/bootstrap_ecom/images/logo.png" class="logo"></a>
       </div>
       <div class="d-flex p-1" style="align-items: center;">
-        @auth
-        <div class="position-relative d-md-none" style="margin-right: 13px; align-self: center;">
-          <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>
+        <div class="position-relative d-md-none cursor-pointer" style="margin-right: 13px; align-self: center;"  data-toggle="modal" data-target="#exampleModal"> 
+          <!-- pls make shure to leave card_product_number -->
+          <span class="badge badge-primary card_product_number"  style="top: -4px;position: absolute;right: -4px;font-size: x-small;">@if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif</span>
           <svg xmlns="http://www.w3.org/2000/svg" style="height: 27px;" class="ionicon" viewBox="0 0 512 512">
             <title>Cart</title>
             <circle cx="176" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -81,7 +119,6 @@ $languages= \App\Models\Language::all();
             <path d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
           </svg>
         </div>
-        @endauth
         <div class="dropdown px-2">
           <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <a href=""></a>
@@ -129,9 +166,10 @@ $languages= \App\Models\Language::all();
 
         </form>
         <div class="d-none d-md-flex ">
-          @auth
-          <div class="position-relative" style="align-self: center;">
-            <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>
+         
+          <div class="position-relative cursor-pointer" style="align-self: center;" data-toggle="modal" data-target="#exampleModal">
+          <!-- pls make shure to leave card_product_number -->
+            <span class="badge badge-primary card_product_number" style="top: -4px;position: absolute;right: -4px;font-size: x-small;" > @if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif  </span>
             <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
               <title>Cart</title>
               <circle cx="176" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -140,7 +178,6 @@ $languages= \App\Models\Language::all();
               <path d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
             </svg>
           </div>
-          @endauth
           <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown">
               @foreach($languages as $language)
@@ -201,6 +238,31 @@ $languages= \App\Models\Language::all();
   </div>
   </nav>
 </header>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      @foreach($products_in_cart as $product)
+       <div class="d-flex">
+          <img width="80" src="{{ '/storage/'.$product['product']->Images()->where('is_main','1')->first()->path}}" alt="">
+          {{$product['product']->name}}
+       </div>
+      @endforeach 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 @yield('frant_content')
 @stop
 
@@ -335,7 +397,8 @@ $languages= \App\Models\Language::all();
 @section('script')
 
 <script>
- 
+  /* get nbr_products */
+  var nbr_products_in_cart= @if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif ;
   function search() {
     axios.post('{{route('search',app()->getlocale())}}', {
         params: {
