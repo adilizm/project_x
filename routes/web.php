@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\NotBanned;
@@ -35,6 +36,9 @@ Route::group(['prefix' => '{language}'], function () {
 
     Route::get('change_language/{key}', [LanguageController::class, 'language_changer'])->name('change_languageyy');
 
+    /* Login_required */
+    Route::get('Login_required', [HomeController::class, 'Login_required'])->name('Login_required');
+
    
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/register_vondeur', [VondeurController::class, 'create_vondeur'])->middleware('guest')->name('login.vondeur');
@@ -46,8 +50,8 @@ Route::group(['prefix' => '{language}'], function () {
 
     /* public products */
     Route::get('/produit/{slug}',[HomeController::class,'Product'])->name('product.index');
-    Route::post('/produit/add_to_cart',[ProductsController::class,'add_to_cart'])->name('add_to_cart');
-    Route::post('/produit/remove_from_carte',[ProductsController::class,'remove_from_carte'])->name('remove_from_carte');
+    Route::post('/produit/add_to_cart',[OrderController::class,'add_to_cart'])->name('add_to_cart');
+    Route::post('/produit/remove_from_carte',[OrderController::class,'remove_from_carte'])->name('remove_from_carte');
 
     /* card */
     Route::get('panier', [HomeController::class, 'panier'])->name('panier');
@@ -56,6 +60,8 @@ Route::group(['prefix' => '{language}'], function () {
     /* search */
     Route::post('search', [HomeController::class, 'search'])->name('search');
 
+    /* create order */
+    Route::get('create/order', [OrderController::class, 'Create_order'])->name('create_order');
 
     Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
 

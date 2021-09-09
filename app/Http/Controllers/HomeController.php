@@ -23,14 +23,15 @@ class HomeController extends Controller
         if ($top_10_requested_products_Businesssetting->is_active) {
             if (count(json_decode($top_10_requested_products_Businesssetting->value)) > 1) {
                 foreach (json_decode($top_10_requested_products_Businesssetting->value) as $product_id) {
-                    $product = Product::find($product_id);
-                    array_push($top_10_requested_products, $product);
+                    $product = Product::where(['id'=>$product_id,'confermed'=>'1','status'=>'published'])->first();
+                    $product != null ?  array_push($top_10_requested_products, $product) : $adil='adil';
                 }
             } else {
                 /* change this calcule */
-                $top_10_requested_products = Product::orderBy('created_at', 'desc')->take(10)->get();
+                $top_10_requested_products = Product::orderBy('created_at', 'desc')->where(['confermed'=>'1','status'=>'published'])->take(10)->get();
             }
         }
+        
         /* categories */
         $parent_categoreis = Category::whereNull('parent_id')->get();
 
@@ -171,5 +172,8 @@ class HomeController extends Controller
             }
         }
         return view('frontend.cart.cart',compact('products_in_cart'));
+    }
+    public function Login_required(){
+        return view('frontend.Login_required');
     }
 }

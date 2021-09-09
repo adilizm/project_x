@@ -38,7 +38,7 @@
 			<div class="d-flex" id="{{'div_qty_'.$loop->index}}">
                 <button class="form-control" onclick="decreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') "  >-</button>
                 <input style="width: 33px; padding: 0; padding-left:2px" class="form-control " value="{{$product['quantity']}}"  min="{{$product['product']->min_quantity}}" max="{{ $product['available_qty'] }}" type="number" id="qty_wanted">
-                <button class="form-control" onclick="encreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') " >+</button>
+                <button class="form-control"  onclick="encreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') " >+</button>
             </div>
 		
 	</td>
@@ -59,7 +59,7 @@
 </table>
 
 <div class="card-body border-top">
-	<a href="#" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
+	<a href="{{ route('create_order',['language'=>app()->getLocale()]) }}" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
 	<a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
 </div>	
 </div> <!-- card.// -->

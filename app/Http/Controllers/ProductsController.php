@@ -171,7 +171,7 @@ class ProductsController extends Controller
                             $variant[$request->options[0]] = $value0;
                             $variant[$request->options[1]] = $value1;
                             if ($request->qtys == null) {
-                                $variant['qty'] = null;
+                                $variant['qty'] = 1;
                             } else {
                                 $variant['qty'] = $request->qtys[$Counter];
                             }
@@ -198,7 +198,7 @@ class ProductsController extends Controller
                         $variant[$request->options[0]] = $value0;
                         $variant[$request->options[2]] = $value2;
                         if ($request->qtys == null) {
-                            $variant['qty'] = null;
+                            $variant['qty'] = 1;
                         } else {
                             $variant['qty'] = $request->qtys[$Counter];
                         }
@@ -224,7 +224,7 @@ class ProductsController extends Controller
                     if ($request->has('qtys')) {
                         $variant['qty'] = $request->qtys[$Counter];
                     } else {
-                        $variant['qty'] = null;
+                        $variant['qty'] = 1;
                     }
                     if ($request->has('allprices')) {
                         if ($request->allprices[$Counter] != null) {
@@ -254,7 +254,7 @@ class ProductsController extends Controller
                         $variant[$request->options[1]] = $value1;
                         $variant[$request->options[2]] = $value2;
                         if ($request->qtys == null) {
-                            $variant['qty'] = null;
+                            $variant['qty'] = 1;
                         } else {
                             $variant['qty'] = $request->qtys[$Counter];
                         }
@@ -277,7 +277,7 @@ class ProductsController extends Controller
                     $variant = [];
                     $variant[$request->options[1]] = $value1;
                     if ($request->qtys == null) {
-                        $variant['qty'] = null;
+                        $variant['qty'] = 1;
                     } else {
                         $variant['qty'] = $request->qtys[$Counter];
                     }
@@ -302,7 +302,7 @@ class ProductsController extends Controller
                 $variant = [];
                 $variant[$request->options[2]] = $value2;
                 if ($request->qtys == null) {
-                    $variant['qty'] = null;
+                    $variant['qty'] = 1;
                 } else {
                     $variant['qty'] = $request->qtys[$Counter];
                 }
@@ -500,7 +500,7 @@ class ProductsController extends Controller
                                     $variant['prix'] = $request->allprices[$Counter];
                                 }
                                 if ($request->qtys == null) {
-                                    $variant['qty'] = null;
+                                    $variant['qty'] = 1;
                                 } else {
                                     $variant['qty'] = $request->qtys[$Counter];
                                 }
@@ -522,7 +522,7 @@ class ProductsController extends Controller
                             $variant[$request->options[0]] = $value0;
                             $variant[$request->options[1]] = $value1;
                             if ($request->qtys == null) {
-                                $variant['qty'] = null;
+                                $variant['qty'] = 1;
                             } else {
                                 $variant['qty'] = $request->qtys[$Counter];
                             }
@@ -553,7 +553,7 @@ class ProductsController extends Controller
                         $variant[$request->options[0]] = $value0;
                         $variant[$request->options[2]] = $value2;
                         if ($request->qtys == null) {
-                            $variant['qty'] = null;
+                            $variant['qty'] = 1;
                         } else {
                             $variant['qty'] = $request->qtys[$Counter];
                         }
@@ -579,7 +579,7 @@ class ProductsController extends Controller
                     $variant = [];
                     $variant[$request->options[0]] = $value0;
                     if ($request->qtys[$Counter] == null) {
-                        $variant['qty'] = null;
+                        $variant['qty'] = 1;
                     } else {
                         $variant['qty'] = $request->qtys[$Counter];
                     }
@@ -610,7 +610,7 @@ class ProductsController extends Controller
                         $variant[$request->options[1]] = $value1;
                         $variant[$request->options[2]] = $value2;
                         if ($request->qtys == null) {
-                            $variant['qty'] = null;
+                            $variant['qty'] = 1;
                         } else {
                             $variant['qty'] = $request->qtys[$Counter];
                         }
@@ -636,7 +636,7 @@ class ProductsController extends Controller
                     $variant = [];
                     $variant[$request->options[1]] = $value1;
                     if ($request->qtys == null) {
-                        $variant['qty'] = null;
+                        $variant['qty'] = 1;
                     } else {
                         $variant['qty'] = $request->qtys[$Counter];
                     }
@@ -664,7 +664,7 @@ class ProductsController extends Controller
                 $variant = [];
                 $variant[$request->options[2]] = $value2;
                 if ($request->qtys == null) {
-                    $variant['qty'] = null;
+                    $variant['qty'] = 1;
                 } else {
                     $variant['qty'] = $request->qtys[$Counter];
                 }
@@ -877,7 +877,7 @@ class ProductsController extends Controller
                                     $variant['prix'] = $request->allprices[$Counter];
                                 }
                                 if ($request->qtys == null) {
-                                    $variant['qty'] = null;
+                                    $variant['qty'] = 1;
                                 } else {
                                     $variant['qty'] = $request->qtys[$Counter];
                                 }
@@ -899,7 +899,7 @@ class ProductsController extends Controller
                             $variant[$request->options[0]] = $value0;
                             $variant[$request->options[1]] = $value1;
                             if ($request->qtys == null) {
-                                $variant['qty'] = null;
+                                $variant['qty'] = 1;
                             } else {
                                 $variant['qty'] = $request->qtys[$Counter];
                             }
@@ -930,7 +930,7 @@ class ProductsController extends Controller
                         $variant[$request->options[0]] = $value0;
                         $variant[$request->options[2]] = $value2;
                         if ($request->qtys == null) {
-                            $variant['qty'] = null;
+                            $variant['qty'] = 1;
                         } else {
                             $variant['qty'] = $request->qtys[$Counter];
                         }
@@ -956,7 +956,7 @@ class ProductsController extends Controller
                     $variant = [];
                     $variant[$request->options[0]] = $value0;
                     if ($request->qtys[$Counter] == null) {
-                        $variant['qty'] = null;
+                        $variant['qty'] = 1;
                     } else {
                         $variant['qty'] = $request->qtys[$Counter];
                     }
@@ -987,7 +987,7 @@ class ProductsController extends Controller
                         $variant[$request->options[1]] = $value1;
                         $variant[$request->options[2]] = $value2;
                         if ($request->qtys == null) {
-                            $variant['qty'] = null;
+                            $variant['qty'] = 1;
                         } else {
                             $variant['qty'] = $request->qtys[$Counter];
                         }
@@ -1013,7 +1013,7 @@ class ProductsController extends Controller
                     $variant = [];
                     $variant[$request->options[1]] = $value1;
                     if ($request->qtys == null) {
-                        $variant['qty'] = null;
+                        $variant['qty'] = 1;
                     } else {
                         $variant['qty'] = $request->qtys[$Counter];
                     }
@@ -1041,7 +1041,7 @@ class ProductsController extends Controller
                 $variant = [];
                 $variant[$request->options[2]] = $value2;
                 if ($request->qtys == null) {
-                    $variant['qty'] = null;
+                    $variant['qty'] = 1;
                 } else {
                     $variant['qty'] = $request->qtys[$Counter];
                 }
@@ -1191,39 +1191,5 @@ class ProductsController extends Controller
         $product = Product::where('shop_id', Auth::user()->Shop()->first()->id)->FindOrFail(decrypt($request->product_id))->delete();
         return back()->with('success', 'le produit a été supprimer avec succès!');
     }
-    public function add_to_cart(Request $request){
-      /* $request->session()->forget('cart');
-      return 'ok'; */
-      $product=[];
-      $product['product_id']=$request->params['product_id'];
-      $product['variant_info']=$request->params['selected_variant'];
-      $product['quantity']=$request->params['quantity'];
-
-        $cart=[];
-        if($request->session()->get('cart') != null){
-            $cart=$request->session()->get('cart');
-        }
-       
-        array_push($cart,$product);
-        $request->session()->put('cart', $cart);
-        return $request;
-    }
-    public function remove_from_carte(Request $request){
-      /* $request->session()->forget('cart');
-      return 'ok'; */
-        $old_cart=[];
-        $cart=[];
-        if($request->session()->get('cart') != null){
-            $old_cart=$request->session()->get('cart');
-            $i=0;
-            foreach($old_cart as $product){
-                if($i!= $request->params['position_to_delete']){
-                    array_push($cart,$product);
-                }
-                $i++;
-            }
-        }
-        $request->session()->put('cart', $cart);
-        return $cart;
-    }
+  
 }

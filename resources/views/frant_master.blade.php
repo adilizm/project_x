@@ -103,7 +103,7 @@ if(session()->get('cart') != null){
             <circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
           </svg>
         </span>
-        <a class="navbar-brand" href="#"><img src="/bootstrap_ecom/images/logo.png" class="logo"></a>
+        <a class="navbar-brand" href="/"><img src="/bootstrap_ecom/images/logo.png" class="logo"></a>
       </div>
       <div class="d-flex p-1" style="align-items: center;">
         <div class="position-relative d-md-none cursor-pointer" style="margin-right: 13px; align-self: center;"  data-toggle="modal" data-target="#exampleModal"> 
