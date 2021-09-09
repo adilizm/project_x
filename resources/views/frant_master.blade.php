@@ -35,9 +35,8 @@ $disktop_top_annonce = \App\Models\Businesssetting::where('name','disktop_top_an
 $tablet_top_annonce = \App\Models\Businesssetting::where('name','tablet_top_annonce')->first();
 $phone_top_annonce = \App\Models\Businesssetting::where('name','phone_top_annonce')->first();
 $languages= \App\Models\Language::all();
-
+$products_in_cart=[];
 if(session()->get('cart') != null){
-           $products_in_cart=[];
             foreach(session()->get('cart') as $product_selected){
                 $product=\App\Models\Product::find($product_selected['product_id']);
                 if($product->variants != '[]'){
@@ -53,23 +52,22 @@ if(session()->get('cart') != null){
                         }
                         /* get the min qty */
                    }
-                   $max_qty=$product_selected['variant_info']['qty'];
+                   $available_qty=$product_selected['variant_info']['qty'];
                 }else{
-                    dd('makayninch variants');
+
                 }
                 $quantity=$product_selected['quantity'];
-                if($quantity > $max_qty){
-                    $quantity=$max_qty;
+                if($quantity > $available_qty){
+                    $quantity=$available_qty;
                 }
                 $prod=[];
                 $prod['selected_variants']=$selected_variant;
                 $prod['options']=$options;
-                $prod['max_qty']=$max_qty;
+                $prod['available_qty']=$available_qty;
                 $prod['quantity']=$quantity;
                 $prod['product']=$product;
                 array_push($products_in_cart,$prod);
-                 //dd($selected_variant,$options,$max_qty,$quantity,$product);
-                 //dd($products_in_cart);
+                 
                 
             }
        }
@@ -119,14 +117,26 @@ if(session()->get('cart') != null){
             <path d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
           </svg>
         </div>
-        <div class="dropdown px-2">
-          <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <a href=""></a>
+        @Auth
+        <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="{{ route('myprofil',app()->getLocale())}}">
             <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
               <title>Mon profil</title>
               <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
               <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
             </svg>
+            </a>
+          </span>
+        @else
+        <div class="dropdown px-2">
+          <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href=""> </a>
+            <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
+              <title>Mon profil</title>
+              <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
+              <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+            </svg>
+           
           </span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
             <a href="{{ route('login',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
@@ -134,6 +144,7 @@ if(session()->get('cart') != null){
             <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
           </div>
         </div>
+        @endAuth
         <ul class="d-md-none navbar-nav align-items-center">
           <li class="nav-item dropdown ">
             @foreach($languages as $language)
@@ -196,8 +207,8 @@ if(session()->get('cart') != null){
               <li class="nav-item dropdown">
                 <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> {{ Auth::user()->name}} </a>
                 <ul class="dropdown-menu dropdown-menu-right align-items-center">
-                  <li><a class="dropdown-item" href="#"> Mon profil </a></li>
-                  <li><a class="dropdown-item" href="#"> Ma carte </a></li>
+                  <li><a class="dropdown-item" href="{{ route('myprofil',app()->getLocale())}}"> Mon profil </a></li>
+                  <li><a class="dropdown-item" href="{{ route('panier',app()->getLocale())}}"> Ma carte </a></li>
                   @if(Auth::user()->role_id == 1)
                   <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a></li>
                   @elseif(Auth::user()->role_id == 2)
@@ -248,11 +259,15 @@ if(session()->get('cart') != null){
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div id="cart_body" class="modal-body">
       @foreach($products_in_cart as $product)
-       <div class="d-flex">
+       <!-- dont remove class div-remover -->
+       <div class="d-flex div-remover " id="{{'cart_item'.$loop->index}}">
           <img width="80" src="{{ '/storage/'.$product['product']->Images()->where('is_main','1')->first()->path}}" alt="">
           {{$product['product']->name}}
+          -- Qty = {{$product['quantity']}} 
+          <!-- dont remove class dropper -->
+          <a href="javascript:void(0);" onclick="remove_product_from_cart({{$loop->index}})" class="dropper badge cursor-pointer badge-danger m-2">x</a>
        </div>
       @endforeach 
       </div>
@@ -425,6 +440,38 @@ if(session()->get('cart') != null){
       search();
     }
     
+  }
+  function remove_product_from_cart(position) {
+
+    axios.post('{{route('remove_from_carte',app()->getlocale())}}', {
+                        params: {
+                          position_to_delete:position,
+                        }
+            }).then(function(responce) {
+                console.log(responce);
+                document.getElementById('cart_item'.concat(position.toString())).remove();
+                nbr_products_in_cart--;
+                document.querySelectorAll('.card_product_number').forEach(element => {
+                  element.innerHTML=nbr_products_in_cart;
+                });
+                var i = 0;
+                document.querySelectorAll('.dropper').forEach(element => {
+                  element.setAttribute('onclick','remove_product_from_cart('.concat(i.toString())+')');
+                  i++;
+                });
+                 i = 0;
+                document.querySelectorAll('.div-remover').forEach(element => {
+                  element.setAttribute('id','cart_item'.concat(i.toString()));
+                  i++;
+                });
+
+            }).catch(function(err) {
+
+            console.log(err);
+
+            })
+
+     
   }
 </script>
 @yield('frant_script')

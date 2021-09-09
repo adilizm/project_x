@@ -35,6 +35,7 @@ Route::group(['prefix' => '{language}'], function () {
 
     Route::get('change_language/{key}', [LanguageController::class, 'language_changer'])->name('change_languageyy');
 
+   
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/register_vondeur', [VondeurController::class, 'create_vondeur'])->middleware('guest')->name('login.vondeur');
     Route::get('/Banned_user', [UsersController::class, 'banned_user'])->name('banned.user');
@@ -46,6 +47,10 @@ Route::group(['prefix' => '{language}'], function () {
     /* public products */
     Route::get('/produit/{slug}',[HomeController::class,'Product'])->name('product.index');
     Route::post('/produit/add_to_cart',[ProductsController::class,'add_to_cart'])->name('add_to_cart');
+    Route::post('/produit/remove_from_carte',[ProductsController::class,'remove_from_carte'])->name('remove_from_carte');
+
+    /* card */
+    Route::get('panier', [HomeController::class, 'panier'])->name('panier');
 
 
     /* search */
@@ -53,6 +58,10 @@ Route::group(['prefix' => '{language}'], function () {
 
 
     Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
+
+         /* profile settings */
+        Route::get('mon-profil', [UsersController::class, 'My_profile'])->name('myprofil');
+
         Route::get('shops/create', [ShopController::class, 'create'])->name('shops.create');
         Route::post('shops/enregistre', [ShopController::class, 'save'])->name('shops.save');
         Route::get('shops/enregistre/complete', [ShopController::class, 'register_complet'])->name('shops.register_complet');

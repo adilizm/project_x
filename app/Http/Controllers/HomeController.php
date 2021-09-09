@@ -15,9 +15,6 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-
-     
-
         $sliders = Slider::all();
 
         /* Top 10 requested products */
@@ -107,34 +104,72 @@ class HomeController extends Controller
     {
         $product = Product::where('slug', $slug)->where('confermed', '1')->where('status', 'published')->first();
         $nbr_options = count(json_decode($product->variants));
-        $options=[];
+        $options = [];
         for ($i = 0; $i < $nbr_options; $i++) {
-            $options = array_keys( get_object_vars(json_decode($product->variants)[$i]));
-        }
-      
-        $variants=[];
-        foreach(json_decode($product->variants) as $variant){
-            array_push($variants,get_object_vars($variant)) ;
-        }
-        $variables=[];
-        
-        foreach($options as $option){  
-            $variable=[];  
-            foreach($variants as $variant){
-                array_push($variable,$variant[$option]);
-                if($option!='qty' && $option != 'prix' && $option != 'image'){
-                    $variable=array_unique($variable);
-                }
-            }
-            array_push($variables,$variable);
+            $options = array_keys(get_object_vars(json_decode($product->variants)[$i]));
         }
 
-/*         dd($variants,$options,$variables);
- */        
+        $variants = [];
+        foreach (json_decode($product->variants) as $variant) {
+            array_push($variants, get_object_vars($variant));
+        }
+        $variables = [];
+
+        foreach ($options as $option) {
+            $variable = [];
+            foreach ($variants as $variant) {
+                array_push($variable, $variant[$option]);
+                if ($option != 'qty' && $option != 'prix' && $option != 'image') {
+                    $variable = array_unique($variable);
+                }
+            }
+            array_push($variables, $variable);
+        }
+
+        /*         dd($variants,$options,$variables);
+ */
         if ($product != null) {
-            return view('frontend.product.product_index', compact('product','variants','options','variables'));
+            return view('frontend.product.product_index', compact('product', 'variants', 'options', 'variables'));
         } else {
             return redirect()->route('home', ['language' => App::getLocale()]);
         }
+    }
+    public function panier(Request $request)
+    {
+        $products_in_cart = [];
+        if ($request->session()->get('cart') != null) {
+            foreach (session()->get('cart') as $product_selected) {
+                $product = \App\Models\Product::find($product_selected['product_id']);
+                if ($product->variants != '[]') {
+                    $options = [];
+                    $selected_variant = [];
+                    $options = array_keys(get_object_vars(json_decode($product->variants)[0]));
+                    /* dd($options); */
+                    //dd($product_selected); 
+
+                    foreach ($options as $option) {
+                        if ($option != 'qty' && $option != 'image' && $option != 'prix') {
+                            $selected_variant[$option] = $product_selected['variant_info'][$option];
+                        }
+                        /* get the min qty */
+                    }
+                    $available_qty = $product_selected['variant_info']['qty'];
+                } else {
+
+                }
+                $quantity = $product_selected['quantity'];
+                if ($quantity > $available_qty) {
+                    $quantity = $available_qty;
+                }
+                $prod = [];
+                $prod['selected_variants'] = $selected_variant;
+                $prod['options'] = $options;
+                $prod['available_qty'] = $available_qty;
+                $prod['quantity'] = $quantity;
+                $prod['product'] = $product;
+                array_push($products_in_cart, $prod);
+            }
+        }
+        return view('frontend.cart.cart',compact('products_in_cart'));
     }
 }
