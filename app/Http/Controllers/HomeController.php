@@ -15,6 +15,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        
         $sliders = Slider::all();
 
         /* Top 10 requested products */

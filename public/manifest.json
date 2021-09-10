@@ -1,0 +1,20 @@
+{
+    "short_name": "test App",
+    "name": "Web test App",
+    "icons": [
+      {
+        "src": "images/projectx-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "images/projectx-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "http://192.168.1.10:8000/fr/",
+    "background_color": "#3367D6",
+    "display": "standalone",
+    "theme_color": "#3367D6"
+  }

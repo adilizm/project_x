@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderdetailsTable extends Migration
+class CreateAddressesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateOrderdetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('orderdetails', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained();
-            $table->foreignId('product_id')->constrained();
-            $table->json('variant');
-            $table->double('price');
-            $table->integer('qty');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +27,6 @@ class CreateOrderdetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orderdetails');
+        Schema::dropIfExists('addresses');
     }
 }

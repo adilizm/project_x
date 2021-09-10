@@ -257,42 +257,6 @@
 @stop
 @section('frant_script')
 
-<script>
-    document.getElementById('super_marche').addEventListener('mouseover', function() {
-        document.getElementById('super_marche_categories').classList.remove('invisible')
-        document.getElementById('super_marche_categories').classList.add('visible')
-    })
-    document.getElementById('super_marche_categories').addEventListener('mouseover', function() {
-        document.getElementById('super_marche_categories').classList.remove('invisible')
-        document.getElementById('super_marche_categories').classList.add('visible')
-    })
-    document.getElementById('super_marche').addEventListener('mouseleave', function() {
-        document.getElementById('super_marche_categories').classList.remove('visible')
-        document.getElementById('super_marche_categories').classList.add('invisible')
-    })
-    document.getElementById('super_marche_categories').addEventListener('mouseleave', function() {
-        document.getElementById('super_marche_categories').classList.remove('visible')
-        document.getElementById('super_marche_categories').classList.add('invisible')
-    })
-
-    /* ---------------------- sport et loisire  */
-    document.getElementById('Sport_et_loisire').addEventListener('mouseover', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('invisible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('visible')
-    })
-    document.getElementById('Sport_et_loisire_categories').addEventListener('mouseover', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('invisible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('visible')
-    })
-    document.getElementById('Sport_et_loisire').addEventListener('mouseleave', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('visible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('invisible')
-    })
-    document.getElementById('Sport_et_loisire_categories').addEventListener('mouseleave', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('visible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('invisible')
-    })
-</script>
 <script src="/glide/glide.min.js"></script>
     @php
         $language = \App\Models\Language::where('key',app()->getLocale())->first();

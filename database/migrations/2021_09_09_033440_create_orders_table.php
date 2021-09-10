@@ -15,11 +15,13 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained(); // the customer id
             $table->string('status')->default('new_arrivale'); // new_arrivale - confirmed - cancled - returned - successed
             $table->string('delivery_status')->default('not-assigned'); // not-assigned - in_the_way - successed - returned 
             $table->double('price_total'); 
             $table->double('price_shipping'); 
+            $table->double('lat'); 
+            $table->double('lng'); 
             $table->timestamps();
             $table->softDeletes();
 

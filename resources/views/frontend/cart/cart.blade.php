@@ -1,7 +1,19 @@
 @extends('frant_master')
 
 @section('frant_head')
+	<style>
+		/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+	</style>
 @stop
 @section('frant_content')
 <section class="section-content padding-y">
@@ -21,6 +33,8 @@
 </tr>
 </thead>
 <tbody>
+<form id="form_checkout" action="{{ route('create_order',['language'=>app()->getLocale()]) }}" method="post">
+	@csrf
 @foreach($products_in_cart as $product)
 <tr>
 	<td>
@@ -35,11 +49,11 @@
 		</a>
 	</td>
 	<td> 
-			<div class="d-flex" id="{{'div_qty_'.$loop->index}}">
-                <button class="form-control" onclick="decreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') "  >-</button>
-                <input style="width: 33px; padding: 0; padding-left:2px" class="form-control " value="{{$product['quantity']}}"  min="{{$product['product']->min_quantity}}" max="{{ $product['available_qty'] }}" type="number" id="qty_wanted">
-                <button class="form-control"  onclick="encreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') " >+</button>
-            </div>
+		<div class="d-flex" id="{{'div_qty_'.$loop->index}}">
+            <span class="form-control btn p-2 " style="border-bottom: 1px #ced4da solid;    border-left: 1px #ced4da solid;    border-top: 1px #ced4da solid;    border-radius: 0;" onclick="decreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') "  >-</span>
+            <input style="width: 33px; padding: 0; text-align: center;border: 0;   border-bottom: 1px #ced4da solid;    border-radius: 0;    border-top: 1px #ced4da solid;" name="qty[]" class="form-control" value="{{$product['quantity']}}"  min="{{$product['product']->min_quantity}}" max="{{ $product['available_qty'] }}" type="number" id="qty_wanted">
+            <span class="form-control btn p-2 " style=" border-top: 1px #ced4da solid;  border-bottom: 1px #ced4da solid;    border-radius: 0;    border-right: 1px #ced4da solid;" onclick="encreas_qty('{{ $loop->index }}','{{$product['product']->prix}}') " >+</span>
+        </div>
 		
 	</td>
 	<td> 
@@ -55,11 +69,13 @@
 	</td>
 </tr>
 @endforeach
+</form>
+
 </tbody>
 </table>
 
 <div class="card-body border-top">
-	<a href="{{ route('create_order',['language'=>app()->getLocale()]) }}" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
+	<a href="javascript:void(0);" onclick="submit_form()" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
 	<a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
 </div>	
 </div> <!-- card.// -->
@@ -159,5 +175,8 @@
 			document.querySelector('#Total_to_pay').innerHTML=Total_to_pay;
 			
 		}
+		function submit_form(){
+			document.getElementById('form_checkout').submit();
+				}
 	</script>
 @stop

@@ -61,7 +61,8 @@ Route::group(['prefix' => '{language}'], function () {
     Route::post('search', [HomeController::class, 'search'])->name('search');
 
     /* create order */
-    Route::get('create/order', [OrderController::class, 'Create_order'])->name('create_order');
+    Route::post('create/order', [OrderController::class, 'Create_order'])->name('create_order');
+    Route::get('select/position', [OrderController::class, 'Select_position'])->name('select_position');
 
     Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
 
@@ -112,6 +113,10 @@ Route::group(['prefix' => '{language}'], function () {
         Route::get('villes', [CitiesController::class, 'index'])->name('cities.index');
         Route::post('villes/save', [CitiesController::class, 'store'])->name('cities.store');
 
+        /* Orders routes */
+        Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
+
+        
 
 
         Route::prefix('vendeur')->group(function () {

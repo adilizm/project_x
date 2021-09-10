@@ -154,7 +154,7 @@ if(session()->get('cart') != null){
             @endforeach
             <ul class="dropdown-menu dropdown-menu-right">
               @foreach($languages as $language)
-              <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',['language'=>app()->getLocale(),'key'=>$language->key]) }}"> {{ $language->name }} <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a></li>
+              <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',['language'=>app()->getLocale(),'key'=>$language->key]) }}"> {{ $language->name }} <img src="{{ '/storage/'.$language->image_path }}" alt=""> </a></li>
               @endforeach
             </ul>
           </li>
