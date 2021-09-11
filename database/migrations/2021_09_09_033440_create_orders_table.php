@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained(); // the customer id
             $table->string('status')->default('new_arrivale'); // new_arrivale - confirmed - cancled - returned - successed
-            $table->string('delivery_status')->default('not-assigned'); // not-assigned - in_the_way - successed - returned 
+            $table->string('delivery_status')->default('not-assigned'); // not_assigned - in_the_way - successed - returned 
             $table->double('price_total'); 
             $table->double('price_shipping'); 
             $table->double('lat'); 

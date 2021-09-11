@@ -13,7 +13,7 @@
         "sizes": "512x512"
       }
     ],
-    "start_url": "http://192.168.1.10:8000/fr/",
+    "start_url": "http://192.168.1.100:8000/fr/",
     "background_color": "#3367D6",
     "display": "standalone",
     "theme_color": "#3367D6"

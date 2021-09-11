@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,17 +65,38 @@ class OrderController extends Controller
         return redirect()->route('select_position',['language'=>app()->getLocale()]);
 
     }
-    public function Select_position(){
+    public function Select_position(Request $request){
         if(Auth::user() == null){
             return redirect()->route('Login_required',['language'=>app()->getLocale()]);
         }else{
-            return view('frontend.select_position',['language'=>app()->getLocale()]);
+            $shops_ids=[];
+            $cart=$request->session()->get('cart');
+            foreach($cart as $product){
+                //fixe relation between shop and product 
+                $shop_id=Product::find($product['product_id'])->Shop()->first()->id;
+                array_push($shops_ids,$shop_id);
+            }
+            $shops_ids=array_unique($shops_ids);
+            $nbr_shops = count($shops_ids);
+            return view('frontend.select_position',compact('nbr_shops'));
         }
+    }
+
+    public function Calculate_shipping(Request $request){
+        dd($request);
     }
     public function Store_order(Request $request){
         $order= new Order();
-        $order->create([
-            ''
+        dd($request);
+
+       $oprder= $order->create([
+            'user_id'=>Auth::user()->id,
+            "status"=>"new_arrivale",
+            "delivery_status"=>"not_assigned",
+            "price_total"=>"",
+            "price_shipping"=>"",
+            "lat"=>"",
+            "lng"=>"",
         ]);
     }
 }

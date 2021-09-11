@@ -9,12 +9,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    public function Order_Details(){
+    public  $NEW_ARIVAL = 'new_arival';
+    public  $CONFIRMED = 'confirmed';
+    public  $CANCLED = 'cancled';
+    public  $RETURNED = 'returned';
+    public  $SUCCESSED = 'successed';
+
+    public function Order_Details()
+    {
         return $this->hasMany(Orderdetail::class);
     }
-    public function User(){
+    public function User()
+    {
         return $this->belongsTo(User::class);
     }
 }

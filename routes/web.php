@@ -64,6 +64,8 @@ Route::group(['prefix' => '{language}'], function () {
     Route::post('create/order', [OrderController::class, 'Create_order'])->name('create_order');
     Route::get('select/position', [OrderController::class, 'Select_position'])->name('select_position');
 
+    Route::post('Shipping_calculate', [OrderController::class, 'Calculate_shipping'])->name('Calculate_shipping');
+
     Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
 
          /* profile settings */
@@ -162,9 +164,14 @@ Route::group(['prefix' => '{language}'], function () {
             Route::get('languages', [LanguageController::class, 'index'])->name('languages.index');
             Route::post('languages/update/default', [LanguageController::class, 'update_default'])->name('languages.update_default');
             Route::get('languages/edit/{id}', [LanguageController::class, 'language_edit'])->name('languages.language_edit');
-
+            
             /* Translation routes */
             Route::post('translation/update', [TranslationController::class, 'update'])->name('Translation.update');
+            
+            /* shipping configuration */
+            Route::get('configuration/shipping', [WebsiteController::class, 'Shipping_configuration'])->name('shipping.configuration.index');
+            Route::post('configuration/shipping/update', [WebsiteController::class, 'Shipping_configuration_update'])->name('shipping.update_delivry_fee');
+
         });
     });
 

@@ -18,12 +18,15 @@
 @stop
 @section('frant_content')
 <div class="cotainer">
-    <div class="row" style="height: 500px;">
-        <div id="map"></div>
+    <div class="row position-relative" style="height: 500px;">
+    <button class="btn btn-warning position-absolute " style="    z-index: 100;    top: 12px;    right: 62px;    width: 42px;    height: 42;"> my place</button>
+
+        <div id="map">
+        </div>
     </div>
     <div class=" m-3">
 
-        <form action="{{ route('store_order',app()->getLocale())}}" method="post">
+        <form action="{{ route('Calculate_shipping',app()->getLocale())}}" method="post">
             @csrf
             <div class="row">
                 <div class="form-group col-12 col-md-6">
@@ -52,8 +55,10 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="submit">Passer La Commande</button>
+                <button type="submit" class="btn btn-primary">Passer La Commande</button>
             </div>
+            <input type="text" id="lat" name="lat" value="">
+            <input type="text" id="lng" name="lng" value="">
         </form>
 
     </div>
@@ -66,7 +71,7 @@
     var user_lng = 0
     let map;
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&callback=initMap&libraries=&v=weekly" async></script>
+<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&callback=initMap&v=weekly'}}" async></script>
 
 <script>
     function initMap() {
@@ -74,6 +79,8 @@
             /*  console.log(responce); */
             user_lat = responce.data.location.lat
             user_lng = responce.data.location.lng
+            document.getElementById('lat').value=user_lat
+            document.getElementById('lng').value=user_lng
             map = new google.maps.Map(document.getElementById("map"), {
                 center: {
                     lat: user_lat,
@@ -97,7 +104,12 @@
                 var result = [event.latLng.lat(), event.latLng.lng()];
                 transition(result)
             });
-
+           
+            @if($nbr_shops == 1)
+            calculate_distance_one_seller();
+            @else
+            console.log('Too many shops');
+            @endif
 
         }).catch(function(err) {
             console.log(err);
@@ -122,13 +134,22 @@
         user_lng += deltaLng;
         var latlng = new google.maps.LatLng(user_lat, user_lng);
         marker.setTitle("Latitude:" + user_lat + " | Longitude:" + user_lng);
+        document.getElementById('lat').value=user_lat
+        document.getElementById('lng').value=user_lng
         marker.setPosition(latlng);
         if (i != numDeltas) {
             i++;
             setTimeout(moveMarker, delay);
         }
         // console.log('addres selectioner : lat = ',user_lat,'| lng = ',user_lng )
-
     }
+    function calculate_distance_one_seller(){
+        latLngA=new google.maps.LatLng(30, 20);
+        latLngB=new google.maps.LatLng(31,50);
+        var distance = google.maps.geometry.spherical.computeDistanceBetween(latLngA, latLngB)
+       console.log('Distance = ',distance); 
+    }
+    
+    
 </script>
 @stop

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Businesssetting;
 use Illuminate\Http\Request;
 
+
 class WebsiteController extends Controller
 {
     public function index(){
@@ -38,6 +39,25 @@ class WebsiteController extends Controller
             ]);
         }
         return view('managment.website_managment.pages.edit_home_page_elements');
+    }
+     public function Shipping_configuration()
+    {
+        $Delivery_price_delivery_man_each_KM=Businesssetting::where('name','Delivery_price_delivery_man_each_KM')->first();
+        $Delivery_price_costumer_each_KM=Businesssetting::where('name','Delivery_price_costumer_each_KM')->first();
+        return view('managment.website_managment.shipping.index',compact('Delivery_price_costumer_each_KM','Delivery_price_delivery_man_each_KM'));
+    }
+    public function Shipping_configuration_update(Request $request){
+        $request->validate([
+            'Delivery_price_delivery_man_each_KM'=>'required',
+            'Delivery_price_costumer_each_KM'=>'required'
+        ]);
+        Businesssetting::where('name','Delivery_price_costumer_each_KM')->first()->update([
+            'value'=>$request->Delivery_price_costumer_each_KM
+        ]);
+        Businesssetting::where('name','Delivery_price_delivery_man_each_KM')->first()->update([
+            'value'=>$request->Delivery_price_delivery_man_each_KM
+        ]);
+        return back()->with('success','les valeus de shipping updated');
     }
 
 }
