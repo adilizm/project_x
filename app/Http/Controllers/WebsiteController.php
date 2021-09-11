@@ -42,9 +42,13 @@ class WebsiteController extends Controller
     }
      public function Shipping_configuration()
     {
-        $Delivery_price_delivery_man_each_KM=Businesssetting::where('name','Delivery_price_delivery_man_each_KM')->first();
-        $Delivery_price_costumer_each_KM=Businesssetting::where('name','Delivery_price_costumer_each_KM')->first();
-        return view('managment.website_managment.shipping.index',compact('Delivery_price_costumer_each_KM','Delivery_price_delivery_man_each_KM'));
+        $Delivery_price_costumer_less_than_10_KM=Businesssetting::where('name','Delivery_price_costumer_less_than_10_KM')->first();
+        $Delivery_price_costumer_more_than_10KM=Businesssetting::where('name','Delivery_price_costumer_more_than_10KM')->first();
+        $min_Delivery_price_costumer=Businesssetting::where('name','min_Delivery_price_costumer')->first();
+        $Delivery_price_delivery_man_less_than_10_KM=Businesssetting::where('name','Delivery_price_delivery_man_less_than_10_KM')->first();
+        $Delivery_price_delivery_man_more_than_10_KM=Businesssetting::where('name','Delivery_price_delivery_man_more_than_10_KM')->first();
+        $min_Delivery_price_delivery_man=Businesssetting::where('name','min_Delivery_price_delivery_man')->first();
+        return view('managment.website_managment.shipping.index',compact('Delivery_price_costumer_less_than_10_KM','Delivery_price_costumer_more_than_10KM','min_Delivery_price_costumer','Delivery_price_delivery_man_less_than_10_KM','Delivery_price_delivery_man_more_than_10_KM','min_Delivery_price_delivery_man'));
     }
     public function Shipping_configuration_update(Request $request){
         $request->validate([

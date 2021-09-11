@@ -17,20 +17,64 @@
             <div class="form-group col-12 col-md-6">
                 <div class="row p-2">
                     <div class="col-lg-6">
-                        <label class="col-from-label">Delivery price per kilometer (paid by the customer)</label>
+                        <label class="col-from-label">Delivery price per kilometer (First 10 Km) (paid by the customer)</label>
                     </div>
                     <div class="col-lg-6">
-                        <input class="form-control" name="Delivery_price_costumer_each_KM" value="{{$Delivery_price_costumer_each_KM->value}}" type="number" step="0.01">
+                        <input class="form-control" name="Delivery_price_costumer_less_than_10_KM" value="{{$Delivery_price_costumer_less_than_10_KM->value}}" type="number" step="0.01">
                     </div>
                 </div>
             </div>
             <div class="form-group col-12 col-md-6">
                 <div class="row p-2">
                     <div class="col-lg-6">
-                        <label class="col-from-label">Delivery price per kilometer (delivery fee)</label>
+                        <label class="col-from-label">Delivery price per kilometer (>10km) </label>
                     </div>
                     <div class="col-lg-6">
-                        <input class="form-control" name="Delivery_price_delivery_man_each_KM" value="{{$Delivery_price_delivery_man_each_KM->value}}" type="number" step="0.01"> 
+                        <input class="form-control" name="Delivery_price_costumer_more_than_10KM" value="{{$Delivery_price_costumer_more_than_10KM->value}}" type="number" step="0.01"> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <div class="row p-2">
+                    <div class="col-lg-6">
+                        <label class="col-from-label">min Delivery price</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" name="min_Delivery_price_costumer" value="{{$min_Delivery_price_costumer->value}}" type="number" step="0.01"> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <div class="row p-2">
+                    <div class="col-lg-6">
+                        <label class="col-from-label">Delivery price per kilometer (less than 10 km) (delivery man fee)</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" name="Delivery_price_delivery_man_less_than_10_KM" value="{{$Delivery_price_delivery_man_less_than_10_KM->value}}" type="number" step="0.01"> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <div class="row p-2">
+                    <div class="col-lg-6">
+                        <label class="col-from-label">Delivery price per kilometer (more than 10km) (delivery man fee)</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" name="Delivery_price_delivery_man_more_than_10_KM" value="{{$Delivery_price_delivery_man_more_than_10_KM->value}}" type="number" step="0.01"> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="form-group col-12 col-md-6">
+                <div class="row p-2">
+                    <div class="col-lg-6">
+                        <label class="col-from-label">min Delivery price</label>
+                    </div>
+                    <div class="col-lg-6">
+                        <input class="form-control" name="min_Delivery_price_delivery_man" value="{{$min_Delivery_price_delivery_man->value}}" type="number" step="0.01"> 
                     </div>
                     
                 </div>

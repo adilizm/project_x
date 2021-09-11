@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Businesssetting;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -70,15 +71,23 @@ class OrderController extends Controller
             return redirect()->route('Login_required',['language'=>app()->getLocale()]);
         }else{
             $shops_ids=[];
+            $shops_latlng=[];
             $cart=$request->session()->get('cart');
             foreach($cart as $product){
                 //fixe relation between shop and product 
-                $shop_id=Product::find($product['product_id'])->Shop()->first()->id;
-                array_push($shops_ids,$shop_id);
+                $shop=Product::find($product['product_id'])->Shop()->first();
+                $shop_latlng=[$shop->map_latitude,$shop->map_longitude];
+                array_push($shops_ids,$shop->id);
+                array_push($shops_latlng,$shop_latlng);
+                
             }
             $shops_ids=array_unique($shops_ids);
             $nbr_shops = count($shops_ids);
-            return view('frontend.select_position',compact('nbr_shops'));
+            
+            $shipping_fee_first_10_km=Businesssetting::where("name","Delivery_price_costumer_less_than_10_KM")->first()->value;
+            $shipping_fee_more_than_10_km=Businesssetting::where("name","Delivery_price_costumer_more_than_10KM")->first()->value;
+            $min_shipping_fee=Businesssetting::where("name","min_Delivery_price_costumer")->first()->value;
+            return view('frontend.select_position',compact('nbr_shops','shipping_fee_first_10_km','shipping_fee_more_than_10_km','min_shipping_fee','shops_latlng'));
         }
     }
 
