@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Businesssetting;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Product;
 use App\Models\Slider;
 use Illuminate\Http\Request;
@@ -13,27 +14,37 @@ use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
+    public function Select_city()
+    {
+        $cities = City::all();
+        return view('frontend.select_city', compact('cities'));
+    }
+    public function store_city($language,$id,Request $request)
+    {   
+        $city=City::find(decrypt($id));
+        $cookie = Cookie::make('user_city', $city->id);
+        return redirect()->route('home', app()->getLocale())->cookie($cookie);
+    }
     public function index(Request $request)
     {
-       // $request->session()->forget('cart');
-       // dd($request);
+        // $request->session()->forget('cart');
+        // dd($request);
         $sliders = Slider::all();
-
         /* Top 10 requested products */
         $top_10_requested_products = [];
         $top_10_requested_products_Businesssetting = Businesssetting::where('name', 'top_10_requested_products')->first();
         if ($top_10_requested_products_Businesssetting->is_active) {
             if (count(json_decode($top_10_requested_products_Businesssetting->value)) > 1) {
                 foreach (json_decode($top_10_requested_products_Businesssetting->value) as $product_id) {
-                    $product = Product::where(['id'=>$product_id,'confermed'=>'1','status'=>'published'])->first();
-                    $product != null ?  array_push($top_10_requested_products, $product) : $adil='adil';
+                    $product = Product::where(['id' => $product_id, 'confermed' => '1', 'status' => 'published'])->first();
+                    $product != null ?  array_push($top_10_requested_products, $product) : $adil = 'adil';
                 }
             } else {
                 /* change this calcule */
-                $top_10_requested_products = Product::orderBy('created_at', 'desc')->where(['confermed'=>'1','status'=>'published'])->take(10)->get();
+                $top_10_requested_products = Product::orderBy('created_at', 'desc')->where(['confermed' => '1', 'status' => 'published'])->take(10)->get();
             }
         }
-        
+
         /* categories */
         $parent_categoreis = Category::whereNull('parent_id')->get();
 
@@ -140,7 +151,8 @@ class HomeController extends Controller
     public function panier(Request $request)
     {
         $products_in_cart = [];
-        $price_selected_variant=0;
+        $citeis = City::all();
+        $price_selected_variant = 0;
         if ($request->session()->get('cart') != null) {
             foreach (session()->get('cart') as $product_selected) {
                 $product = \App\Models\Product::find($product_selected['product_id']);
@@ -155,15 +167,13 @@ class HomeController extends Controller
                         if ($option != 'qty' && $option != 'image' && $option != 'prix') {
                             $selected_variant[$option] = $product_selected['variant_info'][$option];
                         }
-                        if($option == 'prix'){
-                            $price_selected_variant= $product_selected['variant_info']['prix'];
+                        if ($option == 'prix') {
+                            $price_selected_variant = $product_selected['variant_info']['prix'];
                         }
-
                     }
                     //dd($product_selected,$price_selected_variant); 
                     $available_qty = $product_selected['variant_info']['qty'];
                 } else {
-
                 }
                 $quantity = $product_selected['quantity'];
                 if ($quantity > $available_qty) {
@@ -178,31 +188,32 @@ class HomeController extends Controller
                 $prod['price_selected_variant'] = $price_selected_variant;
                 array_push($products_in_cart, $prod);
             }
-            $shops_ids=[];
-            $shops_latlng=[];
-            $cart=$request->session()->get('cart');
-            if($cart != null){
-            foreach($cart as $product){
-                //fixe relation between shop and product 
-                $shop=Product::find($product['product_id'])->Shop()->first();
-                $shop_latlng=[$shop->map_latitude,$shop->map_longitude];
-                array_push($shops_ids,$shop->id);
-                array_push($shops_latlng,$shop_latlng);
-                
-            }}
-            $shops_ids=array_unique($shops_ids);
+            $shops_ids = [];
+            $shops_latlng = [];
+            $cart = $request->session()->get('cart');
+            if ($cart != null) {
+                foreach ($cart as $product) {
+                    //fixe relation between shop and product 
+                    $shop = Product::find($product['product_id'])->Shop()->first();
+                    $shop_latlng = [$shop->map_latitude, $shop->map_longitude];
+                    array_push($shops_ids, $shop->id);
+                    array_push($shops_latlng, $shop_latlng);
+                }
+            }
+            $shops_ids = array_unique($shops_ids);
             $nbr_shops = count($shops_ids);
-            
-            $shipping_fee_first_10_km=Businesssetting::where("name","Delivery_price_costumer_less_than_10_KM")->first()->value;
-            $shipping_fee_more_than_10_km=Businesssetting::where("name","Delivery_price_costumer_more_than_10KM")->first()->value;
-            $min_shipping_fee=Businesssetting::where("name","min_Delivery_price_costumer")->first()->value;
-       
-            return view('frontend.cart.cart',compact('products_in_cart','nbr_shops','shipping_fee_first_10_km','shipping_fee_more_than_10_km','min_shipping_fee','shops_latlng'));
-        }else{
-           return 'cart empty';
-        }   
+
+            $shipping_fee_first_10_km = Businesssetting::where("name", "Delivery_price_costumer_less_than_10_KM")->first()->value;
+            $shipping_fee_more_than_10_km = Businesssetting::where("name", "Delivery_price_costumer_more_than_10KM")->first()->value;
+            $min_shipping_fee = Businesssetting::where("name", "min_Delivery_price_costumer")->first()->value;
+
+            return view('frontend.cart.cart', compact('citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng'));
+        } else {
+            return 'cart empty';
+        }
     }
-    public function Login_required(){
+    public function Login_required()
+    {
         return view('frontend.Login_required');
     }
 }

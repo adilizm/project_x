@@ -141,6 +141,15 @@ input[type=number] {
             @csrf
             <div class="row">
                 <div class="form-group col-12 col-md-6">
+                    <label for="exampleInputEmail">City</label>
+                    <select name="city_id" class="form-control" >
+                        <option>Your city</option>
+                        @foreach($citeis as $city)
+                            <option value="{{$city->id}}">{{$city->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group col-12 col-md-6">
                     <label for="exampleInputEmail1">number</label>
                     <input type="number" name="number" class="form-control">
                 </div>
@@ -242,9 +251,36 @@ input[type=number] {
 <script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&callback=initMap&v=weekly'}}" async></script>
 
 <script>
+    
+        var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+        };
+        navigator.geolocation.getCurrentPosition((pos)=>{
+                var user_latd = pos.coords.latitude
+                var user_lngd = pos.coords.longitude
+                console.log('user_latdd = ',user_latd)
+                console.log('user_lngdd = ',user_lngd)
+            }, error, options);
+
+        function success(pos) {
+        var crd = pos.coords;
+        console.log('Votre position actuelle est :');
+        console.log(`Latitude : ${crd.latitude}`);
+        console.log(`Longitude : ${crd.longitude}`);
+        console.log(`La précision est de ${crd.accuracy} mètres.`);
+        }
+
+        function error(err) {
+        console.warn(`ERREUR (${err.code}): ${err.message}`);
+        }
     function initMap() {
         axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE').then(function(responce) {
             /*  console.log(responce); */
+            
+           
+
             user_lat = responce.data.location.lat
             user_lng = responce.data.location.lng
             document.getElementById('lat').value=user_lat

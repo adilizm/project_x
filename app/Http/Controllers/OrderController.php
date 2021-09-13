@@ -8,6 +8,7 @@ use App\Models\Orderdetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -15,11 +16,16 @@ class OrderController extends Controller
 {
     public function Orders_index(){
         if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
-           $orders=Order::paginate(10);
-           return view('managment.orders.index',compact('orders'));
+           $orders=Order::orderBy('created_at','desc')->paginate(10);
+           return view('managment.orders.admin.index',compact('orders'));
         }
-
-        
+    }
+    public function admin_edit_order($language,$id){
+        if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
+            $order=Order::find(decrypt($id));
+            $orders_detailes=Orderdetail::where('order_id',$order->id)->get();
+            return view('managment.orders.admin.edit',compact('order','orders_detailes'));
+         }
 
     }
 
@@ -133,9 +139,11 @@ class OrderController extends Controller
         $new_order = $order->create([
             'user_id' => Auth::user()->id,
             "status" => "new_arrivale",
+            "city_id" => $request->city_id,
             "delivery_status" => "not_assigned",
             "price_total" => $total_shipping + $total_products,
             "price_shipping" => $total_shipping,
+            "city_id" =>Cookie::get('user_city'),
             "lat" => $lat,
             "lng" => $lng,
         ]);

@@ -379,7 +379,7 @@ if(session()->get('cart') != null){
             <a href="#!" class="text-reset">Settings</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Orders</a>
+          <a href="{{route('login.delivry',app()->getLocale())}}" class="text-reset">Devenir Livreur</a>
           </p>
           <p>
             <a href="#!" class="text-reset">Help</a>

@@ -38,14 +38,22 @@ INSERT INTO `autorisations` (`id`, `name`, `autorisation_key`, `autorisation_des
 (37, '', 'cities.index', 'voir les villes', 0, 36, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
 (38, '', 'cities.create', 'cree new villes', 0, 36, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
 (39, '', 'cities.destroy', 'supprimer villes', 0, 36, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
-(40, '', 'cities.edit', 'modifier info des villes', 0, 36, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL);
-
+(40, '', 'cities.edit', 'modifier info des villes', 0, 36, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(41, 'les ordres', '', 'managment des ordres', 1, 0, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(42, '', 'orders.index', 'voir les villes', 0, 41, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(43, '', 'orders.edit', 'editer new villes', 0, 41, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL);
 
 INSERT INTO `businesssettings` (`id`, `name`, `value`, `is_active`, `from`, `to`, `link`, `created_at`, `updated_at`) VALUES
-(1, 'top_10_requested_products', '[]', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2021-09-04 15:52:28'),
-(2, 'disktop_top_annonce', 'top_anonces_barrs/1630781548top_barr.png', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '-', '2021-09-04 15:52:38', '2021-09-04 15:52:28'),
-(3, 'tablet_top_annonce', 'top_anonces_barrs/1630781558top_barr.png', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '-', '2021-09-04 15:52:38', '2021-09-04 15:52:38'),
-(4, 'phone_top_annonce', 'top_anonces_barrs/1630781569top_barr.png', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '-', '2021-09-04 15:52:38', '2021-09-04 15:52:49');
+(1, 'top_10_requested_products', '[]', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2021-09-04 14:52:28'),
+(2, 'disktop_top_annonce', 'top_anonces_barrs/1630781548top_barr.png', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '-', '2021-09-04 14:52:38', '2021-09-04 14:52:28'),
+(3, 'tablet_top_annonce', 'top_anonces_barrs/1630781558top_barr.png', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '-', '2021-09-04 14:52:38', '2021-09-04 14:52:38'),
+(4, 'phone_top_annonce', 'top_anonces_barrs/1630781569top_barr.png', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '-', '2021-09-04 14:52:38', '2021-09-04 14:52:49'),
+(5, 'Delivery_price_costumer_less_than_10_KM', '5', 1, NULL, NULL, NULL, NULL, NULL),
+(6, 'Delivery_price_costumer_more_than_10KM', '2', 1, NULL, NULL, NULL, NULL, NULL),
+(7, 'min_Delivery_price_costumer', '20', 1, NULL, NULL, NULL, NULL, NULL),
+(8, 'Delivery_price_delivery_man_less_than_10_KM', '3.5', 1, NULL, NULL, NULL, NULL, NULL),
+(9, 'Delivery_price_delivery_man_more_than_10_KM', '1.4', 1, NULL, NULL, NULL, NULL, NULL),
+(10, 'min_Delivery_price_delivery_man', '14', 1, NULL, NULL, NULL, NULL, NULL);
 
 
 INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `created_at`, `updated_at`, `deleted_at`, `parent_id`) VALUES
@@ -91,7 +99,7 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `creat
 
 
 INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', '[\"role.index\",\"role.create\",\"role.edit\",\"role.destroy\",\"users.index\",\"users.edit\",\"users.create\",\"users.destroy\",\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Admin\",\"shops.index\",\"shops.create\",\"shops.destroy\",\"shops.edit\"]', '2021-07-27 00:03:22', '2021-08-26 12:14:20', NULL),
+(1, 'admin', '[\"role.index\",\"role.create\",\"role.edit\",\"role.destroy\",\"users.index\",\"users.edit\",\"users.create\",\"users.destroy\",\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Admin\",\"shops.index\",\"shops.create\",\"shops.destroy\",\"shops.edit\",\"orders.index\",\"orders.edit\"]', '2021-07-27 00:03:22', '2021-08-26 12:14:20', NULL),
 (2, 'manager', '[\"Manager\"]', '2021-07-27 00:03:22', '2021-08-26 06:12:50', NULL),
 (3, 'vondeur', '[\"category.index\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Vondeur\"]', '2021-07-27 00:03:22', '2021-08-26 06:12:59', NULL),
 (4, 'livreur', '[\"Livreur\"]', '2021-07-27 00:03:22', '2021-08-26 06:13:06', NULL),
@@ -221,6 +229,3 @@ INSERT INTO `translations` (`id`, `lang`, `lang_key`, `lang_value`, `created_at`
 (14, 'ar', 'Most requested', 'Most requested', '2021-09-06 14:12:13', '2021-09-06 14:12:13', NULL),
 (15, 'en', 'More Categoreis', 'More Categoreis', '2021-09-06 14:12:18', '2021-09-06 14:12:18', NULL),
 (16, 'en', 'Most requested', 'Most requested', '2021-09-06 14:12:18', '2021-09-06 14:12:18', NULL);
-
-INSERT INTO `businesssettings`(`id`, `name`, `value`) VALUES ('7','min_Delivery_price_costumer','20'),
-('8','Delivery_price_delivery_man_less_than_10_KM','20'),('9','Delivery_price_delivery_man_more_than_10_KM','20'),('10','min_Delivery_price_delivery_man','20')

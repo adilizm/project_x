@@ -52,6 +52,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">date</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">user_info</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">address</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">price</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Order status</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">delivery status</th>
@@ -64,10 +65,13 @@
                     <td>{{$order->id}}</td>
                     <td>{{$order->created_at}}</td>
                     <td><strong>name:</strong> {{$order->User()->first()->name}} <br> <strong>phone: </strong> {{$order->User()->first()->phone}} </td>
+                    <td><strong>adress on Map :</strong><a class="mx-1" target="_blank" href="{{'https://www.google.com/maps/?q='.$order->lat . ','.$order->lng}}" title="show on map" ><i class="fas fa-map-marked-alt"></i></a> <br> <strong>ville: </strong> {{$order->City()->first()->name}} </td>
                     <td><strong>Total:</strong> {{$order->price_total}} <br> <strong>Shipping: </strong>{{$order->price_shipping}} </td>
                     <td>{{$order->status}} </td>
                     <td>{{$order->delivery_status}} </td>
-                    <td>edition links</td>
+                    <td>
+                    <a class="mx-1" href="{{ route('admin.orders.admin_edit_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-map-marked-alt"></i></a>
+                    </td>
                   </tr>
                   @endforeach
 
