@@ -39,6 +39,7 @@ $products_in_cart=[];
 if(session()->get('cart') != null){
             foreach(session()->get('cart') as $product_selected){
                 $product=\App\Models\Product::find($product_selected['product_id']);
+                $prod=[];
                 if($product->variants != '[]'){
                     $options=[];
                     $selected_variant=[];
@@ -53,14 +54,15 @@ if(session()->get('cart') != null){
                         /* get the min qty */
                    }
                    $available_qty=$product_selected['variant_info']['qty'];
+                   $prod['options']=$options;
                 }else{
-
+                  $prod['options']=null;
                 }
                 $quantity=$product_selected['quantity'];
                 if($quantity > $available_qty){
                     $quantity=$available_qty;
                 }
-                $prod=[];
+               
                 $prod['selected_variants']=$selected_variant;
                 $prod['options']=$options;
                 $prod['available_qty']=$available_qty;
@@ -68,6 +70,7 @@ if(session()->get('cart') != null){
                 $prod['product']=$product;
                 array_push($products_in_cart,$prod);
                  
+             
                 
             }
        }
@@ -262,10 +265,17 @@ if(session()->get('cart') != null){
       <div id="cart_body" class="modal-body">
       @foreach($products_in_cart as $product)
        <!-- dont remove class div-remover -->
-       <div class="d-flex div-remover " id="{{'cart_item'.$loop->index}}">
-          <img width="80" src="{{ '/storage/'.$product['product']->Images()->where('is_main','1')->first()->path}}" alt="">
-          {{$product['product']->name}}
-          -- Qty = {{$product['quantity']}} 
+       <div class="d-flex div-remover @if(!$loop->last) border-bottom @endif my-1 " id="{{'cart_item'.$loop->index}}">
+          <img width="80" style="align-self: center; height: min-content;" src="{{ '/storage/'.$product['product']->Images()->where('is_main','1')->first()->path}}" alt="">
+          {{$product['product']->name}} <br>
+          -- Qty -> {{$product['quantity']}} <br>
+          @if($product['options'] != null)
+            @foreach($product['options'] as $option)
+              @if($option !='qty' && $option != 'prix' && $option !='image' ) 
+              -- {{$option}} -> {{$product['selected_variants'][$option]}} <br>
+              @endif
+            @endforeach
+          @endif
           <!-- dont remove class dropper -->
           <a href="javascript:void(0);" onclick="remove_product_from_cart({{$loop->index}})" class="dropper badge cursor-pointer badge-danger m-2">x</a>
        </div>

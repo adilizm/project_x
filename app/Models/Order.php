@@ -17,6 +17,8 @@ class Order extends Model
     public  $RETURNED = 'returned';
     public  $SUCCESSED = 'successed';
 
+    protected $guarded=['id'];
+
     public function Order_Details()
     {
         return $this->hasMany(Orderdetail::class);

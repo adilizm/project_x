@@ -15,7 +15,8 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        
+       // $request->session()->forget('cart');
+       // dd($request);
         $sliders = Slider::all();
 
         /* Top 10 requested products */
@@ -139,6 +140,7 @@ class HomeController extends Controller
     public function panier(Request $request)
     {
         $products_in_cart = [];
+        $price_selected_variant=0;
         if ($request->session()->get('cart') != null) {
             foreach (session()->get('cart') as $product_selected) {
                 $product = \App\Models\Product::find($product_selected['product_id']);
@@ -153,8 +155,12 @@ class HomeController extends Controller
                         if ($option != 'qty' && $option != 'image' && $option != 'prix') {
                             $selected_variant[$option] = $product_selected['variant_info'][$option];
                         }
-                        /* get the min qty */
+                        if($option == 'prix'){
+                            $price_selected_variant= $product_selected['variant_info']['prix'];
+                        }
+
                     }
+                    //dd($product_selected,$price_selected_variant); 
                     $available_qty = $product_selected['variant_info']['qty'];
                 } else {
 
@@ -169,10 +175,32 @@ class HomeController extends Controller
                 $prod['available_qty'] = $available_qty;
                 $prod['quantity'] = $quantity;
                 $prod['product'] = $product;
+                $prod['price_selected_variant'] = $price_selected_variant;
                 array_push($products_in_cart, $prod);
             }
-        }
-        return view('frontend.cart.cart',compact('products_in_cart'));
+            $shops_ids=[];
+            $shops_latlng=[];
+            $cart=$request->session()->get('cart');
+            if($cart != null){
+            foreach($cart as $product){
+                //fixe relation between shop and product 
+                $shop=Product::find($product['product_id'])->Shop()->first();
+                $shop_latlng=[$shop->map_latitude,$shop->map_longitude];
+                array_push($shops_ids,$shop->id);
+                array_push($shops_latlng,$shop_latlng);
+                
+            }}
+            $shops_ids=array_unique($shops_ids);
+            $nbr_shops = count($shops_ids);
+            
+            $shipping_fee_first_10_km=Businesssetting::where("name","Delivery_price_costumer_less_than_10_KM")->first()->value;
+            $shipping_fee_more_than_10_km=Businesssetting::where("name","Delivery_price_costumer_more_than_10KM")->first()->value;
+            $min_shipping_fee=Businesssetting::where("name","min_Delivery_price_costumer")->first()->value;
+       
+            return view('frontend.cart.cart',compact('products_in_cart','nbr_shops','shipping_fee_first_10_km','shipping_fee_more_than_10_km','min_shipping_fee','shops_latlng'));
+        }else{
+           return 'cart empty';
+        }   
     }
     public function Login_required(){
         return view('frontend.Login_required');

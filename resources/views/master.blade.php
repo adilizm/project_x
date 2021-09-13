@@ -11,7 +11,7 @@ $language = \App\Models\Language::where('key',app()->getLocale())->first();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <meta http-equiv="Content-Type" content="application/json" />
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <!-- jQuery -->
     <script src="{{asset('bootstrap_ecom/js/jquery-2.0.0.min.js')}}" type="text/javascript"></script>
 

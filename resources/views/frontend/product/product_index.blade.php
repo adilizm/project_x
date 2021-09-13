@@ -105,6 +105,8 @@
                     }
                     console.log('variant selected is out of stock')
                     variant_selected=null;
+                    document.getElementById('prix').innerHTML=('Out of stock');
+
                 }else{
                     variant_selected=variant
                     console.log('selected_variant = ',variant_selected)

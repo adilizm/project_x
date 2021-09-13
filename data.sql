@@ -222,3 +222,5 @@ INSERT INTO `translations` (`id`, `lang`, `lang_key`, `lang_value`, `created_at`
 (15, 'en', 'More Categoreis', 'More Categoreis', '2021-09-06 14:12:18', '2021-09-06 14:12:18', NULL),
 (16, 'en', 'Most requested', 'Most requested', '2021-09-06 14:12:18', '2021-09-06 14:12:18', NULL);
 
+INSERT INTO `businesssettings`(`id`, `name`, `value`) VALUES ('7','min_Delivery_price_costumer','20'),
+('8','Delivery_price_delivery_man_less_than_10_KM','20'),('9','Delivery_price_delivery_man_more_than_10_KM','20'),('10','min_Delivery_price_delivery_man','20')

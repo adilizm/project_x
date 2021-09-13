@@ -14,9 +14,9 @@
     <div class=" border-bottom border-top">
         <form action="{{ route('shipping.update_delivry_fee',app()->getLocale())}}" class=" row" method="POST">
             @csrf
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-12 col-md-6 col-lg-4">
                 <div class="row p-2">
-                    <div class="col-lg-6">
+                    <div class="col-12 col-lg-4">
                         <label class="col-from-label">Delivery price per kilometer (First 10 Km) (paid by the customer)</label>
                     </div>
                     <div class="col-lg-6">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-12 col-md-6 col-lg-4">
                 <div class="row p-2">
                     <div class="col-lg-6">
                         <label class="col-from-label">Delivery price per kilometer (>10km) </label>
@@ -35,7 +35,7 @@
                     
                 </div>
             </div>
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-12 col-md-6 col-lg-4">
                 <div class="row p-2">
                     <div class="col-lg-6">
                         <label class="col-from-label">min Delivery price</label>
@@ -46,7 +46,7 @@
                     
                 </div>
             </div>
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-12 col-md-6 col-lg-4">
                 <div class="row p-2">
                     <div class="col-lg-6">
                         <label class="col-from-label">Delivery price per kilometer (less than 10 km) (delivery man fee)</label>
@@ -57,7 +57,7 @@
                     
                 </div>
             </div>
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-12 col-md-6 col-lg-4">
                 <div class="row p-2">
                     <div class="col-lg-6">
                         <label class="col-from-label">Delivery price per kilometer (more than 10km) (delivery man fee)</label>
@@ -68,7 +68,7 @@
                     
                 </div>
             </div>
-            <div class="form-group col-12 col-md-6">
+            <div class="form-group col-12 col-md-6 col-lg-4">
                 <div class="row p-2">
                     <div class="col-lg-6">
                         <label class="col-from-label">min Delivery price</label>

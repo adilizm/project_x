@@ -64,7 +64,7 @@ Route::group(['prefix' => '{language}'], function () {
     Route::post('create/order', [OrderController::class, 'Create_order'])->name('create_order');
     Route::get('select/position', [OrderController::class, 'Select_position'])->name('select_position');
 
-    Route::post('Shipping_calculate', [OrderController::class, 'Calculate_shipping'])->name('Calculate_shipping');
+    Route::post('Store_shipping_price_and_latlng', [OrderController::class, 'Store_shipping_price_and_latlng'])->name('Store_shipping_price_and_latlng');
 
     Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
 
@@ -117,6 +117,7 @@ Route::group(['prefix' => '{language}'], function () {
 
         /* Orders routes */
         Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
+        Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
 
         
 

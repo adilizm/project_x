@@ -52,14 +52,30 @@ class WebsiteController extends Controller
     }
     public function Shipping_configuration_update(Request $request){
         $request->validate([
-            'Delivery_price_delivery_man_each_KM'=>'required',
-            'Delivery_price_costumer_each_KM'=>'required'
+            'Delivery_price_costumer_less_than_10_KM'=>'required',
+            'Delivery_price_costumer_more_than_10KM'=>'required',
+            'min_Delivery_price_costumer'=>'required',
+            'Delivery_price_delivery_man_less_than_10_KM'=>'required',
+            'Delivery_price_delivery_man_more_than_10_KM'=>'required',
+            'min_Delivery_price_delivery_man'=>'required',
         ]);
-        Businesssetting::where('name','Delivery_price_costumer_each_KM')->first()->update([
-            'value'=>$request->Delivery_price_costumer_each_KM
+        Businesssetting::where('name','Delivery_price_costumer_less_than_10_KM')->first()->update([
+            'value'=>$request->Delivery_price_costumer_less_than_10_KM
         ]);
-        Businesssetting::where('name','Delivery_price_delivery_man_each_KM')->first()->update([
-            'value'=>$request->Delivery_price_delivery_man_each_KM
+        Businesssetting::where('name','Delivery_price_costumer_more_than_10KM')->first()->update([
+            'value'=>$request->Delivery_price_costumer_more_than_10KM
+        ]);
+        Businesssetting::where('name','min_Delivery_price_costumer')->first()->update([
+            'value'=>$request->min_Delivery_price_costumer
+        ]);
+        Businesssetting::where('name','Delivery_price_delivery_man_less_than_10_KM')->first()->update([
+            'value'=>$request->Delivery_price_delivery_man_less_than_10_KM
+        ]);
+        Businesssetting::where('name','Delivery_price_delivery_man_more_than_10_KM')->first()->update([
+            'value'=>$request->Delivery_price_delivery_man_more_than_10_KM
+        ]);
+        Businesssetting::where('name','min_Delivery_price_delivery_man')->first()->update([
+            'value'=>$request->min_Delivery_price_delivery_man
         ]);
         return back()->with('success','les valeus de shipping updated');
     }
