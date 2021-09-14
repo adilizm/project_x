@@ -16,6 +16,7 @@ class CreateManagersTable extends Migration
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('city_id')->constrained();
             $table->softDeletes();
 
             $table->timestamps();

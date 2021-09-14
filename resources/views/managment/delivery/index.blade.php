@@ -76,7 +76,11 @@
                                         </td>
                                         <td class="dtr-control" tabindex="0">0</td>
                                         <td class="dtr-control" tabindex="0">0</td>
-                                        <td>options</td>
+                                        <td>
+                                            
+                                        <a href="{{ route('delivery.edit',['language'=>app()->getLocale(),'id'=>encrypt($delivery->id)])}}"  class="mx-1" ><i class="fas fa-user-edit"></i></a>
+
+                                        </td>
 
                                     </tr>
                                     @endforeach

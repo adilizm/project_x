@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->foreignId('role_id')->constrained();
             $table->boolean('is_banned')->default(0);
             $table->rememberToken();

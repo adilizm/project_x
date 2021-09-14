@@ -44,7 +44,10 @@ INSERT INTO `autorisations` (`id`, `name`, `autorisation_key`, `autorisation_des
 (43, '', 'orders.edit', 'editer new villes', 0, 41, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
 (44, 'les Livreur', '', 'managment delivery', 1, 0, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
 (45, '', 'delivery.index', 'voir les delivery', 0, 44, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
-(46, '', 'delivery.edit', 'editer livreurs', 0, 44, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL);
+(46, '', 'delivery.edit', 'editer livreurs', 0, 44, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(47, 'les Manager', '', 'managment Managers', 1, 0, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(48, '', 'managers.index', 'voir les managers', 0, 47, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(49, '', 'managers.create', 'create managers', 0, 47, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL);
 
 INSERT INTO `businesssettings` (`id`, `name`, `value`, `is_active`, `from`, `to`, `link`, `created_at`, `updated_at`) VALUES
 (1, 'top_10_requested_products', '[]', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2021-09-04 14:52:28'),
@@ -102,7 +105,7 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `creat
 
 
 INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'admin', '[\"role.index\",\"role.create\",\"role.edit\",\"role.destroy\",\"users.index\",\"users.edit\",\"users.create\",\"users.destroy\",\"category.index\",\"category.create\",\"category.edit\",\"category.destroy\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Admin\",\"shops.index\",\"shops.create\",\"shops.destroy\",\"shops.edit\",\"orders.index\",\"orders.edit\"]', '2021-07-27 00:03:22', '2021-08-26 12:14:20', NULL),
+(1, 'admin', '["role.index","role.create","role.edit","role.destroy","users.index","users.edit","users.create","users.destroy","category.index","category.create","category.edit","category.destroy","products.index","products.create","products.edit","products.destroy","Admin","shops.index","shops.create","shops.destroy","shops.edit","cities.index","cities.create","cities.destroy","cities.edit","orders.index","orders.edit","delivery.index","delivery.edit","managers.index","managers.create"]', '2021-07-27 00:03:22', '2021-08-26 12:14:20', NULL),
 (2, 'manager', '[\"Manager\"]', '2021-07-27 00:03:22', '2021-08-26 06:12:50', NULL),
 (3, 'vondeur', '[\"category.index\",\"products.index\",\"products.create\",\"products.edit\",\"products.destroy\",\"Vondeur\"]', '2021-07-27 00:03:22', '2021-08-26 06:12:59', NULL),
 (4, 'livreur', '[\"Livreur\"]', '2021-07-27 00:03:22', '2021-08-26 06:13:06', NULL),
@@ -113,7 +116,7 @@ INSERT INTO `roles` (`id`, `name`, `permissions`, `created_at`, `updated_at`, `d
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `phone`, `role_id`, `is_banned`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'admin', 'admin@yahoo.com', NULL, '$2y$10$rIqF1C0Z8fPvogZjkVYvD.ygJiFzIF62ndrvOv5A2t9lnmivVqHzK', '0606060606', 1, 0, 'IKc0NGM6zTRESY0PGFD2r1NdCrrZrQzAfkyGU8U6dEnLS0aVVt9ZV9khoOR5', '2021-08-15 07:16:31', '2021-08-25 07:03:45', NULL),
 (2, 'user test', 'test@test.ma', NULL, '$2y$10$nvbkKYGbHMXpMh540vCkU.Tdj8hVJlMmguYVHxXbFlGk1oRrdq3di', '0303030303', 3, 0, 'DRdwsv3N6zgnmG24aSu8NevNu4abswlhqKC2V4GbZgX61Cwc4kYN24S9W3Qw', '2021-08-16 22:16:08', '2021-08-18 15:10:55', NULL),
-(3, 'newvondeur asd', 'adilizmWya@asd.com', NULL, '$2y$10$3hasOCPswZdLEYicdoyePu7Yw/iN1URfh5ckYhkCRQq/azoyTmgi.', '0303030303', 3, 0, NULL, '2021-08-25 07:04:58', '2021-08-26 05:41:06', NULL),
+(3, 'newvondeur asd', 'adilizmWya@asd.com', NULL, '$2y$10$3hasOCPswZdLEYicdoyePu7Yw/iN1URfh5ckYhkCRQq/azoyTmgi.', '0503030303', 3, 0, NULL, '2021-08-25 07:04:58', '2021-08-26 05:41:06', NULL),
 (4, 'asada aasdas', 'tests@sada.asd', NULL, '$2y$10$BKifymwfrBvXftdJNlthcOJjhj0/VEdOQeVJqx0b/nPsBnPhEtXWS', '000000000000', 3, 1, 'jmUWj6s28rCA6CmC25MO2BFzENjeUrs160b1J8Wy0CVhjNlJyn3gWDDRXKe3', '2021-08-25 07:09:05', '2021-08-26 05:50:16', NULL),
 (5, 'aasdasa asdasd', 'asda@asda.asd', NULL, '$2y$10$pvpj5bfj.EMmFzt0yvIWjOQaSkAGchZs7WbD/sz.F9dEl6aITw5cS', '0101010101', 3, 0, 'sIVZl4Cc5kxUjBUpmCV2g0hMpBHXgLnXAJceOWoBm9P8gDVsrbWl2maN6Lso', '2021-08-25 07:10:38', '2021-08-25 07:10:38', NULL),
 (6, 'Hassan Ousaid', 'hassan@maroc.ma', NULL, '$2y$10$UmBY8GIuEU48.lO8e7Z16ethzPiNkkpm8MSnZkTsNoN898FgQW2E.', '0909090909', 3, 0, 'xfDQMlqrrBXxyvysOp8B5UayYdOc0oktyEb53e3xWj6BzCYsKxUqWdpEyJbO', '2021-08-25 07:26:08', '2021-08-25 07:26:08', NULL),

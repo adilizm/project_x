@@ -14,6 +14,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ManagersController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Middleware\Authenticate;
@@ -138,6 +139,15 @@ Route::group(['prefix' => '{language}'], function () {
         /* delivery managment */
         Route::post('delivery/update/activity', [DeliveryController::class, 'update_delivery_activity'])->name('delivery.update_delivery_activity');
         Route::post('delivery/update/activation', [DeliveryController::class, 'update_delivery_activation'])->name('delivery.update_delivery_activation');
+        Route::get('delivery/edit/{id}', [DeliveryController::class, 'edit_delivery'])->name('delivery.edit');
+        Route::post('delivery/update_info/', [DeliveryController::class, 'Delivery_update_info'])->name('delivery.update_info');
+
+        /* managers managment */
+
+        Route::get('managers/create', [ManagersController::class, 'create'])->name('managers.create');
+        Route::get('managers', [ManagersController::class, 'index'])->name('managers.index');
+        Route::post('managers/store', [ManagersController::class, 'store'])->name('managers.store');
+        Route::post('managers/change_bann_status', [ManagersController::class, 'change_bann_status'])->name('manager.change_bann_status');
 
 
         Route::prefix('vendeur')->group(function () {
@@ -192,6 +202,7 @@ Route::group(['prefix' => '{language}'], function () {
             /* Translation routes */
             Route::post('translation/update', [TranslationController::class, 'update'])->name('Translation.update');
 
+          
             /* shipping configuration */
             Route::get('configuration/shipping', [WebsiteController::class, 'Shipping_configuration'])->name('shipping.configuration.index');
             Route::post('configuration/shipping/update', [WebsiteController::class, 'Shipping_configuration_update'])->name('shipping.update_delivry_fee');
