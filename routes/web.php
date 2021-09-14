@@ -52,6 +52,7 @@ Route::group(['prefix' => '{language}'], function () {
     Route::get('/', [HomeController::class, 'index'])->middleware([city_checker::class])->name('home');
     Route::get('/register_vondeur', [VondeurController::class, 'create_vondeur'])->middleware('guest')->name('login.vondeur');
     Route::get('/register_delivery', [DeliveryController::class, 'create_delivery'])->middleware('guest')->name('login.delivery');
+    Route::post('/delivery/signup', [DeliveryController::class, 'delivery_signup'])->middleware('guest')->name('delivery.signup');
     Route::get('/Banned_user', [UsersController::class, 'banned_user'])->name('banned.user');
     Route::post('/save_vondeur', [VondeurController::class, 'Register_vondeur'])->name('create_vondeur');
 
@@ -131,7 +132,12 @@ Route::group(['prefix' => '{language}'], function () {
         Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
         Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
 
-
+        /* vondeur managment */
+        Route::get('vondeurs/index', [DeliveryController::class, 'Orders_index'])->name('delivery.index');
+        
+        /* delivery managment */
+        Route::post('delivery/update/activity', [DeliveryController::class, 'update_delivery_activity'])->name('delivery.update_delivery_activity');
+        Route::post('delivery/update/activation', [DeliveryController::class, 'update_delivery_activation'])->name('delivery.update_delivery_activation');
 
 
         Route::prefix('vendeur')->group(function () {

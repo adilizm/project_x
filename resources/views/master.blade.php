@@ -11,6 +11,9 @@ $language = \App\Models\Language::where('key',app()->getLocale())->first();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <meta http-equiv="Content-Type" content="application/json" />
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="/images/apple-icon-180.png">
     <link rel="manifest" href="/manifest.json">
     <!-- jQuery -->
     <script src="{{asset('bootstrap_ecom/js/jquery-2.0.0.min.js')}}" type="text/javascript"></script>
@@ -57,6 +60,39 @@ $language = \App\Models\Language::where('key',app()->getLocale())->first();
                 });
             });
         }
+         const pwaTrackingListeners = () => {
+  const fireAddToHomeScreenImpression = event => {
+    fireTracking("Add to homescreen shown");
+    //will not work for chrome, untill fixed
+    event.userChoice.then(choiceResult => {
+      fireTracking(`User clicked ${choiceResult}`);
+    });
+    //This is to prevent `beforeinstallprompt` event that triggers again on `Add` or `Cancel` click
+    window.removeEventListener(
+      "beforeinstallprompt",
+      fireAddToHomeScreenImpression
+    );
+  };
+  window.addEventListener("beforeinstallprompt", fireAddToHomeScreenImpression);
+  
+  //Track web app install by user
+  window.addEventListener("appinstalled", event => {
+    fireTracking("PWA app installed by user!!! Hurray");
+  });
+
+  //Track from where your web app has been opened/browsed
+  window.addEventListener("load", () => {
+    let trackText;
+    if (navigator && navigator.standalone) {
+      trackText = "Launched: Installed (iOS)";
+    } else if (matchMedia("(display-mode: standalone)").matches) {
+      trackText = "Launched: Installed";
+    } else {
+      trackText = "Launched: Browser Tab";
+    }
+    fireTracking(track);
+  });
+};
     </script>
 </body>
 

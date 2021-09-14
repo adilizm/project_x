@@ -316,6 +316,14 @@
             </a>
         </li>
         @endif
+        @if( in_array( "delivery.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('delivery.index',app()->getLocale())}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Les livreurs</p>
+            </a>
+        </li>
+        @endif
 
         </ul>
       </nav>

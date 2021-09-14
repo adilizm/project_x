@@ -41,7 +41,10 @@ INSERT INTO `autorisations` (`id`, `name`, `autorisation_key`, `autorisation_des
 (40, '', 'cities.edit', 'modifier info des villes', 0, 36, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
 (41, 'les ordres', '', 'managment des ordres', 1, 0, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
 (42, '', 'orders.index', 'voir les villes', 0, 41, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
-(43, '', 'orders.edit', 'editer new villes', 0, 41, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL);
+(43, '', 'orders.edit', 'editer new villes', 0, 41, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(44, 'les Livreur', '', 'managment delivery', 1, 0, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(45, '', 'delivery.index', 'voir les delivery', 0, 44, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL),
+(46, '', 'delivery.edit', 'editer livreurs', 0, 44, '2021-08-24 12:19:14', '2021-08-24 12:19:14', NULL);
 
 INSERT INTO `businesssettings` (`id`, `name`, `value`, `is_active`, `from`, `to`, `link`, `created_at`, `updated_at`) VALUES
 (1, 'top_10_requested_products', '[]', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '0000-00-00 00:00:00', '2021-09-04 14:52:28'),
