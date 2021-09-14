@@ -129,5 +129,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('cities.destroy', function () {
             return in_array("cities.destroy", json_decode(Auth::user()->Role->permissions));
         });
+
+        /* orders Roles  */
+        Gate::define('orders.index', function () {
+            return in_array("cities.index", json_decode(Auth::user()->Role->permissions));
+        });
+        Gate::define('orders.edit', function () {
+            return in_array("cities.edit", json_decode(Auth::user()->Role->permissions));
+        });
     }
 }

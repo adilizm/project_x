@@ -35,6 +35,45 @@ $disktop_top_annonce = \App\Models\Businesssetting::where('name','disktop_top_an
 $tablet_top_annonce = \App\Models\Businesssetting::where('name','tablet_top_annonce')->first();
 $phone_top_annonce = \App\Models\Businesssetting::where('name','phone_top_annonce')->first();
 $languages= \App\Models\Language::all();
+$products_in_cart=[];
+if(session()->get('cart') != null){
+            foreach(session()->get('cart') as $product_selected){
+                $product=\App\Models\Product::find($product_selected['product_id']);
+                $prod=[];
+                if($product->variants != '[]'){
+                    $options=[];
+                    $selected_variant=[];
+                    $options= array_keys(get_object_vars( json_decode($product->variants)[0])); 
+                    /* dd($options); */ 
+                    //dd($product_selected); 
+
+                    foreach( $options as $option ){
+                        if($option != 'qty' && $option != 'image' && $option != 'prix'){
+                            $selected_variant[$option]=$product_selected['variant_info'][$option];
+                        }
+                        /* get the min qty */
+                   }
+                   $available_qty=$product_selected['variant_info']['qty'];
+                   $prod['options']=$options;
+                }else{
+                  $prod['options']=null;
+                }
+                $quantity=$product_selected['quantity'];
+                if($quantity > $available_qty){
+                    $quantity=$available_qty;
+                }
+               
+                $prod['selected_variants']=$selected_variant;
+                $prod['options']=$options;
+                $prod['available_qty']=$available_qty;
+                $prod['quantity']=$quantity;
+                $prod['product']=$product;
+                array_push($products_in_cart,$prod);
+                 
+             
+                
+            }
+       }
 @endphp
 
 
@@ -67,12 +106,12 @@ $languages= \App\Models\Language::all();
             <circle cx="80" cy="368" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
           </svg>
         </span>
-        <a class="navbar-brand" href="#"><img src="/bootstrap_ecom/images/logo.png" class="logo"></a>
+        <a class="navbar-brand" href="/"><img src="/bootstrap_ecom/images/logo.png" class="logo"></a>
       </div>
       <div class="d-flex p-1" style="align-items: center;">
-        @auth
-        <div class="position-relative d-md-none" style="margin-right: 13px; align-self: center;">
-          <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>
+        <div class="position-relative d-md-none cursor-pointer" style="margin-right: 13px; align-self: center;"  data-toggle="modal" data-target="#exampleModal"> 
+          <!-- pls make shure to leave card_product_number -->
+          <span class="badge badge-primary card_product_number"  style="top: -4px;position: absolute;right: -4px;font-size: x-small;">@if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif</span>
           <svg xmlns="http://www.w3.org/2000/svg" style="height: 27px;" class="ionicon" viewBox="0 0 512 512">
             <title>Cart</title>
             <circle cx="176" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -81,15 +120,26 @@ $languages= \App\Models\Language::all();
             <path d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
           </svg>
         </div>
-        @endauth
-        <div class="dropdown px-2">
-          <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <a href=""></a>
+        @Auth
+        <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href="{{ route('myprofil',app()->getLocale())}}">
             <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
               <title>Mon profil</title>
               <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
               <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
             </svg>
+            </a>
+          </span>
+        @else
+        <div class="dropdown px-2">
+          <span class="d-md-none" id="drop_down_login_register" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a href=""> </a>
+            <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
+              <title>Mon profil</title>
+              <path d="M344 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
+              <path d="M256 304c-87 0-175.3 48-191.64 138.6C62.39 453.52 68.57 464 80 464h352c11.44 0 17.62-10.48 15.65-21.4C431.3 352 343 304 256 304z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" />
+            </svg>
+           
           </span>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="drop_down_login_register">
             <a href="{{ route('login',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Connectez-vous</a>
@@ -97,6 +147,7 @@ $languages= \App\Models\Language::all();
             <a href="{{ route('register',app()->getLocale()) }}" class="dropdown-item text-sm text-gray-700 underline">Créer un compte</a>
           </div>
         </div>
+        @endAuth
         <ul class="d-md-none navbar-nav align-items-center">
           <li class="nav-item dropdown ">
             @foreach($languages as $language)
@@ -106,7 +157,7 @@ $languages= \App\Models\Language::all();
             @endforeach
             <ul class="dropdown-menu dropdown-menu-right">
               @foreach($languages as $language)
-              <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',['language'=>app()->getLocale(),'key'=>$language->key]) }}"> {{ $language->name }} <img src="{{ 'storage/'.$language->image_path }}" alt=""> </a></li>
+              <li class="d-flex"><a class="dropdown-item " href="{{ route('change_languageyy',['language'=>app()->getLocale(),'key'=>$language->key]) }}"> {{ $language->name }} <img src="{{ '/storage/'.$language->image_path }}" alt=""> </a></li>
               @endforeach
             </ul>
           </li>
@@ -129,9 +180,10 @@ $languages= \App\Models\Language::all();
 
         </form>
         <div class="d-none d-md-flex ">
-          @auth
-          <div class="position-relative" style="align-self: center;">
-            <span class="badge badge-primary" style="top: -4px;position: absolute;right: -4px;font-size: x-small;">15</span>
+         
+          <div class="position-relative cursor-pointer" style="align-self: center;" data-toggle="modal" data-target="#exampleModal">
+          <!-- pls make shure to leave card_product_number -->
+            <span class="badge badge-primary card_product_number" style="top: -4px;position: absolute;right: -4px;font-size: x-small;" > @if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif  </span>
             <svg xmlns="http://www.w3.org/2000/svg" style="height: 25px;" class="ionicon" viewBox="0 0 512 512">
               <title>Cart</title>
               <circle cx="176" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
@@ -140,7 +192,6 @@ $languages= \App\Models\Language::all();
               <path d="M160 288h249.44a8 8 0 007.85-6.43l28.8-144a8 8 0 00-7.85-9.57H128" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
             </svg>
           </div>
-          @endauth
           <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown">
               @foreach($languages as $language)
@@ -159,8 +210,8 @@ $languages= \App\Models\Language::all();
               <li class="nav-item dropdown">
                 <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown"> {{ Auth::user()->name}} </a>
                 <ul class="dropdown-menu dropdown-menu-right align-items-center">
-                  <li><a class="dropdown-item" href="#"> Mon profil </a></li>
-                  <li><a class="dropdown-item" href="#"> Ma carte </a></li>
+                  <li><a class="dropdown-item" href="{{ route('myprofil',app()->getLocale())}}"> Mon profil </a></li>
+                  <li><a class="dropdown-item" href="{{ route('panier',app()->getLocale())}}"> Ma carte </a></li>
                   @if(Auth::user()->role_id == 1)
                   <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a></li>
                   @elseif(Auth::user()->role_id == 2)
@@ -201,6 +252,42 @@ $languages= \App\Models\Language::all();
   </div>
   </nav>
 </header>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="cart_body" class="modal-body">
+      @foreach($products_in_cart as $product)
+       <!-- dont remove class div-remover -->
+       <div class="d-flex div-remover @if(!$loop->last) border-bottom @endif my-1 " id="{{'cart_item'.$loop->index}}">
+          <img width="80" style="align-self: center; height: min-content;" src="{{ '/storage/'.$product['product']->Images()->where('is_main','1')->first()->path}}" alt="">
+          {{$product['product']->name}} <br>
+          -- Qty -> {{$product['quantity']}} <br>
+          @if($product['options'] != null)
+            @foreach($product['options'] as $option)
+              @if($option !='qty' && $option != 'prix' && $option !='image' ) 
+              -- {{$option}} -> {{$product['selected_variants'][$option]}} <br>
+              @endif
+            @endforeach
+          @endif
+          <!-- dont remove class dropper -->
+          <a href="javascript:void(0);" onclick="remove_product_from_cart({{$loop->index}})" class="dropper badge cursor-pointer badge-danger m-2">x</a>
+       </div>
+      @endforeach 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 @yield('frant_content')
 @stop
 
@@ -292,7 +379,7 @@ $languages= \App\Models\Language::all();
             <a href="#!" class="text-reset">Settings</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Orders</a>
+          <a href="{{route('login.delivery',app()->getLocale())}}" class="text-reset">Devenir Livreur</a>
           </p>
           <p>
             <a href="#!" class="text-reset">Help</a>
@@ -335,7 +422,8 @@ $languages= \App\Models\Language::all();
 @section('script')
 
 <script>
- 
+  /* get nbr_products */
+  var nbr_products_in_cart= @if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif ;
   function search() {
     axios.post('{{route('search',app()->getlocale())}}', {
         params: {
@@ -362,6 +450,38 @@ $languages= \App\Models\Language::all();
       search();
     }
     
+  }
+  function remove_product_from_cart(position) {
+
+    axios.post('{{route('remove_from_carte',app()->getlocale())}}', {
+                        params: {
+                          position_to_delete:position,
+                        }
+            }).then(function(responce) {
+                console.log(responce);
+                document.getElementById('cart_item'.concat(position.toString())).remove();
+                nbr_products_in_cart--;
+                document.querySelectorAll('.card_product_number').forEach(element => {
+                  element.innerHTML=nbr_products_in_cart;
+                });
+                var i = 0;
+                document.querySelectorAll('.dropper').forEach(element => {
+                  element.setAttribute('onclick','remove_product_from_cart('.concat(i.toString())+')');
+                  i++;
+                });
+                 i = 0;
+                document.querySelectorAll('.div-remover').forEach(element => {
+                  element.setAttribute('id','cart_item'.concat(i.toString()));
+                  i++;
+                });
+
+            }).catch(function(err) {
+
+            console.log(err);
+
+            })
+
+     
   }
 </script>
 @yield('frant_script')

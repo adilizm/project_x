@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CitiesController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\MarketingController;
@@ -13,8 +14,10 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\city_checker;
 use App\Http\Middleware\NotBanned;
 use Illuminate\Support\Facades\App;
 
@@ -30,28 +33,57 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-Route::redirect('/', '/' . App::getLocale());
+Route::middleware([city_checker::class])->group(function () {
+    Route::redirect('/', '/' . App::getLocale());
+});
 Route::group(['prefix' => '{language}'], function () {
+
+
+    Route::get('Select_city', [HomeController::class, 'Select_city'])->name('Select_city');
+    Route::get('store_city/{id}', [HomeController::class, 'store_city'])->name('store_city');
 
     Route::get('change_language/{key}', [LanguageController::class, 'language_changer'])->name('change_languageyy');
 
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+
+    /* Login_required */
+    Route::get('Login_required', [HomeController::class, 'Login_required'])->name('Login_required');
+
+
+    Route::get('/', [HomeController::class, 'index'])->middleware([city_checker::class])->name('home');
     Route::get('/register_vondeur', [VondeurController::class, 'create_vondeur'])->middleware('guest')->name('login.vondeur');
+    Route::get('/register_delivery', [DeliveryController::class, 'create_delivery'])->middleware('guest')->name('login.delivery');
+    Route::post('/delivery/signup', [DeliveryController::class, 'delivery_signup'])->middleware('guest')->name('delivery.signup');
     Route::get('/Banned_user', [UsersController::class, 'banned_user'])->name('banned.user');
     Route::post('/save_vondeur', [VondeurController::class, 'Register_vondeur'])->name('create_vondeur');
 
-    /* public category */
-    Route::get('/categorie/{slug}',[HomeController::class,'Category'])->name('category.page');
+    Route::middleware([city_checker::class])->group(function () {
 
-    /* public products */
-    Route::get('/produit/{slug}',[HomeController::class,'Product'])->name('product.index');
+        /* public category */
+        Route::get('/categorie/{slug}', [HomeController::class, 'Category'])->name('category.page');
+
+        /* public products */
+        Route::get('/produit/{slug}', [HomeController::class, 'Product'])->name('product.index');
+        Route::post('/produit/add_to_cart', [OrderController::class, 'add_to_cart'])->name('add_to_cart');
+        Route::post('/produit/remove_from_carte', [OrderController::class, 'remove_from_carte'])->name('remove_from_carte');
+
+        /* card */
+        Route::get('panier', [HomeController::class, 'panier'])->name('panier');
 
 
-    /* search */
-    Route::post('search', [HomeController::class, 'search'])->name('search');
+        /* search */
+        Route::post('search', [HomeController::class, 'search'])->name('search');
 
+        /* create order */
+        Route::post('create/order', [OrderController::class, 'Create_order'])->name('create_order');
+        Route::get('select/position', [OrderController::class, 'Select_position'])->name('select_position');
 
-    Route::middleware([Authenticate::class, NotBanned::class])->group(function () {
+        Route::post('Store_shipping_price_and_latlng', [OrderController::class, 'Store_shipping_price_and_latlng'])->name('Store_shipping_price_and_latlng');
+    });
+    Route::middleware([Authenticate::class, NotBanned::class, city_checker::class])->group(function () {
+
+        /* profile settings */
+        Route::get('mon-profil', [UsersController::class, 'My_profile'])->name('myprofil');
+
         Route::get('shops/create', [ShopController::class, 'create'])->name('shops.create');
         Route::post('shops/enregistre', [ShopController::class, 'save'])->name('shops.save');
         Route::get('shops/enregistre/complete', [ShopController::class, 'register_complet'])->name('shops.register_complet');
@@ -96,6 +128,16 @@ Route::group(['prefix' => '{language}'], function () {
         Route::get('villes', [CitiesController::class, 'index'])->name('cities.index');
         Route::post('villes/save', [CitiesController::class, 'store'])->name('cities.store');
 
+        /* Orders routes */
+        Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
+        Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
+
+        /* vondeur managment */
+        Route::get('vondeurs/index', [DeliveryController::class, 'Orders_index'])->name('delivery.index');
+        
+        /* delivery managment */
+        Route::post('delivery/update/activity', [DeliveryController::class, 'update_delivery_activity'])->name('delivery.update_delivery_activity');
+        Route::post('delivery/update/activation', [DeliveryController::class, 'update_delivery_activation'])->name('delivery.update_delivery_activation');
 
 
         Route::prefix('vendeur')->group(function () {
@@ -130,6 +172,11 @@ Route::group(['prefix' => '{language}'], function () {
                 Route::post('update', [ShopController::class, 'admin_update_shop'])->name('admin.shops.admin_update_shop');
             });
 
+            /* Orders routes */
+            Route::prefix('orders')->group(function () {
+                Route::get('edit/{id}', [OrderController::class, 'admin_edit_order'])->name('admin.orders.admin_edit_order');
+            });
+
             /* marketing routes */
             Route::get('marketing', [MarketingController::class, 'index'])->name('marketing.index');
             Route::post('marketing/update', [MarketingController::class, 'set_top_annonces'])->name('marketing.update.top_annonces');
@@ -144,6 +191,10 @@ Route::group(['prefix' => '{language}'], function () {
 
             /* Translation routes */
             Route::post('translation/update', [TranslationController::class, 'update'])->name('Translation.update');
+
+            /* shipping configuration */
+            Route::get('configuration/shipping', [WebsiteController::class, 'Shipping_configuration'])->name('shipping.configuration.index');
+            Route::post('configuration/shipping/update', [WebsiteController::class, 'Shipping_configuration_update'])->name('shipping.update_delivry_fee');
         });
     });
 

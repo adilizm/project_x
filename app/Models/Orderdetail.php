@@ -6,20 +6,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+
+class Orderdetail extends Model
 {
     use HasFactory,SoftDeletes;
 
     protected $guarded=['id'];
 
-    public function Shop()
-    {
-        return $this->belongsTo(Shop::class);
+    public function Order(){
+        return $this->belongsTo(Order::class);
     }
-    
-    public function Images()
-    {
-        return $this->hasmany(ProductImage::class);
+
+    public function Product(){
+        return $this->belongsTo(Product::class);
     }
     
 }

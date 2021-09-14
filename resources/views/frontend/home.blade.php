@@ -233,7 +233,7 @@
                 <li class="glide__slide   product-card1 position-relative p-1 m-1" style="overflow: hidden;padding-left: 2px;padding-right: 2px;">
                     <a href="{{route('product.index',['language'=>app()->getLocale(),'slug'=>$product->slug])}}">
                         <div style="width: 100%;padding: 1px;">
-                            <img src="{{'storage/'.$product->Images()->where('is_main','1')->first()->path}}" alt="" style="width: 100%;">
+                            <img src="{{'/storage/'.$product->Images()->where('is_main','1')->first()->path}}" alt="" style="width: 100%;">
                         </div>
                         <div>
                             <div style="overflow: hidden; white-space: nowrap; font-size: .875rem; width: 170px; text-overflow: ellipsis; padding-left: 3px;">{{ $product->name }}</div>
@@ -257,42 +257,6 @@
 @stop
 @section('frant_script')
 
-<script>
-    document.getElementById('super_marche').addEventListener('mouseover', function() {
-        document.getElementById('super_marche_categories').classList.remove('invisible')
-        document.getElementById('super_marche_categories').classList.add('visible')
-    })
-    document.getElementById('super_marche_categories').addEventListener('mouseover', function() {
-        document.getElementById('super_marche_categories').classList.remove('invisible')
-        document.getElementById('super_marche_categories').classList.add('visible')
-    })
-    document.getElementById('super_marche').addEventListener('mouseleave', function() {
-        document.getElementById('super_marche_categories').classList.remove('visible')
-        document.getElementById('super_marche_categories').classList.add('invisible')
-    })
-    document.getElementById('super_marche_categories').addEventListener('mouseleave', function() {
-        document.getElementById('super_marche_categories').classList.remove('visible')
-        document.getElementById('super_marche_categories').classList.add('invisible')
-    })
-
-    /* ---------------------- sport et loisire  */
-    document.getElementById('Sport_et_loisire').addEventListener('mouseover', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('invisible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('visible')
-    })
-    document.getElementById('Sport_et_loisire_categories').addEventListener('mouseover', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('invisible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('visible')
-    })
-    document.getElementById('Sport_et_loisire').addEventListener('mouseleave', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('visible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('invisible')
-    })
-    document.getElementById('Sport_et_loisire_categories').addEventListener('mouseleave', function() {
-        document.getElementById('Sport_et_loisire_categories').classList.remove('visible')
-        document.getElementById('Sport_et_loisire_categories').classList.add('invisible')
-    })
-</script>
 <script src="/glide/glide.min.js"></script>
     @php
         $language = \App\Models\Language::where('key',app()->getLocale())->first();
