@@ -14,6 +14,12 @@ class Manager extends Model
 
     public function User()
     {
-        return $this->hasone(User::class);
+        return $this->belongsTo(User::class);
     }
+
+    public function City()
+    {
+        return $this->belongsTo(City::class);
+    }
+
 }

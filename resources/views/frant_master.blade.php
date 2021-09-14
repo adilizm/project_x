@@ -480,8 +480,6 @@ if(session()->get('cart') != null){
             console.log(err);
 
             })
-
-     
   }
 </script>
 @yield('frant_script')

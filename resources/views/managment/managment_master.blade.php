@@ -324,6 +324,14 @@
             </a>
         </li>
         @endif
+        @if( in_array( "managers.index", json_decode(Auth::user()->Role->permissions)))
+        <li class="nav-item">
+            <a href="{{route('managers.index',app()->getLocale())}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Les managers</p>
+            </a>
+        </li>
+        @endif
 
         </ul>
       </nav>
