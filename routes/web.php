@@ -134,7 +134,7 @@ Route::group(['prefix' => '{language}'], function () {
         Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
 
         /* vondeur managment */
-        Route::get('vondeurs/index', [DeliveryController::class, 'Orders_index'])->name('delivery.index');
+        Route::get('delivery/index', [DeliveryController::class, 'Orders_index'])->name('delivery.index');
         
         /* delivery managment */
         Route::post('delivery/update/activity', [DeliveryController::class, 'update_delivery_activity'])->name('delivery.update_delivery_activity');
