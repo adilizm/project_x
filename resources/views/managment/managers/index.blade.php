@@ -27,11 +27,11 @@
                 <thead>
                   <tr role="row">
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">nom du manager</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">téléphone et email</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">Ville</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">activation </th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">suspend status</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >nom du manager</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >téléphone et email</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Ville</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" >activation </th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" >Activities</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -48,7 +48,9 @@
                         <label class="custom-control-label" for="customSwitch3"></label>
                       </div>
                     </td>
-                    <td>{{$manager->City()->first()->name}}</td>
+                    <td>
+                      see Activities
+                    </td>
 
                   </tr>
                   @endforeach
@@ -113,10 +115,11 @@
                         }
             }).then(function(responce) {
                 if(responce.data == '1'){
-                    toastr.success("The manager is banned ");
+                    toastr.success("The manager is banned now and he/she cant join");
                 }else{
-                  toastr.success("The manager is active ");
+                  toastr.success("The manager is active now ");
                 }
+                console.log(responce)
             }).catch(function(err) {
             console.log(err);
             toastr.error("something is wrong pls refresh and try again ");

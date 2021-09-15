@@ -179,6 +179,9 @@ input[type=number] {
             </div>
             <input type="text" id="lat" name="lat" value="">
             <input type="text" id="lng" name="lng" value="">
+            <br>
+            <input type="text" id="latnav" name="" value="">
+            <input type="text" id="lngnav" name="" value="">
         </form>
 
     </div>
@@ -248,20 +251,26 @@ input[type=number] {
 	<script>
 
 </script>
-<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&callback=initMap&v=weekly'}}" async></script>
+<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&v=weekly'}}" async></script>
 
 <script>
     
+                var x =0
+                var y =0
+
         var options = {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
         };
         navigator.geolocation.getCurrentPosition((pos)=>{
-                var user_latd = pos.coords.latitude
-                var user_lngd = pos.coords.longitude
-                console.log('user_latdd = ',user_latd)
-                console.log('user_lngdd = ',user_lngd)
+                x = pos.coords.latitude
+                y = pos.coords.longitude
+                console.log('xx = ',x)
+                console.log('yy = ',y)
+                initMap()
+                document.getElementById('latnav').value=x
+            document.getElementById('lngnav').value=y
             }, error, options);
 
         function success(pos) {
@@ -281,10 +290,9 @@ input[type=number] {
             
            
 
-            user_lat = responce.data.location.lat
-            user_lng = responce.data.location.lng
-            document.getElementById('lat').value=user_lat
-            document.getElementById('lng').value=user_lng
+            user_lat = x
+            user_lng = y
+            
             map = new google.maps.Map(document.getElementById("map"), {
                 center: {
                     lat: user_lat,

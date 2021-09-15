@@ -61,7 +61,18 @@ class ManagersController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        
+        $user=User::find($request->params['id']);
+        if($user->is_banned == 1){
+            $user->update([
+                'is_banned'=>0,
+            ]);
+            return '0';
+        }else{
+            $user->update([
+                'is_banned'=>1,
+            ]);
+            return '1';
+        }
 
     }
 }
