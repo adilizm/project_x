@@ -61,19 +61,35 @@ input[type=number] {
 		</a>
 	</td>
 	<td> 
+    @if($product['product_with_variant'] == 1)
 		<div class="d-flex" id="{{'div_qty_'.$loop->index}}">
             <span class="form-control btn p-2 " style="border-bottom: 1px #ced4da solid;    border-left: 1px #ced4da solid;    border-top: 1px #ced4da solid;    border-radius: 0;" onclick="decreas_qty('{{ $loop->index }}','{{$product['price_selected_variant']}}') "  >-</span>
             <input style="width: 33px; padding: 0; text-align: center;border: 0;   border-bottom: 1px #ced4da solid;    border-radius: 0;    border-top: 1px #ced4da solid;" name="qty[]" class="form-control" value="{{$product['quantity']}}"  min="{{$product['product']->min_quantity}}" max="{{ $product['available_qty'] }}" type="number" id="qty_wanted">
             <span class="form-control btn p-2 " style=" border-top: 1px #ced4da solid;  border-bottom: 1px #ced4da solid;    border-radius: 0;    border-right: 1px #ced4da solid;" onclick="encreas_qty('{{ $loop->index }}','{{$product['price_selected_variant']}}') " >+</span>
         </div>
+        @else
+        <div class="d-flex" id="{{'div_qty_'.$loop->index}}">
+            <span class="form-control btn p-2 " style="border-bottom: 1px #ced4da solid;    border-left: 1px #ced4da solid;    border-top: 1px #ced4da solid;    border-radius: 0;" onclick="decreas_qty('{{ $loop->index }}','{{ $product['product']->prix }}') "  >-</span>
+            <input style="width: 33px; padding: 0; text-align: center;border: 0;   border-bottom: 1px #ced4da solid;    border-radius: 0;    border-top: 1px #ced4da solid;" name="qty[]" class="form-control" value="{{$product['quantity']}}"  min="{{$product['product']->min_quantity}}" max="{{ $product['available_qty'] }}" type="number" id="qty_wanted">
+            <span class="form-control btn p-2 " style=" border-top: 1px #ced4da solid;  border-bottom: 1px #ced4da solid;    border-radius: 0;    border-right: 1px #ced4da solid;" onclick="encreas_qty('{{ $loop->index }}','{{ $product['product']->prix }}') " >+</span>
+        </div>
+        @endif
 		
 	</td>
 	<td> 
+        @if($product['product_with_variant'] == 1)
 		<div class="price-wrap" > 
 			<!-- do not remove total-product class -->
 			<var class="price total-product " id="{{'this_product_total'. $loop->index}}" val="{{$product['price_selected_variant'] * $product['quantity']}}">  {{$product['price_selected_variant'] * $product['quantity']}}</var> 
 			<small class="text-muted">{{$product['price_selected_variant']}} each </small> 
 		</div> <!-- price-wrap .// -->
+        @else
+        <div class="price-wrap" > 
+			<!-- do not remove total-product class -->
+			<var class="price total-product " id="{{'this_product_total'. $loop->index}}" val="{{$product['product']->prix * $product['quantity']}}">  {{$product['product']->prix * $product['quantity']}}</var> 
+			<small class="text-muted">{{$product['product']->prix}} each </small> 
+		</div> <!-- price-wrap .// -->
+        @endif
 	</td>
 	<td class="text-right"> 
 	<a data-original-title="Save to Wishlist" title="" href="#" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a> 

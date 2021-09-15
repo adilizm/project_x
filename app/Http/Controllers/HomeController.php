@@ -19,9 +19,9 @@ class HomeController extends Controller
         $cities = City::all();
         return view('frontend.select_city', compact('cities'));
     }
-    public function store_city($language,$id,Request $request)
-    {   
-        $city=City::find(decrypt($id));
+    public function store_city($language, $id, Request $request)
+    {
+        $city = City::find(decrypt($id));
         $cookie = Cookie::make('user_city', $city->id);
         return redirect()->route('home', app()->getLocale())->cookie($cookie);
     }
@@ -173,20 +173,36 @@ class HomeController extends Controller
                     }
                     //dd($product_selected,$price_selected_variant); 
                     $available_qty = $product_selected['variant_info']['qty'];
+                    $quantity = $product_selected['quantity'];
+                    if ($quantity > $available_qty) {
+                        $quantity = $available_qty;
+                    }
+                    $prod = [];
+                    $prod['selected_variants'] = $selected_variant;
+                    $prod['options'] = $options;
+                    $prod['available_qty'] = $available_qty;
+                    $prod['quantity'] = $quantity;
+                    $prod['product'] = $product;
+                    $prod['price_selected_variant'] = $price_selected_variant;
+                    $prod['product_with_variant'] = 1;
+                    array_push($products_in_cart, $prod);
                 } else {
+                   
+                    $quantity = $product_selected['quantity'];
+                    if ($quantity > $product->qty) {
+                        $quantity = $product->qty;
+                    }
+
+                    $prod = [];
+                    $prod['selected_variants'] = null;
+                    $prod['options'] = null;
+                    $prod['available_qty'] = $product->qty;
+                    $prod['quantity'] = $quantity;
+                    $prod['product'] = $product;
+                    $prod['price_selected_variant'] = $price_selected_variant;
+                    $prod['product_with_variant'] = 0;
+                    array_push($products_in_cart, $prod);
                 }
-                $quantity = $product_selected['quantity'];
-                if ($quantity > $available_qty) {
-                    $quantity = $available_qty;
-                }
-                $prod = [];
-                $prod['selected_variants'] = $selected_variant;
-                $prod['options'] = $options;
-                $prod['available_qty'] = $available_qty;
-                $prod['quantity'] = $quantity;
-                $prod['product'] = $product;
-                $prod['price_selected_variant'] = $price_selected_variant;
-                array_push($products_in_cart, $prod);
             }
             $shops_ids = [];
             $shops_latlng = [];
@@ -202,7 +218,7 @@ class HomeController extends Controller
             }
             $shops_ids = array_unique($shops_ids);
             $nbr_shops = count($shops_ids);
-
+            //dd($products_in_cart);
             $shipping_fee_first_10_km = Businesssetting::where("name", "Delivery_price_costumer_less_than_10_KM")->first()->value;
             $shipping_fee_more_than_10_km = Businesssetting::where("name", "Delivery_price_costumer_more_than_10KM")->first()->value;
             $min_shipping_fee = Businesssetting::where("name", "min_Delivery_price_costumer")->first()->value;

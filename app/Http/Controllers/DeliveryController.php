@@ -28,6 +28,7 @@ class DeliveryController extends Controller
             'description' => 'required|max:400',
             'city' => 'required',
         ]);
+       
         $user = new User();
         $user = $user->create([
             'name' => $request->name,
@@ -48,7 +49,7 @@ class DeliveryController extends Controller
         ]);
         return view('delivery.thanks_delivery_after_register');
     }
-    public function Orders_index()
+    public function deliveries_index()
     {
         $cities = City::all();
         $deliveries = Delivery::orderBy('created_at', 'desc')->paginate(10);

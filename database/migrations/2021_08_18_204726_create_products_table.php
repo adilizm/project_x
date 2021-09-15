@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
             $table->integer('min_quantity')->default(1);
             $table->text('keywords')->nullable()->default(null);
             $table->json("variants")->nullable()->default(null);
+            $table->integer("qty")->nullable()->default(null);
             $table->string('status')->default('new'); // draft - new - published - unpublished  - banned
             $table->boolean('confermed')->default(0); // before change status to public check this confermation of admin 
             $table->timestamps();

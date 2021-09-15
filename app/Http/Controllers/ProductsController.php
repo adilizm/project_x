@@ -134,7 +134,7 @@ class ProductsController extends Controller
         }
         $Counter = 0; //
 
-        //dd($request);
+       
         $variants = [];
         if ($request->options[0] != null) {
             foreach ($values[0] as $value0) {
@@ -322,8 +322,8 @@ class ProductsController extends Controller
                 $Counter++;
             }
         }
-
         $variants_saved = json_encode($variants);
+       // dd($request,$variants_saved);
 
         $min_qty = null;
         if ($request->min_qty != null) {
@@ -348,6 +348,10 @@ class ProductsController extends Controller
         if ($request->old_price != null) {
             $old_price = $request->old_price;
         }
+        $qty=0;
+        if ($request->qty_no_variant != null) {
+            $qty = $request->qty_no_variant;
+        }
 
         $product = $product->create([
             'shop_id' => Auth::user()->Shop->id,
@@ -363,6 +367,7 @@ class ProductsController extends Controller
             'keywords' => $keywords,
             'min_quantity' => 1,
             'variants' => $variants_saved,
+            'qty' => $qty,
         ]);
         $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
         $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
@@ -714,6 +719,10 @@ class ProductsController extends Controller
         if ($request->old_price != null) {
             $old_price = $request->old_price;
         }
+        $qty=0;
+        if ($request->qty_no_variant != null) {
+            $qty = $request->qty_no_variant;
+        }
         $product->update([
             'category_id' => $request->category,
             'name' => $request->name,
@@ -727,6 +736,7 @@ class ProductsController extends Controller
             'keywords' => $keywords,
             'min_quantity' => $min_qty,
             'variants' => $variants_saved,
+            'qty' => $qty,
         ]);
 
         /* save remplace main product image  */
@@ -1091,6 +1101,10 @@ class ProductsController extends Controller
         if ($request->old_price != null) {
             $old_price = $request->old_price;
         }
+        $qty=0;
+        if ($request->qty_no_variant != null) {
+            $qty = $request->qty_no_variant;
+        }
         $product->update([
             'category_id' => $request->category,
             'name' => $request->name,
@@ -1104,6 +1118,7 @@ class ProductsController extends Controller
             'keywords' => $keywords,
             'min_quantity' => $min_qty,
             'variants' => $variants_saved,
+            'qty' => $qty,
         ]);
         /* save remplace main product image  */
         if ($request->main_image != null) {

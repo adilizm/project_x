@@ -52,7 +52,7 @@ class ShopController extends Controller
             'logo'        => 'required|mimes:png,jpg,jpeg|max:2048',
             'banner'      => 'required|mimes:png,jpg,jpeg|max:2048',
             'name'        => 'required|max:20',
-            'Ville'       => 'required',
+            'city_id'     => 'required',
             'address'     => 'required|max:240',
             'description' => 'required|max:400',
             'lat'         => 'required',
@@ -64,12 +64,12 @@ class ShopController extends Controller
         $fileName = time() . '_' . $request->banner->getClientOriginalName();
         $banner_filePath = $request->file('banner')->storeAs('shops', $fileName, 'public');
         
-        $city = City::find($request->Ville);
+        $city = City::find($request->city_id);
         
         $shop = new Shop();
         $shop->create([
             'name' => $request->name,
-            'City_id' => $city->id,
+            'city_id' => $city->id,
             'address' => $request->address,
             'description' => $request->description,
             'map_latitude' => $request->lat,

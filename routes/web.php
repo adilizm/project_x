@@ -133,10 +133,10 @@ Route::group(['prefix' => '{language}'], function () {
         Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
         Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
 
-        /* vondeur managment */
-        Route::get('delivery/index', [DeliveryController::class, 'Orders_index'])->name('delivery.index');
+        
         
         /* delivery managment */
+        Route::get('delivery/index', [DeliveryController::class, 'deliveries_index'])->name('delivery.index');
         Route::post('delivery/update/activity', [DeliveryController::class, 'update_delivery_activity'])->name('delivery.update_delivery_activity');
         Route::post('delivery/update/activation', [DeliveryController::class, 'update_delivery_activation'])->name('delivery.update_delivery_activation');
         Route::get('delivery/edit/{id}', [DeliveryController::class, 'edit_delivery'])->name('delivery.edit');

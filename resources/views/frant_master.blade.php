@@ -55,11 +55,9 @@ if(session()->get('cart') != null){
                    }
                    $available_qty=$product_selected['variant_info']['qty'];
                    $prod['options']=$options;
-                }else{
-                  $prod['options']=null;
-                }
-                $quantity=$product_selected['quantity'];
-                if($quantity > $available_qty){
+
+                   $quantity=$product_selected['quantity'];
+                if($quantity> $available_qty){
                     $quantity=$available_qty;
                 }
                
@@ -69,6 +67,23 @@ if(session()->get('cart') != null){
                 $prod['quantity']=$quantity;
                 $prod['product']=$product;
                 array_push($products_in_cart,$prod);
+
+                }else{
+                  $available_qty=$product->qty;
+                  $prod['options']=null;
+                  $quantity=$product_selected['quantity'];
+                if($quantity > $available_qty){
+                    $quantity=$available_qty;
+                }
+               
+                $prod['selected_variants']=null;
+                $prod['options']=null;
+                $prod['available_qty']=$available_qty;
+                $prod['quantity']=$quantity;
+                $prod['product']=$product;
+                array_push($products_in_cart,$prod);
+                }
+                
                  
              
                 
@@ -217,9 +232,13 @@ if(session()->get('cart') != null){
                   @elseif(Auth::user()->role_id == 2)
                   <li><a class="dropdown-item" href="#"> {{ translate('manager managment')}} </a></li>
                   @elseif(Auth::user()->role_id == 3)
-                  <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> vendor managment </a></li>
+                  <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale()) }}"> vendor managment </a></li>
                   @elseif(Auth::user()->role_id == 4)
-                  <li><a class="dropdown-item" href="#"> livreur managment </a></li>
+                    @if(Auth::user()->Livreur()->first()->is_active == 1 && Auth::user()->Livreur()->first()->is_confirmed == 1 )
+                      <li><a class="dropdown-item" href="#">livreur managment </a></li>
+                    @else
+                      <li><a class="dropdown-item" href="#">livreur not active</a></li>
+                    @endif
                   @endif
                   <li>
                     <form method="POST" action="{{ route('logout',app()->getLocale()) }}">

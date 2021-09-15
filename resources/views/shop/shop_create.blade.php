@@ -3,26 +3,16 @@
 @section('frant_head')
 
 <style>
-    .gm-style .gm-style-iw-t::after {
-        background: linear-gradient(45deg, crimson 50%, rgba(255, 255, 255, 0) 51%, rgba(255, 255, 255, 0) 100%);
-        box-shadow: -2px 2px 2px 0 rgb(178 178 178 / 40%);
-        content: "";
-        height: 15px;
-        left: 0;
-        position: absolute;
-        top: -1px;
-        transform: translate(-50%, -50%) rotate(-45deg);
-        width: 15px;
-    }
-
-    .gm-style-iw-c {
-        background-color: crimson !important;
-
-    }
+   
 </style>
 @stop
 @section('frant_content')
-<div class="card col-lg-10 m-auto jusify-content-center">
+<div id="overlay" class="d-none overlay position-absolute" style="padding:40px;right: 0;top:0;width: 100vw;height:100vh; z-index:1000;background-color: #00000099;">
+    <div class="d-flex justify-content-center align-content-center align-items-center">
+        <div class="alert alert-warning">pls allow us to detect your position to continue </div>
+    </div>
+</div>
+<div id="content" class="card col-lg-10 m-auto jusify-content-center">
     <article class="card-body">
         @if ($message = Session::get('info'))
         <div class="alert alert-info" role="alert">
@@ -76,25 +66,25 @@
             <div>
                 <img id="targetbanner" style="width: 100%; max-height: 350px;" />
             </div>
-            
+
             <div class="form-group my-1">
                 <label>Ville <span class="text-danger">*</span></label>
-                <select name="Ville" class="form-control" onChange="get_the_city(this);" id="Ville">
-                    <option>choisire votre ville</option>
+                <select name="city_id" class="form-control" required onChange="get_the_city(this);" id="Ville">
+                    <option >choisire votre ville</option>
                     @foreach($cities as $city)
                     <option value="{{$city->id}}">{{$city->name}}</option>
                     @endforeach
                 </select>
-               
+
             </div> <!-- form-group end.// -->
             <div class="form-group my-1">
                 <label>Adresse <span class="text-danger">*</span></label>
-                <textarea name="address" class="form-control" id="address" cols="30" rows="3"></textarea>
+                <textarea name="address" class="form-control" required id="address" cols="30" rows="3"></textarea>
             </div> <!-- form-group end.// -->
-            <div class="d-flex justify-content-end mt-3">
-                <button class="btn btn-primary-light " onclick="Geocod();return false;">confirmer l'address</button>
+            <div class="d-flex mt-3">
+                <strong>Merci de choisire votre adress exact sur la map </strong>
             </div>
-            <div class="form-group mt-2" id="map_container">
+            <div class="form-group mt-2" id="map_container" style="height:300px !important">
                 <p class="text-muted" id="note" style="display:none">merci de choisir la position exacte de votre boutique</p>
                 <div id="map" style="height: 100%;"></div>
             </div>
@@ -119,10 +109,33 @@
 
 @stop
 @section('frant_script')
+<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&language='.app()->getLocale().'&v=weekly'}}" async></script>
+
 <script>
     var lats = 0;
     var lngs = 0;
+    var x=0;
+    var y=0;
+    var deltaLat;
+    var deltaLng;
+    var numDeltas = 100;
+    var delay = 1; //milliseconds
+    navigator.geolocation.getCurrentPosition((pos)=>{
+                x = pos.coords.latitude
+                y = pos.coords.longitude
+                console.log('xx = ',x)
+                console.log('yy = ',y)
+               setTimeout(() => {
+                initMap()
+               }, 1000);
+            },error_block);
+            
+            function error_block(){
+                document.getElementById('overlay').classList.remove('d-none')
+                document.getElementById('content').classList.add('d-none')
+            }
 </script>
+
 <script>
     $('#customFile').on('change', function() {
         //get the file name
@@ -158,80 +171,61 @@
     showImage(srcbanner, targetbanner);
 </script>
 <script>
-    //call the Geocod() function 
-var ville='';
-function get_the_city(sel) {
-  ville=sel.options[sel.selectedIndex].text;
-}
-    function Geocod() {
-        if ( document.getElementById('address').value.length < 5) {
-        } else {
-            var map_container = document.getElementById('map_container').setAttribute("style", "height:300px !important")
-            var location = ville + ', ' + document.getElementById('address').value;
-            console.log('location = ',location);
-            axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-                params: {
-                    address: location,
-                    key: 'AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE'
-                }
-            }).then(function(responce) {
-
-                var formatedaddress = responce.data.results[0].formatted_address;
-                console.log('formatedaddress = ',formatedaddress);
-
-                // change addres to formated address 
-                // document.getElementById('address').value = formatedaddress;
-                // get the lat and lng of address
-                lats = responce.data.results[0].geometry.location.lat;
-                lngs = responce.data.results[0].geometry.location.lng
-
-                initMap();
-
-                document.getElementById('lat').setAttribute("value", lats)
-                document.getElementById('note').removeAttribute("style", "display:block")
-                document.getElementById('lng').setAttribute("value", lngs)
-            }).catch(function(err) {
-                console.log(err);
-            })
-        }
-    }
-</script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=&v=weekly" async>
-</script>
-
-<script>
     function initMap() {
         const myLatlng = {
-            lat: lats,
-            lng: lngs
+            lat: x,
+            lng: y
         };
+        document.getElementById('lat').setAttribute("value",myLatlng.lat),
+        document.getElementById('lng').setAttribute("value", myLatlng.lng);
         const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 14,
             center: myLatlng,
         });
         // Create the initial InfoWindow.
-        let infoWindow = new google.maps.InfoWindow({
-            content: "",
-            position: myLatlng,
-        });
-        infoWindow.open(map);
+        let center_marker = {
+                position: {
+                    lat: x,
+                    lng: y
+                },
+                map,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                title: "Votre position",
+            }
+            marker = new google.maps.Marker(center_marker);
+        
         // Configure the click listener.
         map.addListener("click", (mapsMouseEvent) => {
-            // Close the current InfoWindow.
-            infoWindow.close();
-            // Create a new InfoWindow.
-            infoWindow = new google.maps.InfoWindow({
-                position: mapsMouseEvent.latLng,
-
-            });
             document.getElementById('lat').setAttribute("value", mapsMouseEvent.latLng.toJSON().lat),
-                document.getElementById('lng').setAttribute("value", mapsMouseEvent.latLng.toJSON().lng),
-                infoWindow.setContent(
-                    ''
-                );
-            infoWindow.open(map);
+            document.getElementById('lng').setAttribute("value", mapsMouseEvent.latLng.toJSON().lng);
+            var result = [mapsMouseEvent.latLng.lat(), mapsMouseEvent.latLng.lng()];
+            console.log('result = ',result)
+            transition(result)
+          
         });
+        
     }
+    function transition(result) {
+        i = 0;
+        deltaLat = (result[0] - x) / numDeltas;
+        deltaLng = (result[1] - y) / numDeltas;
+        moveMarker();
+    }
+
+    function moveMarker() {
+        x += deltaLat;
+        y += deltaLng;
+        var latlng = new google.maps.LatLng(x, y);
+        marker.setTitle("Latitude:" + x + " | Longitude:" + y);
+        document.getElementById('lat').value=x
+        document.getElementById('lng').value=y
+        marker.setPosition(latlng);
+        if (i != numDeltas) {
+            i++;
+            setTimeout(moveMarker, delay);
+        }
+
+}
 </script>
 @stop

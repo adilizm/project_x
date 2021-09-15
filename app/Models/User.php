@@ -59,7 +59,7 @@ class User extends Authenticatable
     }
     public function Livreur()
     {
-        return $this->hasOne(Livreur::class);
+        return $this->hasOne(Delivery::class);
     }
     public function Vondeur()
     {

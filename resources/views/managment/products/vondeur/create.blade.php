@@ -104,6 +104,12 @@
                             <label >les mot cle du produit (max:5)</label>
                             <input type="text" name="keywords" class="form-control" value="t-shirt" style="width: 100% !important;height:100% !important;" data-role="tagsinput" >
                         </div>
+                        <span id="qty_div">
+                        <div class="form-group " id="qty">
+                            <label >Quantité </label>
+                            <input type="number" value="1" name="qty_no_variant"  class="form-control"  >
+                        </div>
+                        </span>
                         <div class="form-group ">
                             <label >Quantité minimum</label>
                             <input type="number" value="1" name="min_qty" class="form-control"  >
@@ -219,21 +225,30 @@
     let option1 = false;
     let option2 = false;
     let option3 = false;
+    let show_qty=true;
     function Click_btn_generate_prices(){
         document.getElementById('btn_generate_prices').click();
     }
     function Adding_variants_to_product() {
+        if(show_qty){
+                document.getElementById('qty').remove();
+                show_qty=false;
+            }
+
         document.getElementById('btn_generate_prices').classList.remove('d-none')
         document.getElementById('btn_generate_prices').classList.add('d-flex')
         if (!option1) {
             document.getElementById('option1').classList.add('d-block')
             option1 = true;
+            show_qty=false;
         } else if (!option2) {
             document.getElementById('option2').classList.add('d-block')
             option2 = true;
+            show_qty=false;
         } else if (!option3) {
             document.getElementById('option3').classList.add('d-block')
             option3 = true;
+            show_qty=false;
         } else {
             alert('vous ne pouvez avoir que trois options par produit');
         }
@@ -266,7 +281,11 @@
             document.getElementById('btn_generate_prices').classList.add('d-none')
             document.getElementById('prices_table').classList.add('d-none')
             document.getElementById('add_variant_to_this_product').innerText = 'Ajouter une variante a ce produit'
-
+            document.getElementById('qty_div').innerHTML=` <div class="form-group " id="qty">
+                            <label >Quantité </label>
+                            <input type="number" value="1" name="qty_no_variant"  class="form-control"  >
+                        </div>`;
+            show_qty=true
         }
     }
 
