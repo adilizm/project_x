@@ -24,9 +24,9 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
         
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans bg-gray-100">
         @include('frontend-user.header')
-       <div class="flex flex-col  transition-colors duration-150 bg-gray-100" style="min-height:50vh">
+       <div class="container mx-auto bg-gray-100" style="min-height:50vh">
            @yield('home')
        </div>
         @include('frontend-user.footer')

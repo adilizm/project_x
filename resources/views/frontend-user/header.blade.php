@@ -1,6 +1,6 @@
-<header class=" h-14 md:h-16 lg:h-22">
+<header class=" h-14 md:h-16 lg:h-22 fixed bg-white w-full z-50 border-b border-border-200 shadow-sm">
          <div
-            class="flex justify-between items-center w-full h-14 md:h-16 lg:h-22 md:px-10 lg:px-22 xl:px-40  py-5 z-50 fixed bg-white border-b border-border-200 shadow-sm transition-transform duration-300">
+            class="flex justify-between items-center w-full h-14 md:h-16 lg:h-22 container mx-auto  py-5">
             <div class="flex items-center w-full lg:w-auto"><a class="inline-flex mx-auto lg:mx-0" href="/"><span
                      class="overflow-hidden relative w-32 md:w-40 h-10">
                      <div>
