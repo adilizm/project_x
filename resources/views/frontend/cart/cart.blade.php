@@ -212,18 +212,17 @@ input[type=number] {
 	var user_lat = 0
     var user_lng = 0
     @foreach($shops_info as $shop)
-        const {{ 'shop_'. $loop->index .'._lat' }}={{$shop['lat']}}
-        const {{ 'shop_'. $loop->index .'._lng' }}={{$shop['lng']}}
+        const {{ 'shop_'. $loop->index .'_lat' }}={{$shop['lat']}}
+        const {{ 'shop_'. $loop->index .'_lng' }}={{$shop['lng']}}
         @if(!$loop->last)
         var {{ 'distance_'.$loop->index }}
         @endif
-
     @endforeach
 
     
 
     let map;
-    const shipping_fee_first_10_km= {{$shipping_fee_first_10_km}}
+    const shipping_fee_first_10_km=  {{$shipping_fee_first_10_km}}
     const shipping_fee_more_than_10_km= {{$shipping_fee_more_than_10_km}}
     const min_shipping_fee= {{$min_shipping_fee}}
     var price_shipping=0
@@ -338,6 +337,7 @@ input[type=number] {
                 animation: google.maps.Animation.DROP,
                 title: "Votre position",
             }
+            
             marker = new google.maps.Marker(center_marker);
 
             google.maps.event.addListener(map, 'click', function(event) {
@@ -351,7 +351,9 @@ input[type=number] {
             calculate_distance_one_seller();
             @else
             console.log('Too many shops');
-            @endif */
+            @endif 
+            shop 1 ; 30.421151, -9.605297
+            */
 
         }).catch(function(err) {
             console.log(err);
@@ -371,21 +373,43 @@ input[type=number] {
         moveMarker();
     }
     function calculate_distance_with_google_api(){
-        var origin1 = new google.maps.LatLng({{$shops_latlng[0][0]}}, {{$shops_latlng[0][1]}});
-            
+           // var origin1 = new google.maps.LatLng({{$shops_latlng[0][0]}}, {{$shops_latlng[0][1]}});
+            @foreach($shops_info as $shop)
+                const {{ 'origin'. $loop->index  }} = new google.maps.LatLng({{$shop['lat']}} ,{{$shop['lng']}});
+            @endforeach
+            const destination_costumer = new google.maps.LatLng( user_lat, user_lng);
+
+               
+                var _origins =[
+                    @foreach($shops_info as $shop)
+                        @if($loop->first)
+                        {{ 'origin'. $loop->index  }} 
+                        @endif
+                    @endforeach
+                ];
+
+                var _destinations =[
+                @foreach($shops_info as $shop)
+                    @if(!$loop->first)
+                        {{ 'origin'. $loop->index  }} @if(!$loop->last) ,  @endif  @if($loop->last) , destination_costumer  @endif
+                    @endif
+                @endforeach
+                ];
+
             var destinationA = new google.maps.LatLng( user_lat, user_lng);
 
             var service = new google.maps.DistanceMatrixService();
             service.getDistanceMatrix(
             {
-                origins: [origin1],
-                destinations: [destinationA],
+                origins: _origins,
+                destinations: _destinations,
                 travelMode: 'DRIVING',
             }, callback);
     }
 
     function callback(response, status) {
-        console.log('status = ',response,status)    
+        console.log('status = ',status)    
+        console.log('response = ',response)    
         console.log('distance = ',Object.values( response,status.rows)[0][0]['elements'][0]['distance']['value']/1000)   
         distance = Object.values( response,status.rows)[0][0]['elements'][0]['distance']['value']/1000 
         var first_distance=0
