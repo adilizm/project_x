@@ -37,8 +37,14 @@ use Illuminate\Support\Facades\App;
 Route::middleware([city_checker::class])->group(function () {
     Route::redirect('/', '/' . App::getLocale());
 });
-Route::group(['prefix' => '{language}'], function () {
 
+
+Route::group(['prefix' => '{language}'], function () {
+    // just for test 
+    Route::get('/konly', function () {
+        return view('frontend-user.home');
+    });
+/////////////////////////////////////////
 
     Route::get('Select_city', [HomeController::class, 'Select_city'])->name('Select_city');
     Route::get('store_city/{id}', [HomeController::class, 'store_city'])->name('store_city');
