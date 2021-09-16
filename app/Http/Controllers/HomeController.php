@@ -6,7 +6,9 @@ use App\Models\Businesssetting;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Product;
+use App\Models\Shop;
 use App\Models\Slider;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Response;
@@ -41,7 +43,10 @@ class HomeController extends Controller
                 }
             } else {
                 /* change this calcule */
-                $top_10_requested_products = Product::orderBy('created_at', 'desc')->where(['confermed' => '1', 'status' => 'published'])->take(10)->get();
+                $top_10_requested_products = Product::orderBy('created_at', 'desc')->where(['confermed' => '1', 'status' => 'published'])->whereHas('Shop', function (Builder $query) {
+                    $query->where('is_published', '1');
+                })->take(10)->get();
+               //  dd($top_10_requested_products);
             }
         }
 
@@ -106,8 +111,7 @@ class HomeController extends Controller
     }
     public function search(Request $request)
     {
-        $prod_result = Product::where('name', 'LIKE', '%' . $request->params['keyword'] . '%')->where('status', 'published')->get();
-
+        $prod_result = Product::where('name', 'LIKE', '%' . $request->params['keyword'] . '%')->where(['confermed' => 1, 'status' => 'published'])->get();
         if (count($prod_result) > 0) {
             return view('frontend.components.search', compact('prod_result'));
         } else {
@@ -218,12 +222,22 @@ class HomeController extends Controller
             }
             $shops_ids = array_unique($shops_ids);
             $nbr_shops = count($shops_ids);
-            //dd($products_in_cart);
+            $shops_info=[];
+            foreach($shops_ids as $shop_id){
+                $shop=Shop::find($shop_id);
+                $shop_info['name']=$shop->name;
+                $shop_info['lat']=$shop->map_latitude;
+                $shop_info['lng']=$shop->map_longitude;
+                $shop_info['logo']=$shop->logo_path;
+                array_push($shops_info,$shop_info);
+            }
+            //dd($shops_info);
             $shipping_fee_first_10_km = Businesssetting::where("name", "Delivery_price_costumer_less_than_10_KM")->first()->value;
             $shipping_fee_more_than_10_km = Businesssetting::where("name", "Delivery_price_costumer_more_than_10KM")->first()->value;
             $min_shipping_fee = Businesssetting::where("name", "min_Delivery_price_costumer")->first()->value;
 
-            return view('frontend.cart.cart', compact('citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng'));
+            
+            return view('frontend.cart.cart', compact('citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng','shops_info'));
         } else {
             return 'cart empty';
         }

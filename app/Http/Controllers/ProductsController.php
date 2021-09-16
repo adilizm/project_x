@@ -325,7 +325,7 @@ class ProductsController extends Controller
         $variants_saved = json_encode($variants);
        // dd($request,$variants_saved);
 
-        $min_qty = null;
+        $min_qty = 1;
         if ($request->min_qty != null) {
             $min_qty = $request->min_qty;
         }
@@ -365,7 +365,7 @@ class ProductsController extends Controller
             'status' => $status,
             'confermed' => 0,
             'keywords' => $keywords,
-            'min_quantity' => 1,
+            'min_quantity' => $min_qty,
             'variants' => $variants_saved,
             'qty' => $qty,
         ]);

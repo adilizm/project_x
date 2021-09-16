@@ -209,8 +209,19 @@ input[type=number] {
 @stop
 @section('frant_script')
 	<script>
-		    var user_lat = 0
+	var user_lat = 0
     var user_lng = 0
+    @foreach($shops_info as $shop)
+        const {{ 'shop_'. $loop->index .'._lat' }}={{$shop['lat']}}
+        const {{ 'shop_'. $loop->index .'._lng' }}={{$shop['lng']}}
+        @if(!$loop->last)
+        var {{ 'distance_'.$loop->index }}
+        @endif
+
+    @endforeach
+
+    
+
     let map;
     const shipping_fee_first_10_km= {{$shipping_fee_first_10_km}}
     const shipping_fee_more_than_10_km= {{$shipping_fee_more_than_10_km}}
@@ -273,6 +284,7 @@ input[type=number] {
     
                 var x =0
                 var y =0
+                let total_distance =0;
 
         var options = {
         enableHighAccuracy: true,
@@ -302,7 +314,7 @@ input[type=number] {
         }
     function initMap() {
         axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE').then(function(responce) {
-            /*  console.log(responce); */
+             console.log(responce);
             
            
 
@@ -411,6 +423,7 @@ input[type=number] {
             })
 
     }
+    
 
     function moveMarker() {
 
