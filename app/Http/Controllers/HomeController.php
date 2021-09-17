@@ -53,7 +53,8 @@ class HomeController extends Controller
         /* categories */
         $parent_categoreis = Category::whereNull('parent_id')->get();
 
-        return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
+        //return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
+        return view('frontend-user.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
     }
 
     public function Category($language, $slug, Request $request)
@@ -111,7 +112,14 @@ class HomeController extends Controller
     }
     public function search(Request $request)
     {
+        
+        
         $prod_result = Product::where('name', 'LIKE', '%' . $request->params['keyword'] . '%')->where(['confermed' => 1, 'status' => 'published'])->get();
+        foreach ($prod_result as $key => $value) {
+
+            $value->name = str_replace(mb_strtolower($request->params['keyword']),'<b>'. $request->params['keyword'].'</b>', mb_strtolower($value->name));
+        }
+        // return  $prod_result;
         if (count($prod_result) > 0) {
             return view('frontend.components.search', compact('prod_result'));
         } else {

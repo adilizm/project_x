@@ -19,7 +19,7 @@
 
         <!-- Scripts Glide-->
        
-        <script src="/glide/glide.min.js"></script>
+        
         <!-- Scripts-->
         <script src="{{ asset('js/app.js') }}" defer></script>
         

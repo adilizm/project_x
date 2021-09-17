@@ -41,9 +41,7 @@ Route::middleware([city_checker::class])->group(function () {
 
 Route::group(['prefix' => '{language}'], function () {
     // just for test 
-    Route::get('/konly', function () {
-        return view('frontend-user.home');
-    });
+    Route::get('/konly', [HomeController::class, 'index'])->name('home');
 /////////////////////////////////////////
 
     Route::get('Select_city', [HomeController::class, 'Select_city'])->name('Select_city');
