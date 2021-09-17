@@ -48,7 +48,9 @@ class WebsiteController extends Controller
         $Delivery_price_delivery_man_less_than_10_KM=Businesssetting::where('name','Delivery_price_delivery_man_less_than_10_KM')->first();
         $Delivery_price_delivery_man_more_than_10_KM=Businesssetting::where('name','Delivery_price_delivery_man_more_than_10_KM')->first();
         $min_Delivery_price_delivery_man=Businesssetting::where('name','min_Delivery_price_delivery_man')->first();
-        return view('managment.website_managment.shipping.index',compact('Delivery_price_costumer_less_than_10_KM','Delivery_price_costumer_more_than_10KM','min_Delivery_price_costumer','Delivery_price_delivery_man_less_than_10_KM','Delivery_price_delivery_man_more_than_10_KM','min_Delivery_price_delivery_man'));
+        $max_Delivery_price_costumer=Businesssetting::where('name','max_Delivery_price_costumer')->first();
+        $max_Delivery_price_delivery_man=Businesssetting::where('name','max_Delivery_price_delivery_man')->first();
+        return view('managment.website_managment.shipping.index',compact('Delivery_price_costumer_less_than_10_KM','Delivery_price_costumer_more_than_10KM','min_Delivery_price_costumer','Delivery_price_delivery_man_less_than_10_KM','Delivery_price_delivery_man_more_than_10_KM','min_Delivery_price_delivery_man','max_Delivery_price_delivery_man','max_Delivery_price_costumer'));
     }
     public function Shipping_configuration_update(Request $request){
         $request->validate([
@@ -58,6 +60,8 @@ class WebsiteController extends Controller
             'Delivery_price_delivery_man_less_than_10_KM'=>'required',
             'Delivery_price_delivery_man_more_than_10_KM'=>'required',
             'min_Delivery_price_delivery_man'=>'required',
+            'max_Delivery_price_delivery_man'=>'required',
+            'max_Delivery_price_costumer'=>'required',
         ]);
         Businesssetting::where('name','Delivery_price_costumer_less_than_10_KM')->first()->update([
             'value'=>$request->Delivery_price_costumer_less_than_10_KM
@@ -76,6 +80,12 @@ class WebsiteController extends Controller
         ]);
         Businesssetting::where('name','min_Delivery_price_delivery_man')->first()->update([
             'value'=>$request->min_Delivery_price_delivery_man
+        ]);
+        Businesssetting::where('name','max_Delivery_price_delivery_man')->first()->update([
+            'value'=>$request->max_Delivery_price_delivery_man
+        ]);
+        Businesssetting::where('name','max_Delivery_price_costumer')->first()->update([
+            'value'=>$request->max_Delivery_price_costumer
         ]);
         return back()->with('success','les valeus de shipping updated');
     }

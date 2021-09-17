@@ -119,19 +119,22 @@ class OrderController extends Controller
         $shipping_price = $request->params['shipping_price'];
         $lat = $request->params['lat'];
         $lng = $request->params['lng'];
+        $delivery_price_shipping = $request->params['delivery_price_shipping'];
         $request->session()->put('shipping_price', $shipping_price);
         $request->session()->put('lat', $lat);
         $request->session()->put('lng', $lng);
+        $request->session()->put('delivery_price_shipping', $delivery_price_shipping);
         return $request;
     }
     public function Store_order(Request $request)
     {
-
+       
         $order = new Order();
         $total_products = 0;
         $total_shipping = $request->session()->get('shipping_price');
         $lat = $request->session()->get('lat');
         $lng = $request->session()->get('lng');
+        $delivery_price_shipping = $request->session()->get('delivery_price_shipping');
         $cart = $request->session()->get('cart');
         foreach ($cart as $product) {
             $total_products += $product['variant_info']['prix'] * $product['quantity'];
@@ -146,6 +149,7 @@ class OrderController extends Controller
             "city_id" =>Cookie::get('user_city'),
             "lat" => $lat,
             "lng" => $lng,
+            "delivery_price_shipping" => $lng,
         ]);
 
         foreach ($cart as $product) {

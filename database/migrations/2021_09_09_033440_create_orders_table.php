@@ -21,12 +21,12 @@ class CreateOrdersTable extends Migration
             $table->string('delivery_status')->default('not-assigned'); // not_assigned - in_the_way - successed - returned 
             $table->double('price_total'); 
             $table->double('price_shipping'); 
+            $table->double('delivery_price_shipping'); 
             $table->double('lat'); 
             $table->double('lng'); 
             $table->foreignId('Livreur_id')->constrained('users')->default(null); // the customer id
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

@@ -229,15 +229,22 @@ class HomeController extends Controller
                 $shop_info['lat']=$shop->map_latitude;
                 $shop_info['lng']=$shop->map_longitude;
                 $shop_info['logo']=$shop->logo_path;
+                $shop_info['distance']=0;
                 array_push($shops_info,$shop_info);
             }
             //dd($shops_info);
             $shipping_fee_first_10_km = Businesssetting::where("name", "Delivery_price_costumer_less_than_10_KM")->first()->value;
             $shipping_fee_more_than_10_km = Businesssetting::where("name", "Delivery_price_costumer_more_than_10KM")->first()->value;
             $min_shipping_fee = Businesssetting::where("name", "min_Delivery_price_costumer")->first()->value;
+            $max_Delivery_price_costumer = Businesssetting::where("name", "max_Delivery_price_costumer")->first()->value;
+
+            $Delivery_price_delivery_man_less_than_10_KM = Businesssetting::where("name", "Delivery_price_delivery_man_less_than_10_KM")->first()->value;
+            $Delivery_price_delivery_man_more_than_10_KM = Businesssetting::where("name", "Delivery_price_delivery_man_more_than_10_KM")->first()->value;
+            $min_Delivery_price_delivery_man = Businesssetting::where("name", "min_Delivery_price_delivery_man")->first()->value;
+            $max_Delivery_price_delivery_man = Businesssetting::where("name", "max_Delivery_price_delivery_man")->first()->value;
 
             
-            return view('frontend.cart.cart', compact('citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng','shops_info'));
+            return view('frontend.cart.cart', compact('max_Delivery_price_delivery_man','min_Delivery_price_delivery_man','Delivery_price_delivery_man_more_than_10_KM','Delivery_price_delivery_man_less_than_10_KM','citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng','shops_info','max_Delivery_price_costumer'));
         } else {
             return 'cart empty';
         }
