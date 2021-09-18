@@ -15,6 +15,8 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->unique();
+            $table->foreignId('city_id')->constrained()->unique();
             $table->timestamps();
         });
     }

@@ -237,6 +237,17 @@ input[type=number] {
 			if(value< min){
 				value=min;
 			}
+            axios.post('{{ route('decreas_qty',['language'=>app()->getLocale()]) }}', {
+                        params: {
+                            _position:position,
+                            _product_price:product_price,
+                            _value:value
+                        }
+            }).then(function(responce) {
+                console.log(responce)
+            }).catch(function(err) {
+                console.log(err);
+            })
 			document.querySelector('#div_qty_'.concat(position.toString()).concat(' input')).value=value
 			var product_total=value*product_price;
 			document.querySelector('#this_product_total'.concat(position.toString())).innerHTML=product_total;
@@ -250,6 +261,20 @@ input[type=number] {
 			if(value> max){
 				value=max;
 			}
+
+            axios.post('{{ route('encreas_qty',['language'=>app()->getLocale()]) }}', {
+                        params: {
+                            _position:position,
+                            _product_price:product_price,
+                            _value:value
+                        }
+            }).then(function(responce) {
+                console.log(responce)
+            }).catch(function(err) {
+                console.log(err);
+            })
+
+
 			document.querySelector('#div_qty_'.concat(position.toString()).concat(' input')).value=value
 			var product_total=value*product_price;
 			document.querySelector('#this_product_total'.concat(position.toString())).innerHTML=product_total;

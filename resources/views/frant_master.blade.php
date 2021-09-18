@@ -230,7 +230,7 @@ if(session()->get('cart') != null){
                   @if(Auth::user()->role_id == 1)
                   <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a></li>
                   @elseif(Auth::user()->role_id == 2)
-                  <li><a class="dropdown-item" href="#"> {{ translate('manager managment')}} </a></li>
+                  <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale()) }}"> {{ translate('manager managment')}} </a></li>
                   @elseif(Auth::user()->role_id == 3)
                   <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale()) }}"> vendor managment </a></li>
                   @elseif(Auth::user()->role_id == 4)

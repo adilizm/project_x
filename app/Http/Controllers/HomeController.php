@@ -28,7 +28,7 @@ class HomeController extends Controller
         return redirect()->route('home', app()->getLocale())->cookie($cookie);
     }
     public function index(Request $request)
-    {
+    {   
         // $request->session()->forget('cart');
         // dd($request);
         $sliders = Slider::all();

@@ -57,6 +57,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Order status</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">delivery status</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Options</th>
+                    @endif
                   </tr>
                 </thead>
                 <tbody>
@@ -69,9 +70,11 @@
                     <td><strong>Total:</strong> {{$order->price_total}} <br> <strong>Shipping: </strong>{{$order->price_shipping}} </td>
                     <td>{{$order->status}} </td>
                     <td>{{$order->delivery_status}} </td>
+                    @if(in_array("orders.edit", json_decode(Auth::user()->Role->permissions)))
                     <td>
                     <a class="mx-1" href="{{ route('admin.orders.admin_edit_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-map-marked-alt"></i></a>
                     </td>
+                    @endif
                   </tr>
                   @endforeach
 

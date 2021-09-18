@@ -128,7 +128,7 @@ class OrderController extends Controller
     }
     public function Store_order(Request $request)
     {
-       dd($request);
+        dd($request);
         $order = new Order();
         $total_products = 0;
         $total_shipping = $request->session()->get('shipping_price');
@@ -193,5 +193,17 @@ class OrderController extends Controller
         $request->session()->forget('lat');
         $request->session()->forget('lng');
         return 'thankyou';
+    }
+    public function encreas_qty(Request $request){
+        $cart=$request->session()->get('cart');
+        $cart[$request->params['_position']]['quantity']=$request->params['_value'];
+        $request->session()->put('cart',$cart);
+        return $request;
+    }
+    public function decreas_qty(Request $request){
+        $cart=$request->session()->get('cart');
+        $cart[$request->params['_position']]['quantity']=$request->params['_value'];
+        $request->session()->put('cart',$cart);
+        return $request;
     }
 }
