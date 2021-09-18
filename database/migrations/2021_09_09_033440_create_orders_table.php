@@ -25,6 +25,11 @@ class CreateOrdersTable extends Migration
             $table->double('lat'); 
             $table->double('lng'); 
             $table->foreignId('Livreur_id')->constrained('users')->default(null); // the customer id
+            $table->string('number')->default(null); // not_assigned - in_the_way - successed - returned 
+            $table->string('Business')->default(null); // not_assigned - in_the_way - successed - returned 
+            $table->string('floor')->default(null); // not_assigned - in_the_way - successed - returned 
+            $table->string('Zone')->default(null); // not_assigned - in_the_way - successed - returned 
+            $table->string('address_more_info')->default(null); // not_assigned - in_the_way - successed - returned 
             $table->timestamps();
             $table->softDeletes();
         });

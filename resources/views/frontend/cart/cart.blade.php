@@ -1,6 +1,8 @@
 @extends('frant_master')
 
 @section('frant_head')
+<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&v=weekly'}}" async></script>
+
 	<style>
 		/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -151,7 +153,6 @@ input[type=number] {
     </div>
     <div class=" m-3">
         <div class="row">
-            <p>shipping price = <strong id="shipping_price">0.00</strong> <sub>Dhs</sub> </p>
         </div>
         <form action="{{route('store_order',app()->getlocale())}}" method="post">
             @csrf
@@ -192,12 +193,7 @@ input[type=number] {
             </div>
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">Passer La Commande</button>
-            </div>
-            <input type="text" id="lat" name="lat" value="">
-            <input type="text" id="lng" name="lng" value="">
-            <br>
-            <input type="text" id="latnav" name="" value="">
-            <input type="text" id="lngnav" name="" value="">
+            </div>           
         </form>
 
     </div>
@@ -283,7 +279,6 @@ input[type=number] {
 	<script>
 
 </script>
-<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&v=weekly'}}" async></script>
 
 <script>
     
@@ -302,8 +297,6 @@ input[type=number] {
                 console.log('xx = ',x)
                 console.log('yy = ',y)
                 initMap()
-                document.getElementById('latnav').value=x
-            document.getElementById('lngnav').value=y
             }, error, options);
 
         function success(pos) {
@@ -315,6 +308,7 @@ input[type=number] {
         }
 
         function error(err) {
+            //hide the page by using a div and alert to make him accept the geolocation 
         console.warn(`ERREUR (${err.code}): ${err.message}`);
         }
     function initMap() {
@@ -400,26 +394,30 @@ input[type=number] {
             },callback_one_shop_customer_position_distance{{$loop->index}}) 
 
             @endforeach
-           // console.log('all_shops =====asdasd============',all_shops);
+            console.log('all_shops =====================',all_shops);
             var temp_origin=[all_shops[0]]
             origin= new google.maps.LatLng(temp_origin[0].lat(),temp_origin[0].lng())
+            console.log('first shop latlng === ',temp_origin[0].lat(),temp_origin[0].lng())
             var _origins =[origin];
             var _destinations=[];
-            for (let i = 0 ; i < all_shops.length ; i++) {
-               if(all_shops.length > 1){
-                    if(i==all_shops.length-1){
-                            _destinations.push(Customer_latlng );
-                        }else{
-                        var shoop=all_shops[i];
-                        var destination=   new google.maps.LatLng(shoop.lat(),shoop.lng());
-                        _destinations.push(destination);
-                    }
-                }else{
-                    _destinations.push(Customer_latlng );
+            if(all_shops.length != 1){
+            for (let i = 1 ; i < all_shops.length ; i++) {
+               if(i==all_shops.length-1){
+                _destinations.push(new google.maps.LatLng(all_shops[i].lat(),all_shops[i].lng()));
+                _destinations.push(Customer_latlng );
+               }else{
+                _destinations.push(new google.maps.LatLng(all_shops[i].lat(),all_shops[i].lng()));
                }
             }
-            console.log('origin_ ==',destination)
-            console.log('_destinations ==== ', _destinations);
+        }else{
+            _destinations.push(Customer_latlng );
+        }
+            
+            //                    _destinations.push(Customer_latlng );
+
+          /*   console.log('origin_ ===',_origins[0].lat(),_origins[0].lng())
+            console.log('_destinations[0] ==== ', _destinations[0].lat(),_destinations[0].lng());
+            console.log('_destinations[1] ==== ', _destinations[1].lat(),_destinations[1].lng()); */
             var service = new google.maps.DistanceMatrixService();
            
             service.getDistanceMatrix({
@@ -451,17 +449,16 @@ input[type=number] {
     
     function callback(response, status) {
         setTimeout(() => {
-                console.log('hello adil')
-                all_shops.sort((a, b) => (a.distance < b.distance) ? 1 : -1)
+            all_shops.sort((a, b) => (a.distance < b.distance) ? 1 : -1)
+            console.log('sorted all_shops =++++-->',all_shops)
+            console.log('status = ',status)    
+            console.log('response = ',response) 
+            distance = 0
 
-                console.log('sorted all_shops =++++-->',all_shops)
-        console.log('status = ',status)    
-        console.log('response = ',response) 
-        distance = 0
-
-        Object.values( response,status.rows)[0][0]['elements'].forEach(element=>{
-            distance += element['distance']['value']/1000 ;
-        })
+            Object.values( response,status.rows)[0][0]['elements'].forEach(element=>{
+                distance += element['distance']['value']/1000 ;
+                console.log('element distance =======',element['distance']['value'])
+            })
         console.log('xxxdistance = ',distance)   
         var first_distance=0
         var secande_distance=0
@@ -491,7 +488,6 @@ input[type=number] {
 		document.querySelector('#total_shipping').innerHTML=Math.round(price_shipping.toFixed(2));			
 
        // console.log('shipping price = ',price_shipping)
-        document.getElementById('shipping_price').innerHTML= Math.round(price_shipping.toFixed(2)) ;
 		calculate_Total_to_pay()
 		
 		/* send shipping price to backend and store it in session */
@@ -520,8 +516,7 @@ input[type=number] {
         user_lng += deltaLng;
         var latlng = new google.maps.LatLng(user_lat, user_lng);
         marker.setTitle("Latitude:" + user_lat + " | Longitude:" + user_lng);
-        document.getElementById('lat').value=user_lat
-        document.getElementById('lng').value=user_lng
+
         marker.setPosition(latlng);
         if (i != numDeltas) {
             i++;

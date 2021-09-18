@@ -59,8 +59,8 @@ INSERT INTO `businesssettings` (`id`, `name`, `value`, `is_active`, `from`, `to`
 (7, 'min_Delivery_price_costumer', '20', 1, NULL, NULL, NULL, NULL, NULL),
 (8, 'Delivery_price_delivery_man_less_than_10_KM', '3.5', 1, NULL, NULL, NULL, NULL, NULL),
 (9, 'Delivery_price_delivery_man_more_than_10_KM', '1.4', 1, NULL, NULL, NULL, NULL, NULL),
-(10, 'min_Delivery_price_delivery_man', '14', 1, NULL, NULL, NULL, NULL, NULL);
-(11, 'max_Delivery_price_costumer', '100', 1, NULL, NULL, NULL, NULL, NULL);
+(10, 'min_Delivery_price_delivery_man', '14', 1, NULL, NULL, NULL, NULL, NULL),
+(11, 'max_Delivery_price_costumer', '100', 1, NULL, NULL, NULL, NULL, NULL),
 (12, 'max_Delivery_price_delivery_man', '80', 1, NULL, NULL, NULL, NULL, NULL);
 
 INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `picture`, `created_at`, `updated_at`, `deleted_at`, `parent_id`) VALUES

@@ -128,7 +128,7 @@ class OrderController extends Controller
     }
     public function Store_order(Request $request)
     {
-       
+       dd($request);
         $order = new Order();
         $total_products = 0;
         $total_shipping = $request->session()->get('shipping_price');
@@ -139,6 +139,28 @@ class OrderController extends Controller
         foreach ($cart as $product) {
             $total_products += $product['variant_info']['prix'] * $product['quantity'];
         }
+        
+        $number=null;
+        if($request->number != null){
+            $number=$request->number;
+        }
+        $Business=null;
+        if($request->Business != null){
+            $Business=$request->Business;
+        }
+        $floor=null;
+        if($request->floor != null){
+            $floor=$request->floor;
+        }
+        $Zone=null;
+        if($request->Zone != null){
+            $Zone=$request->Zone;
+        }
+        $address_more_info=null;
+        if($request->address_more_info != null){
+            $address_more_info=$request->numaddress_more_infober;
+        }
+
         $new_order = $order->create([
             'user_id' => Auth::user()->id,
             "status" => "new_arrivale",
@@ -149,7 +171,11 @@ class OrderController extends Controller
             "city_id" =>Cookie::get('user_city'),
             "lat" => $lat,
             "lng" => $lng,
-            "delivery_price_shipping" => $lng,
+            "number" => $number,
+            "Business" => $Business,
+            "floor" => $floor,
+            "Zone" => $Zone,
+            "address_more_info" => $address_more_info,
         ]);
 
         foreach ($cart as $product) {
