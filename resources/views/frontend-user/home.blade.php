@@ -339,10 +339,10 @@
                <div class="relative h-full">
                   <div class="glide__track h-full" data-glide-el="track">
                      <ul class="glide__slides h-full">
-                          {{-- @foreach($sliders as $slider) --}}
-                        <li class="glide__slide h-full "><img src=""  
+                          @foreach($sliders as $slider)
+                        <li class="glide__slide h-full "><img src="{{'/storage/'.'$slider->laptop_path'}}"  
                             class="rounded h-full object-fill w-full"></li>
-                             {{-- @endforeach --}}
+                             @endforeach
                         
                      </ul>
                   </div>
