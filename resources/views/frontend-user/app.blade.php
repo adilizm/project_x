@@ -21,6 +21,7 @@
        
         
         <!-- Scripts-->
+         <script src="/glide/glide.min.js"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
         
     </head>
