@@ -28,7 +28,9 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">nom d'utilisateur</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">numéro de téléphone</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">email</th>
+                    @if(Auth::user()->role_id != 2)
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">rôle</th>
+                    @endif
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">situation</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">options</th>
                   </tr>
@@ -41,6 +43,7 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->phone}}</td>
                     <td>{{$user->email}}</td>
+                    @if(Auth::user()->role_id != 2)
                     <td>
                         <form action="{{ route('users.change_Role',app()->getLocale())}}" method="post">
                             @csrf
@@ -52,6 +55,7 @@
                             </select>
                         </form>
                     </td>
+                    @endif
                     <td>
                         @if($user->is_banned == 1)
                         <span class="badge badge-danger">inactif</span>
@@ -72,6 +76,9 @@
               </table>
             </div>
           </div>
+          {{
+            $users->links()
+          }}
         </div>
       </div>
       <!-- /.card-body -->

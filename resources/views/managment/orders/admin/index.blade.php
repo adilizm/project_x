@@ -18,6 +18,12 @@
         <form class="mx-2" action="#" method="get">
           @csrf
           <div class="d-flex justify-content-end">
+            <select name="city_id" class="form-control mr-1" id="">
+              <option>filtrer par ville</option>
+              @foreach($cities as $city)
+              <option value="{{$city->id}}">{{$city->name}}</option>
+             @endforeach
+            </select>
             <select name="status" class="form-control mr-1" id="">
               <option>filtrer Des ordres</option>
               <option value="new">new_arrivale</option>
@@ -26,7 +32,7 @@
               <option value="draft">returned</option>
               <option value="banned">successed</option>
             </select>
-            <select name="confirmation" class="form-control mr-1" id="">
+            <select name="delivery_status" class="form-control mr-1" id="">
               <option>delivery_status</option>
               <option value="1">not_assigned</option>
               <option value="0">in_the_way</option>
@@ -69,9 +75,11 @@
                     <td><strong>Total:</strong> {{$order->price_total}} <br> <strong>Shipping: </strong>{{$order->price_shipping}} </td>
                     <td>{{$order->status}} </td>
                     <td>{{$order->delivery_status}} </td>
+                    @if(in_array("orders.edit", json_decode(Auth::user()->Role->permissions)))
                     <td>
-                    <a class="mx-1" href="{{ route('admin.orders.admin_edit_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-map-marked-alt"></i></a>
+                    <a class="mx-1" href="{{ route('admin.orders.admin_edit_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-eye"></i></a>
                     </td>
+                    @endif
                   </tr>
                   @endforeach
 

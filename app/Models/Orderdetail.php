@@ -20,5 +20,8 @@ class Orderdetail extends Model
     public function Product(){
         return $this->belongsTo(Product::class);
     }
+    public function Vondeur(){
+        return $this->belongsTo(Vondeur::class);
+    }
     
 }
