@@ -18,13 +18,8 @@
         <form class="mx-2" action="{{ route('products.index',app()->getLocale()) }}" method="get">
           @csrf
           <div class="d-flex justify-content-end">
-            <select name="city" class="form-control mr-1" id="">
-            <option>filtrer par ville</option>
-             @foreach($citeis as $city)
-              <option value="{{$city->id}}">{{$city->name}}</option>
-              @endforeach
-            </select>
-            <select name="status" class="form-control mr-1" id=""> 
+          
+            <select name="status" class="form-control mr-1" id="">
               <option>filtrer Des produit</option>
               <option value="new">En attente</option>
               <option value="published">Publié</option>

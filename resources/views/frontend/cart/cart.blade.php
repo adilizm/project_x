@@ -244,7 +244,7 @@ input[type=number] {
                             _value:value
                         }
             }).then(function(responce) {
-                console.log(responce)
+               // console.log(responce)
             }).catch(function(err) {
                 console.log(err);
             })
@@ -269,7 +269,7 @@ input[type=number] {
                             _value:value
                         }
             }).then(function(responce) {
-                console.log(responce)
+               // console.log(responce)
             }).catch(function(err) {
                 console.log(err);
             })
@@ -319,17 +319,17 @@ input[type=number] {
         navigator.geolocation.getCurrentPosition((pos)=>{
                 x = pos.coords.latitude
                 y = pos.coords.longitude
-                console.log('xx = ',x)
-                console.log('yy = ',y)
+              //  console.log('xx = ',x)
+               // console.log('yy = ',y)
                 initMap()
             }, error, options);
 
         function success(pos) {
         var crd = pos.coords;
-        console.log('Votre position actuelle est :');
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude : ${crd.longitude}`);
-        console.log(`La précision est de ${crd.accuracy} mètres.`);
+    //  console.log('Votre position actuelle est :');
+    // console.log(`Latitude : ${crd.latitude}`);
+    //console.log(`Longitude : ${crd.longitude}`);
+    //console.log(`La précision est de ${crd.accuracy} mètres.`);
         }
 
         function error(err) {
@@ -338,11 +338,12 @@ input[type=number] {
         }
     function initMap() {
         axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE').then(function(responce) {
-             console.log(responce);
+            // console.log(responce);
             
             user_lat = x
             user_lng = y
-            
+           
+
             map = new google.maps.Map(document.getElementById("map"), {
                 center: {
                     lat: user_lat,
@@ -360,8 +361,12 @@ input[type=number] {
                 animation: google.maps.Animation.DROP,
                 title: "Votre position",
             }
+           
+
+                
             
             marker = new google.maps.Marker(center_marker);
+            infowindow = new google.maps.InfoWindow();
 
             google.maps.event.addListener(map, 'click', function(event) {
                 var result = [event.latLng.lat(), event.latLng.lng()];
@@ -370,13 +375,6 @@ input[type=number] {
          
             calculate_distance_with_google_api()
 			calculate_Total_products()
-           /*  @if($nbr_shops == 1)
-            calculate_distance_one_seller();
-            @else
-            console.log('Too many shops');
-            @endif 
-            shop 1 ; 30.421151, -9.605297
-            */
         }).catch(function(err) {
             console.log(err);
         })
@@ -389,14 +387,17 @@ input[type=number] {
     var executed = false;
     var shops=@JSON($shops_info);
     let all_shops=[];
+    let address_google_map='';
     function transition(result) {
+
+        
         i = 0;
         deltaLat = (result[0] - user_lat) / numDeltas;
         deltaLng = (result[1] - user_lng) / numDeltas;
         moveMarker();
     }
   
-   
+
     function calculate_distance_with_google_api(){
 
         var Customer_latlng = new google.maps.LatLng( user_lat, user_lng);
@@ -407,7 +408,24 @@ input[type=number] {
         //var ordred_shops_by_distance=[];
      //   console.log('All shops = ',all_shops);
         var service_one = new google.maps.DistanceMatrixService();
-       
+        const geocoder = new google.maps.Geocoder();
+            const latlnggeo = {
+                            lat: parseFloat(user_lat),
+                            lng: parseFloat(user_lng),
+                        };
+           
+        geocoder.geocode({ location: latlnggeo }).then((response) => {
+                if (response.results[0]) {
+                 
+                    infowindow.setContent(response.results[0].formatted_address);
+                    address_google_map=response.results[0].formatted_address;
+                    infowindow.open(map, marker);
+                } else {
+                    window.alert("No results found");
+                }
+                })
+                .catch((e) => window.alert("Geocoder failed due to: " + e));
+
 
             @foreach($shops_info as $shop)
            // console.log('the shop is = ',all_shops[{{$loop->index}}])
@@ -419,10 +437,10 @@ input[type=number] {
             },callback_one_shop_customer_position_distance{{$loop->index}}) 
 
             @endforeach
-            console.log('all_shops =====================',all_shops);
+           // console.log('all_shops =====================',all_shops);
             var temp_origin=[all_shops[0]]
             origin= new google.maps.LatLng(temp_origin[0].lat(),temp_origin[0].lng())
-            console.log('first shop latlng === ',temp_origin[0].lat(),temp_origin[0].lng())
+           // console.log('first shop latlng === ',temp_origin[0].lat(),temp_origin[0].lng())
             var _origins =[origin];
             var _destinations=[];
             if(all_shops.length != 1){
@@ -437,10 +455,7 @@ input[type=number] {
         }else{
             _destinations.push(Customer_latlng );
         }
-            
-            //                    _destinations.push(Customer_latlng );
-
-          /*   console.log('origin_ ===',_origins[0].lat(),_origins[0].lng())
+            /*   console.log('origin_ ===',_origins[0].lat(),_origins[0].lng())
             console.log('_destinations[0] ==== ', _destinations[0].lat(),_destinations[0].lng());
             console.log('_destinations[1] ==== ', _destinations[1].lat(),_destinations[1].lng()); */
             var service = new google.maps.DistanceMatrixService();
@@ -475,16 +490,16 @@ input[type=number] {
     function callback(response, status) {
         setTimeout(() => {
             all_shops.sort((a, b) => (a.distance < b.distance) ? 1 : -1)
-            console.log('sorted all_shops =++++-->',all_shops)
-            console.log('status = ',status)    
-            console.log('response = ',response) 
+         //   console.log('sorted all_shops =++++-->',all_shops)
+          //  console.log('status = ',status)    
+          //  console.log('response = ',response) 
             distance = 0
 
             Object.values( response,status.rows)[0][0]['elements'].forEach(element=>{
                 distance += element['distance']['value']/1000 ;
-                console.log('element distance =======',element['distance']['value'])
+             //   console.log('element distance =======',element['distance']['value'])
             })
-        console.log('xxxdistance = ',distance)   
+      //  console.log('xxxdistance = ',distance)   
         var first_distance=0
         var secande_distance=0
         delivery_prix=0;
@@ -509,7 +524,7 @@ input[type=number] {
        if(delivery_prix > max_Delivery_price_Delivery){
             delivery_prix=max_Delivery_price_Delivery;
        }
-       console.log('delivery shipping price = ',delivery_prix)
+     //  console.log('delivery shipping price = ',delivery_prix)
 		document.querySelector('#total_shipping').innerHTML=Math.round(price_shipping.toFixed(2));			
 
        // console.log('shipping price = ',price_shipping)
@@ -521,10 +536,11 @@ input[type=number] {
 							shipping_price: Math.round(price_shipping.toFixed(2)),
 							lat: user_lat,
 							lng:user_lng,
+							address:address_google_map,
 							delivery_price_shipping: Math.round(delivery_prix.toFixed(2))
                         }
             }).then(function(responce) {
-                console.log(responce);
+               // console.log(responce);
 				calculate_Total_to_pay()
             }).catch(function(err) {
 
@@ -560,7 +576,7 @@ input[type=number] {
        setTimeout(executed_to_false, 1000);
         }
     }
-
+    // executed is a boolean , its make to not calculate distance in every move of marker only when it reached the detination ( after 1000 ms of the click  )
     function executed_to_false(){
         price_shipping=0
        const shop_lat ={{$shops_latlng[0][0]}}
@@ -569,7 +585,7 @@ input[type=number] {
         latLngB=new google.maps.LatLng(shop_lat,shop_lng);
         var distance = google.maps.geometry.spherical.computeDistanceBetween(latLngA, latLngB)
         distance=distance/1000 
-        console.log('distance totak en Km =',distance); 
+      //  console.log('distance totak en Km =',distance); 
         var first_distance=0
         var secande_distance=0
         if(distance >10){

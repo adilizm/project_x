@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -14,13 +15,16 @@ class UsersController extends Controller
     public function index(){
         Gate::authorize('users.index');
         if(Auth::user()->role_id == 1){
-            $users= User::all();
+            $users= User::paginate(7);
             $Roles= Role::all();
         }else if(Auth::user()->role_id == 2){
-            $Customer= Customer::where('city_id',Auth::user()->Manager()->first()->city_id);
+            $users= User::whereHas('Customer', function (Builder $query) {
+                $query->where('city_id', Auth::user()->Manager()->first()->city_id);
+            })->paginate(10);
             $Roles= Role::all();
+        }else{
+            return 'to view users you should be admin or manager pls contact the admin to take care of you thanks';
         }
-       
         return view('managment.users.index', compact('users','Roles'));
     }
 

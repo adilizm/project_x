@@ -133,6 +133,9 @@ Route::group(['prefix' => '{language}'], function () {
 
         /* Orders routes */
         Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
+        Route::post('order/update_order_status', [OrderController::class, 'update_order_status'])->name('update_order_status');
+        Route::post('order/update_order_delivery', [OrderController::class, 'update_order_delivery'])->name('update_order_delivery');
+        Route::post('order/delivery_show_order', [OrderController::class, 'delivery_show_order'])->name('delivery_show_order');
         Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
 
         

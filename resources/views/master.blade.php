@@ -43,7 +43,6 @@ $language = \App\Models\Language::where('key',app()->getLocale())->first();
 <body>
     <div id="wrap">
         <div id="main" class="container clear-top">
-            <button class="btn btn-primary d-none" id="buttonInstall">install app</button>
             @yield('content')
         </div>
     </div>

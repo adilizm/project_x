@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Businesssetting;
+use App\Models\City;
+use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Orderdetail;
 use App\Models\Product;
@@ -14,19 +16,67 @@ use Illuminate\Support\Facades\Gate;
 
 class OrderController extends Controller
 {
-    public function Orders_index(){
+    public function Orders_index(Request $request)
+    {
         if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
-           $orders=Order::orderBy('created_at','desc')->paginate(10);
-           return view('managment.orders.admin.index',compact('orders'));
-        }
-    }
-    public function admin_edit_order($language,$id){
-        if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
-            $order=Order::find(decrypt($id));
-            $orders_detailes=Orderdetail::where('order_id',$order->id)->get();
-            return view('managment.orders.admin.edit',compact('order','orders_detailes'));
-         }
+            $orders = Order::orderBy('created_at', 'desc');
 
+            if ($request->status != null && $request->status != 'filtrer Des ordres') {
+                $orders = $orders->where('status', $request->status);
+            }
+            if ($request->delivery_status != null && $request->delivery_status != 'delivery_status') {
+                $orders = $orders->where('delivery_status', $request->delivery_status);
+            }
+            if ($request->city_id != null && $request->city_id != 'city_id') {
+                $orders = $orders->where('city_id', $request->city_id);
+            }
+            $orders = $orders->paginate(10);
+            $cities = City::all();
+            return view('managment.orders.admin.index', compact('orders', 'cities'));
+        }
+        if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
+            $orders = Order::where('city_id', Auth::user()->Manager()->first()->city_id)->orderBy('created_at', 'desc');
+            if ($request->status != null && $request->status != 'filtrer Des ordres') {
+                $orders = $orders->where('status', $request->status);
+            }
+            if ($request->delivery_status != null && $request->delivery_status != 'delivery_status') {
+                $orders = $orders->where('delivery_status', $request->delivery_status);
+            }
+            $orders = $orders->paginate(10);
+            return view('managment.orders.manager.index', compact('orders'));
+        }
+        if (in_array("Livreur", json_decode(Auth::user()->Role->permissions))) {
+            $orders = Order::where(['status'=>'confirmed','city_id'=> Auth::user()->Livreur()->first()->city_id,'livreur_id'=>Auth::user()->Livreur()->first()->id])->orderBy('created_at', 'desc');
+            if ($request->status != null && $request->status != 'filtrer Des ordres') {
+                $orders = $orders->where('status', $request->status);
+            }
+            if ($request->delivery_status != null && $request->delivery_status != 'delivery_status') {
+                $orders = $orders->where('delivery_status', $request->delivery_status);
+            }
+            $orders = $orders->paginate(10);
+            return view('managment.orders.delivery.index', compact('orders'));
+        }
+        if (in_array("Vondeur", json_decode(Auth::user()->Role->permissions))) {
+            $orders = Orderdetail::where('vondeur_id', Auth::user()->Vondeur()->first()->id)->orderBy('created_at', 'desc');
+            if ($request->status != null && $request->status != 'filtrer Des ordres') {
+                $orders = $orders->where('status', $request->status);
+            }
+            if ($request->delivery_status != null && $request->delivery_status != 'delivery_status') {
+                $orders = $orders->where('delivery_status', $request->delivery_status);
+            }
+            $orders = $orders->paginate(10);
+            return view('managment.orders.delivery.index', compact('orders'));
+        }
+        return 'you should be admin or manager pls contact admin to take care of you, Thanks';
+    }
+    public function admin_edit_order($language, $id)
+    {
+        if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
+            $order = Order::find(decrypt($id));
+            $livreurs = Delivery::where(['city_id' => $order->city_id, 'is_active' => 1, 'is_confirmed' => 1])->get();
+            $orders_detailes = Orderdetail::where('order_id', $order->id)->get();
+            return view('managment.orders.admin.edit', compact('order', 'orders_detailes', 'livreurs'));
+        }
     }
 
     public function add_to_cart(Request $request)
@@ -119,19 +169,22 @@ class OrderController extends Controller
         $shipping_price = $request->params['shipping_price'];
         $lat = $request->params['lat'];
         $lng = $request->params['lng'];
+        $address = $request->params['address'];
         $delivery_price_shipping = $request->params['delivery_price_shipping'];
         $request->session()->put('shipping_price', $shipping_price);
         $request->session()->put('lat', $lat);
         $request->session()->put('lng', $lng);
+        $request->session()->put('address', $address);
         $request->session()->put('delivery_price_shipping', $delivery_price_shipping);
         return $request;
     }
     public function Store_order(Request $request)
     {
-        dd($request);
+       
         $order = new Order();
         $total_products = 0;
         $total_shipping = $request->session()->get('shipping_price');
+        $delivery_price_shipping = $request->session()->get('delivery_price_shipping');
         $lat = $request->session()->get('lat');
         $lng = $request->session()->get('lng');
         $delivery_price_shipping = $request->session()->get('delivery_price_shipping');
@@ -139,51 +192,54 @@ class OrderController extends Controller
         foreach ($cart as $product) {
             $total_products += $product['variant_info']['prix'] * $product['quantity'];
         }
-        
-        $number=null;
-        if($request->number != null){
-            $number=$request->number;
+
+        $number = null;
+        if ($request->number != null) {
+            $number = $request->number;
         }
-        $Business=null;
-        if($request->Business != null){
-            $Business=$request->Business;
+        $Business = null;
+        if ($request->Business != null) {
+            $Business = $request->Business;
         }
-        $floor=null;
-        if($request->floor != null){
-            $floor=$request->floor;
+        $floor = null;
+        if ($request->floor != null) {
+            $floor = $request->floor;
         }
-        $Zone=null;
-        if($request->Zone != null){
-            $Zone=$request->Zone;
+        $Zone = null;
+        if ($request->Zone != null) {
+            $Zone = $request->Zone;
         }
-        $address_more_info=null;
-        if($request->address_more_info != null){
-            $address_more_info=$request->numaddress_more_infober;
+        $address_more_info = null;
+        if ($request->address_more_info != null) {
+            $address_more_info = $request->numaddress_more_infober;
         }
 
-        $new_order = $order->create([
+     /*    $new_order = $order->create([
             'user_id' => Auth::user()->id,
             "status" => "new_arrivale",
-            "city_id" => $request->city_id,
             "delivery_status" => "not_assigned",
             "price_total" => $total_shipping + $total_products,
             "price_shipping" => $total_shipping,
-            "city_id" =>Cookie::get('user_city'),
+            "city_id" => Cookie::get('user_city'),
             "lat" => $lat,
             "lng" => $lng,
             "number" => $number,
             "Business" => $Business,
             "floor" => $floor,
             "Zone" => $Zone,
-            "address_more_info" => $address_more_info,
-        ]);
+            "address_more_info" => $request->session()->get('address'),
+            "delivery_price_shipping" => $delivery_price_shipping,
+            
+        ]); */
 
         foreach ($cart as $product) {
             $orderdetail = new Orderdetail();
+            dd( Product::find( $product['product_id'])->Shop()->first()->User()->first()->Vondeur()->first()->id);
             $orderdetail->create([
                 'order_id' => $new_order->id,
                 'product_id' => $product['product_id'],
-                'variant' => json_encode( $product['variant_info']),
+                'vondeur_id' => Product::find( $product['product_id'])->Shop()->first()->User()->first()->Vondeur()->first()->id,
+                'variant' => json_encode($product['variant_info']),
                 'price' => $product['variant_info']['prix'],
                 'qty' => $product['quantity'],
             ]);
@@ -194,16 +250,59 @@ class OrderController extends Controller
         $request->session()->forget('lng');
         return 'thankyou';
     }
-    public function encreas_qty(Request $request){
-        $cart=$request->session()->get('cart');
-        $cart[$request->params['_position']]['quantity']=$request->params['_value'];
-        $request->session()->put('cart',$cart);
+    public function encreas_qty(Request $request)
+    {
+        $cart = $request->session()->get('cart');
+        $cart[$request->params['_position']]['quantity'] = $request->params['_value'];
+        $request->session()->put('cart', $cart);
         return $request;
     }
-    public function decreas_qty(Request $request){
-        $cart=$request->session()->get('cart');
-        $cart[$request->params['_position']]['quantity']=$request->params['_value'];
-        $request->session()->put('cart',$cart);
+    public function decreas_qty(Request $request)
+    {
+        $cart = $request->session()->get('cart');
+        $cart[$request->params['_position']]['quantity'] = $request->params['_value'];
+        $request->session()->put('cart', $cart);
         return $request;
+    }
+    public function update_order_status(Request $request)
+    {
+        if (in_array("Admin", json_decode(Auth::user()->Role->permissions)) || in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
+            Order::find($request->params['order_id'])->update([
+                'status' => $request->params['order_status'],
+            ]);
+            return '1';
+        }
+    }
+    public function update_order_delivery(Request $request)
+    {
+        if (in_array("Admin", json_decode(Auth::user()->Role->permissions)) || in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
+            $order=Order::find($request->params['order_id']);
+            $delivery = null;
+            if ($request->params['order_delivery'] == 'null') {
+                $delivery = null;
+                $order->update([
+                    'delivery_status' => 'not_assigned',
+                    'Livreur_id' => $delivery,
+                ]);
+                return '2';
+
+            } else {
+                $delivery = $request->params['order_delivery'];
+            }
+            $order->update([
+                'Livreur_id' => $delivery,
+                'delivery_status' => 'in_the_way',
+            ]);
+            return '1';
+        }
+    }
+    public function delivery_show_order($language,$id){
+
+        $order=Order::find(decrypt($id));
+        if($order->city_id == Auth::user()->Livreur()->first()->city_id){
+            $orders_detailes = Orderdetail::where('order_id', $order->id)->get();
+            return view('managment.orders.delivery.show',compact('order','orders_detailes'));
+        }
+
     }
 }

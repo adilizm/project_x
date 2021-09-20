@@ -44,9 +44,8 @@ class HomeController extends Controller
             } else {
                 /* change this calcule */
                 $top_10_requested_products = Product::orderBy('created_at', 'desc')->where(['confermed' => '1', 'status' => 'published'])->whereHas('Shop', function (Builder $query) {
-                    $query->where('is_published', '1');
+                    $query->where('is_published', '1')->where('city_id',Cookie::get('user_city'));
                 })->take(10)->get();
-               //  dd($top_10_requested_products);
             }
         }
 

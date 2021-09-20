@@ -18,12 +18,6 @@
         <form class="mx-2" action="#" method="get">
           @csrf
           <div class="d-flex justify-content-end">
-            <select name="city_id" class="form-control mr-1" id="">
-              <option>filtrer par ville</option>
-              @foreach($cities as $city)
-              <option value="{{$city->id}}">{{$city->name}}</option>
-             @endforeach
-            </select>
             <select name="status" class="form-control mr-1" id="">
               <option>filtrer Des ordres</option>
               <option value="new">new_arrivale</option>

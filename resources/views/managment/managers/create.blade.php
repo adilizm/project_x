@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class=" w-100 float-right p-3">
-                    <button type="submit" class="btn bg-primary btn-sm float-right">ajouter un role</a>
+                    <button type="submit" class="btn bg-primary btn-sm float-right">ajouter le manager</a>
                 </div>
             </form>
         </div>

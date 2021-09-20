@@ -235,9 +235,9 @@ if(session()->get('cart') != null){
                   <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale()) }}"> vendor managment </a></li>
                   @elseif(Auth::user()->role_id == 4)
                     @if(Auth::user()->Livreur()->first()->is_active == 1 && Auth::user()->Livreur()->first()->is_confirmed == 1 )
-                      <li><a class="dropdown-item" href="#">livreur managment </a></li>
+                      <li><a class="dropdown-item" href="{{ route('managment.index',app()->getLocale()) }}">livreur managment </a></li>
                     @else
-                      <li><a class="dropdown-item" href="#">livreur not active</a></li>
+                      <li><a class="dropdown-item" disable href="#">livreur not active</a></li>
                     @endif
                   @endif
                   <li>
@@ -395,7 +395,7 @@ if(session()->get('cart') != null){
             <a href="{{route('login.vondeur',app()->getLocale())}}" class="text-reset">Devenir vendeur</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Settings</a>
+          <a href="javascript:void(0);"  id="buttonInstall" class="text-reset">install app</a>
           </p>
           <p>
           <a href="{{route('login.delivery',app()->getLocale())}}" class="text-reset">Devenir Livreur</a>
