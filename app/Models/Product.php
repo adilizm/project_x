@@ -16,6 +16,10 @@ class Product extends Model
     {
         return $this->belongsTo(Shop::class);
     }
+    public function Category()
+    {
+        return $this->belongsTo(Category::class);
+    }
     
     public function Images()
     {

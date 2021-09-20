@@ -229,7 +229,7 @@
         <div class="d-flex" style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">{{ translate('Most requested')}}</div>
         <div class="glide__track " data-glide-el="track">
             <ul class="glide__slides ">
-                @foreach($top_10_requested_products as $product)
+                @foreach($top_10_requested_products as $product) 
                 <li class="glide__slide   product-card1 position-relative p-1 m-1" style="overflow: hidden;padding-left: 2px;padding-right: 2px;">
                     <a href="{{route('product.index',['language'=>app()->getLocale(),'slug'=>$product->slug])}}">
                         <div style="width: 100%;padding: 1px;">

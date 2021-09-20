@@ -155,7 +155,9 @@ class HomeController extends Controller
         /*         dd($variants,$options,$variables);
  */
         if ($product != null) {
-            return view('frontend.product.product_index', compact('product', 'variants', 'options', 'variables'));
+            // return view('frontend.product.product_index', compact('product', 'variants', 'options', 'variables'));
+            return view('frontend-user.product.index', compact('product', 'variants', 'options', 'variables'));
+
         } else {
             return redirect()->route('home', ['language' => App::getLocale()]);
         }

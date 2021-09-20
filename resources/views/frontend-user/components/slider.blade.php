@@ -41,10 +41,10 @@ var glide = new Glide('.glide-details', {
          hoverpause: true,
          perView: 1
       }).mount();
-        var glide = new Glide('.glide-product', {
-         type: 'carousel',
+      //   var glide = new Glide('.glide-product', {
+      //    type: 'carousel',
          
-         perView: 4
-      }).mount();
+      //    perView: 4
+      // }).mount();
 
 </script>    
