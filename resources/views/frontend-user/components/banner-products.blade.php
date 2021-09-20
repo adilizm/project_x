@@ -15,7 +15,7 @@
                      <div class="relative flex items-center justify-center cursor-pointer w-auto h-44">
                      <span class="sr-only">Product Image</span>
                      <div><img alt="{{ $product->name }}" sizes="100vw" onerror="this.onerror=null;this.src='/images/onerror.svg';" src="{{'/storage/'.$product->Images()->where('is_main','1')->first()->path}}" class="mt-4 absolute object-contain max-w-full max-h-full min-w-full min-h-full -inset-0"></div>
-                     <div class="absolute top-3 right-3 md:top-4 md:end-4 rounded text-xs leading-6 font-semibold px-1.5 sm:px-2 md:px-2.5 bg-green-600 text-white">20%</div>
+                     <div class="absolute top-3 right-3 md:top-4 md:end-4 rounded text-xs leading-6 font-semibold px-1.5 sm:px-2 md:px-2.5 bg-green-600 text-white">{{floor(($product->old_price - $product->prix) * 100 / $product->old_price) }} %</div> 
                   </div>
                   </a>
                   <header class="p-3 md:p-6">
