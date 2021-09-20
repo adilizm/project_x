@@ -65,6 +65,8 @@ Route::group(['prefix' => '{language}'], function () {
         /* public products */
         Route::get('/produit/{slug}', [HomeController::class, 'Product'])->name('product.index');
         Route::post('/produit/add_to_cart', [OrderController::class, 'add_to_cart'])->name('add_to_cart');
+        Route::post('/produit/encreas_qty', [OrderController::class, 'encreas_qty'])->name('encreas_qty');
+        Route::post('/produit/decreas_qty', [OrderController::class, 'decreas_qty'])->name('decreas_qty');
         Route::post('/produit/remove_from_carte', [OrderController::class, 'remove_from_carte'])->name('remove_from_carte');
 
         /* card */
@@ -131,6 +133,9 @@ Route::group(['prefix' => '{language}'], function () {
 
         /* Orders routes */
         Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
+        Route::post('order/update_order_status', [OrderController::class, 'update_order_status'])->name('update_order_status');
+        Route::post('order/update_order_delivery', [OrderController::class, 'update_order_delivery'])->name('update_order_delivery');
+        Route::post('order/delivery_show_order', [OrderController::class, 'delivery_show_order'])->name('delivery_show_order');
         Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
 
         

@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug');
             $table->text("description", 200);
             $table->string("picture", 200)->nullable()->default(null);
+            $table->double("admin_percent")->default(10);
             $table->timestamps();
             $table->softDeletes();
         });

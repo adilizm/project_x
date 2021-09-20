@@ -17,7 +17,7 @@ class ManagmentController extends Controller
             return view('managment.home.manager.index');
         }elseif( Auth::user()->role_id == 3 ){
             return view('managment.home.vondeur.index');
-        }elseif( Auth::user()->role_id == 5 ){
+        }elseif( Auth::user()->role_id == 4 ){
             return view('managment.home.livreur.index');
         } else{
             abort(403, 'Unauthorized action.');

@@ -32,7 +32,7 @@
         </div>
         @endforeach
         <div class=" w-100 float-right">
-            <button type="submit" class="btn bg-gradient-primary btn-sm float-right">modifier le role</a>
+            <button type="submit" class="btn bg-primary btn-sm float-right">modifier le role</a>
         </div>
     </form>
   </div>

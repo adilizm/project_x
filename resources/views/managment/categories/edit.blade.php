@@ -46,7 +46,7 @@
       
         
         <div class=" w-100 float-right">
-            <button type="submit" class="btn bg-gradient-primary btn-sm float-right">Enregistrer</a>
+            <button type="submit" class="btn bg-primary btn-sm float-right">Enregistrer</a>
         </div>
     </form>
   </div>
