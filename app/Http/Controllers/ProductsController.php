@@ -540,7 +540,7 @@ class ProductsController extends Controller
                                 } else if ($request['v_old_i_' . $Counter_img] != null) {
                                     $variant['image'] = $request['v_old_i_' . $Counter_img];
                                 } else {
-                                    $value['image'] = null;
+                                    $variant['image'] = null;
                                 }
                                 array_push($variants, $variant);
                                 $Counter++;

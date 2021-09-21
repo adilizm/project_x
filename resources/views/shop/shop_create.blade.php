@@ -82,7 +82,7 @@
                 <textarea name="address" class="form-control" required id="address" cols="30" rows="3"></textarea>
             </div> <!-- form-group end.// -->
             <div class="d-flex mt-3">
-                <strong>Merci de choisire votre adress exact sur la map </strong>
+                <strong>Merci de choisir votre adress exact sur la map </strong>
             </div>
             <div class="form-group mt-2" id="map_container" style="height:300px !important">
                 <p class="text-muted" id="note" style="display:none">merci de choisir la position exacte de votre boutique</p>

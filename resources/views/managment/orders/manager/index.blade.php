@@ -71,7 +71,7 @@
                     <td>{{$order->delivery_status}} </td>
                     @if(in_array("orders.edit", json_decode(Auth::user()->Role->permissions)))
                     <td>
-                    <a class="mx-1" href="{{ route('admin.orders.admin_edit_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-eye"></i></a>
+                    <a class="mx-1" href="{{ route('orders.manager.manager_edit_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-eye"></i></a>
                     </td>
                     @endif
                   </tr>

@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+
 use App\Models\Businesssetting;
 use App\Models\Product;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,15 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         \App\Models\Product::factory(100)->create();
-        $B1=New Businesssetting();
-        $B1->create([
-            'name'=>'',
-            'value'=>'',
-            'is_active'=>'',
-            'from'=>'',
-            'to'=>'',
-            'link'=>''
-        ]);
+
+        //\App\Models\Product::factory(100)->create();
+        $this->call(RoleSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(BusinesssettingSeeder::class);
+        $this->call(LanguageSeeder::class);
+        $this->call(CitySeeder::class);
+        $this->call(SliderSeeder::class);
+
     }
 }

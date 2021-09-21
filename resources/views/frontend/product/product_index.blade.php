@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-12 col-md-6">
         <div class="container">
-            <img class="w-100" src="{{ '/storage/'. $product->Images()->where('is_main','1')->first()->path}}" alt="">
+            <img class="w-100" id="main_image" src="{{ '/storage/'. $product->Images()->where('is_main','1')->first()->path}}" alt="">
         </div>
         <div class="d-flex justify-content-center">
             @foreach($product->Images()->where('is_main','0')->get() as $image)
@@ -111,6 +111,10 @@
                     variant_selected=variant
                     console.log('selected_variant = ',variant_selected)
                     document.getElementById('prix').innerHTML=(variant.prix + ' Dhs');
+                }
+                if(variant['image'] != null){
+                    document.getElementById('main_image').removeAttribute('src');
+                    document.getElementById('main_image').setAttribute('src','/storage/'.concat(variant['image']));
                 }
             }
             })

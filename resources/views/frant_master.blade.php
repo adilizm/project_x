@@ -191,7 +191,7 @@ if(session()->get('cart') != null){
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448" />
               </svg></button>
           </div>
-          <div class="position-absolute bg-danger w-100 " style="z-index: 1000;" id="search_result"> </div>
+          <div class="position-absolute w-100 " style="z-index: 1000;" id="search_result"> </div>
 
         </form>
         <div class="d-none d-md-flex ">
@@ -454,7 +454,7 @@ if(session()->get('cart') != null){
           console.log('null');
         }else {
            document.getElementById('search_result').innerHTML =responce.data;
-           console.log('kayna data');
+          //  console.log('kayna data');
 
         }
     }).catch(function(err) {

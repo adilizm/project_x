@@ -1,15 +1,27 @@
 module.exports = {
-     purge: [
-     './resources/**/*.blade.php',
-     './resources/**/*.js',
-     './resources/**/*.vue',
-   ],
-  darkMode: true, // or 'media' or 'class'
-  theme: {
-    extend: {},
+  corePlugins: {
+    container: false
   },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.container': {
+          maxWidth: '100%',
+          '@screen sm': {
+            maxWidth: '540px',
+          },
+          '@screen md': {
+            maxWidth: '720px',
+          },
+          '@screen lg': {
+            maxWidth: '992px',
+          },
+          '@screen xl': {
+            maxWidth: '1200px',
+          },
+          
+        }
+      })
+    }
+  ]
 }

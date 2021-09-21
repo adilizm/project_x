@@ -1,5 +1,6 @@
-<div class="pt-12 mb-12 md:mb-14 lg:mb-0 w-full px-4 md:px-10 lg:px-22 xl:px-40">
-      <footer id="footer" class="relative  dark:bg-gray-900">
+<div class="w-full bg-white">
+   <div class="pt-12 mb-12 md:mb-14 lg:mb-0 w-full container mx-auto">
+      <footer id="footer" class="relative">
          <div tabindex="0" aria-label="footer"
             class="focus:outline-none border-t border-b border-gray-200 dark:border-gray-700 py-16">
             <div class="mx-auto">
@@ -114,4 +115,5 @@
                Technopek. All Rights Reserved.</p>
          </div>
       </footer>
-   </div>
+</div>
+</div>
