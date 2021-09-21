@@ -127,7 +127,7 @@ input[type=number] {
 					  <dd class="text-right" id="total_no_coupon">568</dd>
 					</dl>
 					<dl class="dlist-align">
-					  <dt>Total shipping:</dt> <small><a href="#map">choisire ma position</a></small>
+					  <dt>Total shipping:</dt> <small><a href="#map">choisir ma position</a></small>
 					  <dd class="text-right" id="total_shipping">568</dd>
 					</dl>
 					<dl class="dlist-align">

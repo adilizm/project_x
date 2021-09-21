@@ -6,7 +6,7 @@
 @section('frant_content')
 <div class="cotainer">
     <div class="d-flex justify-content-center text-center">
-        <h3>choisire votre Ville</h3>
+        <h3>choisir votre Ville</h3>
     </div>
     <div class="row">
               @foreach($cities as $city)
