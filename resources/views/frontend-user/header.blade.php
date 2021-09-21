@@ -80,9 +80,11 @@
                     </form>
                   @else
              
-                    <a href="{{ route('login',app()->getLocale()) }}" class="py-1 block">Connectez-vous</a>
+                    {{-- <a href="{{ route('login',app()->getLocale()) }}" class="py-1 block">Connectez-vous</a> --}}
+                    <button onclick="showModelLogin()" class="py-1 block">Connectez-vous</button>
                     
-                    <a href="{{ route('register',app()->getLocale()) }}" class="py-1 block">Créer un compte</a>
+                    {{-- <a href="{{ route('register',app()->getLocale()) }}" class="py-1 block">Créer un compte</a> --}}
+                    <a onclick="showModelRegister()" class="py-1 block">Créer un compte</a>
                
                 @endauth
                         </div>
@@ -135,7 +137,9 @@
                   </g>
                </svg></button>
          </nav>
-      </div>
+</div>
+ @include('frontend-user.components.login-model')
+  @include('frontend-user.components.register-model')
       <script>
                function toggleDropUser() {
          document.getElementById('pol-user').style.display = 'block';
@@ -182,4 +186,5 @@
      }
     
   }
+    
       </script>
