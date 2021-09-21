@@ -32,6 +32,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" >Ville</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" >activation </th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" >Activities</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" >Options</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -51,10 +52,11 @@
                     <td>
                       see Activities
                     </td>
-
+                    <td>
+                    <a href="{{ route('admin.manager.edit',['language'=>app()->getLocale(),'id'=>encrypt($manager->id)]) }}" class="mx-1"><i class="fas fa-edit"></i></a>
+                    </td>
                   </tr>
                   @endforeach
-
                 </tbody>
               </table>
             </div>

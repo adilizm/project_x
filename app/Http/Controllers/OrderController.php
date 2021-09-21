@@ -340,4 +340,10 @@ class OrderController extends Controller
         return view('managment.orders.delivery.orders_on_cours', compact('orders'));
 
     }
+    public function deliver_orders_history(){
+        $orders= Order::orderBy('created_at', 'desc')->where(['Livreur_id'=>Auth::user()->Livreur()->first()->id])->whereIn('delivery_status',['successed','returned'])->get();
+        return view('managment.orders.delivery.orders_history', compact('orders'));
+
+
+    }
 }

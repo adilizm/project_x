@@ -110,10 +110,7 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    
     public function vondeur_create()
     {
         if (!in_array("products.create", json_decode(Auth::user()->Role->permissions))) {
