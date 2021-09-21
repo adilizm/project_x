@@ -84,7 +84,7 @@
             <a href="{{route('login.vondeur',app()->getLocale())}}" class="text-reset">Devenir vendeur</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Settings</a>
+            <a href="javascript:void(0);"  id="buttonInstall" class="text-reset">install app</a>
           </p>
           <p>
             <a href="#!" class="text-reset">Orders</a>

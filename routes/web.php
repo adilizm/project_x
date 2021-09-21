@@ -69,6 +69,8 @@ Route::group(['prefix' => '{language}'], function () {
         /* public products */
         Route::get('/produit/{slug}', [HomeController::class, 'Product'])->name('product.index');
         Route::post('/produit/add_to_cart', [OrderController::class, 'add_to_cart'])->name('add_to_cart');
+        Route::post('/produit/encreas_qty', [OrderController::class, 'encreas_qty'])->name('encreas_qty');
+        Route::post('/produit/decreas_qty', [OrderController::class, 'decreas_qty'])->name('decreas_qty');
         Route::post('/produit/remove_from_carte', [OrderController::class, 'remove_from_carte'])->name('remove_from_carte');
 
         /* card */
@@ -128,15 +130,21 @@ Route::group(['prefix' => '{language}'], function () {
 
         /* shops routes */
         Route::get('magasins', [ShopController::class, 'index'])->name('shops.index');
-
+        Route::prefix('manager/magasins')->group(function () {
+            Route::get('edit/{id}', [ShopController::class, 'manager_edit_shop'])->name('manager.shops.manager_edit_shop');
+            Route::post('update', [ShopController::class, 'manager_update_shop'])->name('manager.shops.manager_update_shop');
+        });
         /* Cities routes */
         Route::get('villes', [CitiesController::class, 'index'])->name('cities.index');
         Route::post('villes/save', [CitiesController::class, 'store'])->name('cities.store');
 
         /* Orders routes */
         Route::post('order/store', [OrderController::class, 'Store_order'])->name('store_order');
+        Route::post('order/update_order_status', [OrderController::class, 'update_order_status'])->name('update_order_status');
+        Route::post('order/update_order_delivery', [OrderController::class, 'update_order_delivery'])->name('update_order_delivery');
         Route::get('orders/index', [OrderController::class, 'Orders_index'])->name('orders.index');
-
+        Route::get('orders/manager/edit/{id}', [OrderController::class, 'manager_edit_order'])->name('orders.manager.manager_edit_order');
+        
         
         
         /* delivery managment */
@@ -153,6 +161,17 @@ Route::group(['prefix' => '{language}'], function () {
         Route::post('managers/store', [ManagersController::class, 'store'])->name('managers.store');
         Route::post('managers/change_bann_status', [ManagersController::class, 'change_bann_status'])->name('manager.change_bann_status');
 
+        /* delivery routs */
+        Route::prefix('delivery')->group(function () {
+            Route::prefix('orders')->group(function () {
+                Route::get('history', [OrderController::class, 'deliver_orders_history'])->name('orders.delivery.orders_history');
+                Route::post('orders/take_order', [OrderController::class, 'take_order'])->name('orders.take_order');
+                Route::get('orders/orders_in_progress', [OrderController::class, 'orders_in_progress'])->name('orders.orders_in_progress');
+                Route::post('order/delivery_change_delivery_status/{id}', [OrderController::class, 'delivery_change_delivery_status'])->name('delivery_change_delivery_status');
+                Route::get('order/delivery_show_order/{id}', [OrderController::class, 'delivery_show_order'])->name('delivery_show_order');
+
+            });
+        });
 
         Route::prefix('vendeur')->group(function () {
             //this route may neot be important check it 

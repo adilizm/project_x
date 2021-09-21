@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Shop;
 use Illuminate\Contracts\Session\Session;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -26,8 +28,6 @@ class ProductsController extends Controller
         }
         if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) { //1 admin change this to Role has permition admin 
             $products = Product::orderBy('created_at', 'asc')->with('Images');
-
-            $date = $request->date;
             $sort_search = null;
             if ($request->search != null) {
                 $sort_search = $request->search;
@@ -36,7 +36,43 @@ class ProductsController extends Controller
             if ($request->status != null && $request->status != 'all'  && $request->status != 'filtrer Des produit') {
                 $products = $products->where('status', $request->status);
             }
-            if ($request->confirmation != null && $request->confermed != 'filtrer Des produit') {
+            if ($request->confirmation != null && $request->confirmation != 'filtrer Des produit') {
+                if ($request->confirmation == 1) {
+                    $products = $products->where('confermed', 1);
+                } else {
+                    $products = $products->where('confermed', 0);
+                }
+            }
+
+            if ($request->city != null && $request->city != 'filtrer par ville') {
+                $city_id = $request->city;
+                $products = $products->whereHas('Shop', function (Builder $query) use ($city_id) {
+                    $query->where('city_id', $city_id);
+                });
+            }
+            $citeis = City::all();
+
+            $products = $products->paginate(10);
+
+
+            return view('managment.products.admin.index', compact('products', 'citeis'));
+        } else if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) { // manager
+            $products = Product::orderBy('created_at', 'asc')->with('Images');
+
+            $city_id = Auth::user()->Manager()->first()->city_id;
+            $products = $products->whereHas('Shop', function (Builder $query) use ($city_id) {
+                $query->where('city_id', $city_id);
+            });
+
+            $sort_search = null;
+            if ($request->search != null) {
+                $sort_search = $request->search;
+                $products = $products->where('name', 'like', '%' . $sort_search . '%');
+            }
+            if ($request->status != null && $request->status != 'all'  && $request->status != 'filtrer Des produit') {
+                $products = $products->where('status', $request->status);
+            }
+            if ($request->confirmation != null && $request->confirmation != 'filtrer Des produit') {
                 if ($request->confirmation == 1) {
                     $products = $products->where('confermed', 1);
                 } else {
@@ -44,13 +80,10 @@ class ProductsController extends Controller
                 }
             }
             $products = $products->paginate(10);
-
-            return view('managment.products.admin.index', compact('products'));
-        } else if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) { // manager
-            return view('managment.products.manager.index');
+            return view('managment.products.manager.index',compact('products'));
         } else if (in_array("Vondeur", json_decode(Auth::user()->Role->permissions))) { // vondeur
             if (Auth::user()->Shop()->first() == null) {
-                return redirect()->route('shops.create',app()->getLocale())->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
+                return redirect()->route('shops.create', app()->getLocale())->with('info', 'pour ajouter des produits dont vous avez d\'abord besoin pour avoir une boutique, veuillez remplir les informations ci-dessous pour créer votre boutique');
             }
             $products = Product::orderBy('created_at', 'asc')->where('shop_id', Auth::user()->Shop->id)->with('Images');
 
@@ -63,17 +96,8 @@ class ProductsController extends Controller
             if ($request->status != null && $request->status != 'all' && $request->delete_100_each_page == null && $request->status != 'filtrer Des produit') {
                 $products = $products->where('status', $request->status);
             }
-            if ($request->status != null && $request->status == 'all' || $request->session()->has('100_each_page')) {
-                if ($request->delete_100_each_page != null) {
-                    $request->session()->forget('100_each_page');
-                    $products = $products->paginate(10);
-                } else {
-                    $request->session()->put('100_each_page', true);
-                    $products = $products->paginate(100);
-                }
-            } else {
-                $products = $products->paginate(10);
-            }
+
+            $products = $products->paginate(10);
 
             return view('managment.products.vondeur.index', compact('products'));
         } else {
@@ -134,7 +158,7 @@ class ProductsController extends Controller
         }
         $Counter = 0; //
 
-       
+
         $variants = [];
         if ($request->options[0] != null) {
             foreach ($values[0] as $value0) {
@@ -323,7 +347,7 @@ class ProductsController extends Controller
             }
         }
         $variants_saved = json_encode($variants);
-       // dd($request,$variants_saved);
+        // dd($request,$variants_saved);
 
         $min_qty = 1;
         if ($request->min_qty != null) {
@@ -348,7 +372,7 @@ class ProductsController extends Controller
         if ($request->old_price != null) {
             $old_price = $request->old_price;
         }
-        $qty=0;
+        $qty = 0;
         if ($request->qty_no_variant != null) {
             $qty = $request->qty_no_variant;
         }
@@ -395,21 +419,21 @@ class ProductsController extends Controller
             }
         }
 
-        return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> a été Ajouter!');
+        return redirect()->Route('products.index', app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> a été Ajouter!');
     }
-    public function vondeur_edit($language,$id)
+    public function vondeur_edit($language, $id)
     {
-       
+
         if (!in_array("products.edit", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $product = Product::find(decrypt($id));
         $categreis = Category::All();
         $keywords = implode(",", json_decode($product->keywords));
         $variants = json_decode($product->variants);
         $options = [];
-       
+
         foreach ($variants as $option) {
             array_push($options,  $option);
         }
@@ -516,7 +540,7 @@ class ProductsController extends Controller
                                 } else if ($request['v_old_i_' . $Counter_img] != null) {
                                     $variant['image'] = $request['v_old_i_' . $Counter_img];
                                 } else {
-                                    $value['image'] = null;
+                                    $variant['image'] = null;
                                 }
                                 array_push($variants, $variant);
                                 $Counter++;
@@ -719,7 +743,7 @@ class ProductsController extends Controller
         if ($request->old_price != null) {
             $old_price = $request->old_price;
         }
-        $qty=0;
+        $qty = 0;
         if ($request->qty_no_variant != null) {
             $qty = $request->qty_no_variant;
         }
@@ -744,7 +768,7 @@ class ProductsController extends Controller
             $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
             $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
             $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first();
-           // unlink('storage/' . $product_image->path);
+            // unlink('storage/' . $product_image->path);
             $product_image->update([
                 'path' => $filePath,
             ]);
@@ -758,7 +782,7 @@ class ProductsController extends Controller
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->get();
 
             foreach ($images as $image) {
-           //     unlink('storage/' . $image->path);
+                //     unlink('storage/' . $image->path);
             }
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->delete();
             $Counter = 0;
@@ -778,9 +802,9 @@ class ProductsController extends Controller
             }
         }
 
-        return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
+        return redirect()->Route('products.index', app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
     }
-    public function admin_edit($language,$id)
+    public function admin_edit($language, $id)
     {
         if (!in_array("Admin", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
@@ -1101,7 +1125,7 @@ class ProductsController extends Controller
         if ($request->old_price != null) {
             $old_price = $request->old_price;
         }
-        $qty=0;
+        $qty = 0;
         if ($request->qty_no_variant != null) {
             $qty = $request->qty_no_variant;
         }
@@ -1125,7 +1149,7 @@ class ProductsController extends Controller
             $fileName = time() . '_' . Str::slug($request->name, '_') . '_' . $Counter . '.' . $request['main_image']->guessExtension();
             $filePath = $request->file('main_image')->storeAs('Main_products', $fileName, 'public');
             $product_image = ProductImage::where('product_id', $product->id)->where('is_main', '1')->first();
-           // unlink('storage/' . $product_image->path);
+            // unlink('storage/' . $product_image->path);
             $product_image->update([
                 'path' => $filePath,
             ]);
@@ -1136,7 +1160,7 @@ class ProductsController extends Controller
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->get();
 
             foreach ($images as $image) {
-            //    unlink('storage/' . $image->path);
+                //    unlink('storage/' . $image->path);
             }
             $images = ProductImage::where('product_id', $product->id)->where('is_main', 0)->delete();
             $Counter = 0;
@@ -1156,7 +1180,7 @@ class ProductsController extends Controller
             }
         }
 
-        return redirect()->Route('products.index',app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
+        return redirect()->Route('products.index', app()->getLocale())->with('success', 'le produit : <strong>' . $product->name . '</strong> le produit a été mis à jour avec succès!');
     }
     public function admin_update_status(Request $request)
     {
@@ -1206,5 +1230,4 @@ class ProductsController extends Controller
         $product = Product::where('shop_id', Auth::user()->Shop()->first()->id)->FindOrFail(decrypt($request->product_id))->delete();
         return back()->with('success', 'le produit a été supprimer avec succès!');
     }
-  
 }

@@ -56,6 +56,7 @@ class CategoryController extends Controller
             'logo' => 'required|mimes:png,jpg,jpeg|max:2048',
             'name' => 'required|max:50',
             'description' => 'required|max:300000',
+            'admin_percent' => 'required|max:100',
             ]); 
             
         $fileName = time().'_'.$request->logo->getClientOriginalName();
@@ -77,6 +78,7 @@ class CategoryController extends Controller
                 'description'=>$request->description,
                 'slug'=>Str::slug($request->name),
                 'picture'=>$filePath,
+                'admin_percent'=>$request->admin_percent,
             ]);
         }else{
             $category->create([
@@ -85,6 +87,7 @@ class CategoryController extends Controller
                 'parent_id'=>$request->parent_id,
                 'slug'=>Str::slug($request->name),
                 'picture'=>$filePath,
+                'admin_percent'=>$request->admin_percent,
             ]);
         }
            

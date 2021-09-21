@@ -1,6 +1,8 @@
 @extends('frant_master')
 
 @section('frant_head')
+<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&v=weekly'}}" async></script>
+
 	<style>
 		/* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -151,7 +153,6 @@ input[type=number] {
     </div>
     <div class=" m-3">
         <div class="row">
-            <p>shipping price = <strong id="shipping_price">0.00</strong> <sub>Dhs</sub> </p>
         </div>
         <form action="{{route('store_order',app()->getlocale())}}" method="post">
             @csrf
@@ -192,12 +193,7 @@ input[type=number] {
             </div>
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">Passer La Commande</button>
-            </div>
-            <input type="text" id="lat" name="lat" value="">
-            <input type="text" id="lng" name="lng" value="">
-            <br>
-            <input type="text" id="latnav" name="" value="">
-            <input type="text" id="lngnav" name="" value="">
+            </div>           
         </form>
 
     </div>
@@ -212,20 +208,25 @@ input[type=number] {
 	var user_lat = 0
     var user_lng = 0
     @foreach($shops_info as $shop)
-        const {{ 'shop_'. $loop->index .'._lat' }}={{$shop['lat']}}
-        const {{ 'shop_'. $loop->index .'._lng' }}={{$shop['lng']}}
+        const {{ 'shop_'. $loop->index .'_lat' }}={{$shop['lat']}}
+        const {{ 'shop_'. $loop->index .'_lng' }}={{$shop['lng']}}
         @if(!$loop->last)
         var {{ 'distance_'.$loop->index }}
         @endif
-
     @endforeach
 
-    
-
     let map;
-    const shipping_fee_first_10_km= {{$shipping_fee_first_10_km}}
-    const shipping_fee_more_than_10_km= {{$shipping_fee_more_than_10_km}}
-    const min_shipping_fee= {{$min_shipping_fee}}
+    const shipping_fee_first_10_km_Customer=  {{$shipping_fee_first_10_km}}
+    const shipping_fee_more_than_10_km_Customer= {{$shipping_fee_more_than_10_km}}
+    const min_shipping_fee_Customer= {{$min_shipping_fee}}
+    const max_Delivery_price_costumer= {{$max_Delivery_price_costumer}}
+
+    const shipping_fee_first_10_km_Delivery=  {{$Delivery_price_delivery_man_less_than_10_KM}}
+    const shipping_fee_more_than_10_km_Delivery= {{$Delivery_price_delivery_man_more_than_10_KM}}
+    const min_shipping_fee_Delivery= {{$min_Delivery_price_delivery_man}}
+    const max_Delivery_price_Delivery= {{$max_Delivery_price_delivery_man}}
+
+    var delivery_prix=0;
     var price_shipping=0
 		function decreas_qty(position,product_price){
 			const min =	document.querySelector('#div_qty_'.concat(position.toString()).concat(' input')).getAttribute('min')	;
@@ -236,6 +237,17 @@ input[type=number] {
 			if(value< min){
 				value=min;
 			}
+            axios.post('{{ route('decreas_qty',['language'=>app()->getLocale()]) }}', {
+                        params: {
+                            _position:position,
+                            _product_price:product_price,
+                            _value:value
+                        }
+            }).then(function(responce) {
+               // console.log(responce)
+            }).catch(function(err) {
+                console.log(err);
+            })
 			document.querySelector('#div_qty_'.concat(position.toString()).concat(' input')).value=value
 			var product_total=value*product_price;
 			document.querySelector('#this_product_total'.concat(position.toString())).innerHTML=product_total;
@@ -249,6 +261,20 @@ input[type=number] {
 			if(value> max){
 				value=max;
 			}
+
+            axios.post('{{ route('encreas_qty',['language'=>app()->getLocale()]) }}', {
+                        params: {
+                            _position:position,
+                            _product_price:product_price,
+                            _value:value
+                        }
+            }).then(function(responce) {
+               // console.log(responce)
+            }).catch(function(err) {
+                console.log(err);
+            })
+
+
 			document.querySelector('#div_qty_'.concat(position.toString()).concat(' input')).value=value
 			var product_total=value*product_price;
 			document.querySelector('#this_product_total'.concat(position.toString())).innerHTML=product_total;
@@ -278,7 +304,6 @@ input[type=number] {
 	<script>
 
 </script>
-<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&v=weekly'}}" async></script>
 
 <script>
     
@@ -294,33 +319,31 @@ input[type=number] {
         navigator.geolocation.getCurrentPosition((pos)=>{
                 x = pos.coords.latitude
                 y = pos.coords.longitude
-                console.log('xx = ',x)
-                console.log('yy = ',y)
+              //  console.log('xx = ',x)
+               // console.log('yy = ',y)
                 initMap()
-                document.getElementById('latnav').value=x
-            document.getElementById('lngnav').value=y
             }, error, options);
 
         function success(pos) {
         var crd = pos.coords;
-        console.log('Votre position actuelle est :');
-        console.log(`Latitude : ${crd.latitude}`);
-        console.log(`Longitude : ${crd.longitude}`);
-        console.log(`La précision est de ${crd.accuracy} mètres.`);
+    //  console.log('Votre position actuelle est :');
+    // console.log(`Latitude : ${crd.latitude}`);
+    //console.log(`Longitude : ${crd.longitude}`);
+    //console.log(`La précision est de ${crd.accuracy} mètres.`);
         }
 
         function error(err) {
+            //hide the page by using a div and alert to make him accept the geolocation 
         console.warn(`ERREUR (${err.code}): ${err.message}`);
         }
     function initMap() {
         axios.post('https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE').then(function(responce) {
-             console.log(responce);
+            // console.log(responce);
             
-           
-
             user_lat = x
             user_lng = y
-            
+           
+
             map = new google.maps.Map(document.getElementById("map"), {
                 center: {
                     lat: user_lat,
@@ -338,7 +361,12 @@ input[type=number] {
                 animation: google.maps.Animation.DROP,
                 title: "Votre position",
             }
+           
+
+                
+            
             marker = new google.maps.Marker(center_marker);
+            infowindow = new google.maps.InfoWindow();
 
             google.maps.event.addListener(map, 'click', function(event) {
                 var result = [event.latLng.lat(), event.latLng.lng()];
@@ -347,12 +375,6 @@ input[type=number] {
          
             calculate_distance_with_google_api()
 			calculate_Total_products()
-           /*  @if($nbr_shops == 1)
-            calculate_distance_one_seller();
-            @else
-            console.log('Too many shops');
-            @endif */
-
         }).catch(function(err) {
             console.log(err);
         })
@@ -363,47 +385,149 @@ input[type=number] {
     var deltaLat;
     var deltaLng;
     var executed = false;
-
+    var shops=@JSON($shops_info);
+    let all_shops=[];
+    let address_google_map='';
     function transition(result) {
+
+        
         i = 0;
         deltaLat = (result[0] - user_lat) / numDeltas;
         deltaLng = (result[1] - user_lng) / numDeltas;
         moveMarker();
     }
-    function calculate_distance_with_google_api(){
-        var origin1 = new google.maps.LatLng({{$shops_latlng[0][0]}}, {{$shops_latlng[0][1]}});
-            
-            var destinationA = new google.maps.LatLng( user_lat, user_lng);
+  
 
-            var service = new google.maps.DistanceMatrixService();
-            service.getDistanceMatrix(
+    function calculate_distance_with_google_api(){
+
+        var Customer_latlng = new google.maps.LatLng( user_lat, user_lng);
+        @foreach($shops_info as $shop)
+                const {{ 'origin'. $loop->index  }} = new google.maps.LatLng({{$shop['lat']}} ,{{$shop['lng']}});
+        @endforeach
+        all_shops=[@foreach($shops_info as $shop){{ 'origin'. $loop->index  }} @if(!$loop->last) , @endif @endforeach]
+        //var ordred_shops_by_distance=[];
+     //   console.log('All shops = ',all_shops);
+        var service_one = new google.maps.DistanceMatrixService();
+        const geocoder = new google.maps.Geocoder();
+            const latlnggeo = {
+                            lat: parseFloat(user_lat),
+                            lng: parseFloat(user_lng),
+                        };
+           
+        geocoder.geocode({ location: latlnggeo }).then((response) => {
+                if (response.results[0]) {
+                 
+                    infowindow.setContent(response.results[0].formatted_address);
+                    address_google_map=response.results[0].formatted_address;
+                    infowindow.open(map, marker);
+                } else {
+                    window.alert("No results found");
+                }
+                })
+                .catch((e) => window.alert("Geocoder failed due to: " + e));
+
+
+            @foreach($shops_info as $shop)
+           // console.log('the shop is = ',all_shops[{{$loop->index}}])
+            service_one.getDistanceMatrix(
             {
-                origins: [origin1],
-                destinations: [destinationA],
+                origins: [all_shops[{{$loop->index}}]],
+                destinations: [Customer_latlng],
+                travelMode: 'DRIVING',
+            },callback_one_shop_customer_position_distance{{$loop->index}}) 
+
+            @endforeach
+           // console.log('all_shops =====================',all_shops);
+            var temp_origin=[all_shops[0]]
+            origin= new google.maps.LatLng(temp_origin[0].lat(),temp_origin[0].lng())
+           // console.log('first shop latlng === ',temp_origin[0].lat(),temp_origin[0].lng())
+            var _origins =[origin];
+            var _destinations=[];
+            if(all_shops.length != 1){
+            for (let i = 1 ; i < all_shops.length ; i++) {
+               if(i==all_shops.length-1){
+                _destinations.push(new google.maps.LatLng(all_shops[i].lat(),all_shops[i].lng()));
+                _destinations.push(Customer_latlng );
+               }else{
+                _destinations.push(new google.maps.LatLng(all_shops[i].lat(),all_shops[i].lng()));
+               }
+            }
+        }else{
+            _destinations.push(Customer_latlng );
+        }
+            /*   console.log('origin_ ===',_origins[0].lat(),_origins[0].lng())
+            console.log('_destinations[0] ==== ', _destinations[0].lat(),_destinations[0].lng());
+            console.log('_destinations[1] ==== ', _destinations[1].lat(),_destinations[1].lng()); */
+            var service = new google.maps.DistanceMatrixService();
+           
+            service.getDistanceMatrix({
+                origins: _origins,
+                destinations: _destinations,
                 travelMode: 'DRIVING',
             }, callback);
     }
+   
+    var distances_to_compare=[];
+    let calculate_shops=true
+    @foreach($shops_info as $shop)
+    function callback_one_shop_customer_position_distance{{$loop->index}}(response, status){
+       
+        var distance_from= Object.values( response,status.rows)[0][0]['elements'][0]['distance']['value']/1000;
+       // console.log('distance {{$loop->index}} ====>',distance_from)
+        distances_to_compare[{{$loop->index}}]=distance_from;
+       // console.log('distance to compare ======*====>',distances_to_compare);
+        all_shops[{{$loop->index}}].distance=distance_from;
+       // console.log('all_shops with distance ======+++====>',all_shops)
+    }
+    @endforeach
 
+    function callback_one_shop_customer_position_distance(response, status){
+        var distance_from= Object.values( response,status.rows)[0][0]['elements'][0]['distance']['value']/1000;
+       // console.log('distance ====>',distance_from)
+       // console.log(' distances_to_compare ====> ',distances_to_compare)
+    }
+    
     function callback(response, status) {
-        console.log('status = ',response,status)    
-        console.log('distance = ',Object.values( response,status.rows)[0][0]['elements'][0]['distance']['value']/1000)   
-        distance = Object.values( response,status.rows)[0][0]['elements'][0]['distance']['value']/1000 
+        setTimeout(() => {
+            all_shops.sort((a, b) => (a.distance < b.distance) ? 1 : -1)
+         //   console.log('sorted all_shops =++++-->',all_shops)
+          //  console.log('status = ',status)    
+          //  console.log('response = ',response) 
+            distance = 0
+
+            Object.values( response,status.rows)[0][0]['elements'].forEach(element=>{
+                distance += element['distance']['value']/1000 ;
+             //   console.log('element distance =======',element['distance']['value'])
+            })
+      //  console.log('xxxdistance = ',distance)   
         var first_distance=0
         var secande_distance=0
+        delivery_prix=0;
         if(distance >10){
             first_distance = 10
             secande_distance=distance-10;
-            price_shipping=(first_distance * shipping_fee_first_10_km)+(secande_distance * shipping_fee_more_than_10_km)
+            price_shipping=(first_distance * shipping_fee_first_10_km_Customer)+(secande_distance * shipping_fee_more_than_10_km_Customer)
+            delivery_prix=(first_distance * shipping_fee_first_10_km_Delivery)+(secande_distance * shipping_fee_more_than_10_km_Delivery)
         }else{
-            price_shipping=(distance * shipping_fee_first_10_km)
-            if(price_shipping < min_shipping_fee){
-                price_shipping=min_shipping_fee
+            price_shipping=(distance * shipping_fee_first_10_km_Customer)
+            delivery_prix=(distance * shipping_fee_first_10_km_Delivery)
+            if(price_shipping < min_shipping_fee_Customer){
+                price_shipping=min_shipping_fee_Customer
+            }
+            if(delivery_prix < min_shipping_fee_Delivery){
+                delivery_prix = min_shipping_fee_Delivery
             }
         } 
+       if(price_shipping > max_Delivery_price_costumer){
+           price_shipping=max_Delivery_price_costumer;
+       }
+       if(delivery_prix > max_Delivery_price_Delivery){
+            delivery_prix=max_Delivery_price_Delivery;
+       }
+     //  console.log('delivery shipping price = ',delivery_prix)
 		document.querySelector('#total_shipping').innerHTML=Math.round(price_shipping.toFixed(2));			
 
-        console.log('shipping price = ',price_shipping)
-        document.getElementById('shipping_price').innerHTML= Math.round(price_shipping.toFixed(2)) ;
+       // console.log('shipping price = ',price_shipping)
 		calculate_Total_to_pay()
 		
 		/* send shipping price to backend and store it in session */
@@ -411,19 +535,21 @@ input[type=number] {
                         params: {
 							shipping_price: Math.round(price_shipping.toFixed(2)),
 							lat: user_lat,
-							lng:user_lng
+							lng:user_lng,
+							address:address_google_map,
+							delivery_price_shipping: Math.round(delivery_prix.toFixed(2))
                         }
             }).then(function(responce) {
-                console.log(responce);
+               // console.log(responce);
 				calculate_Total_to_pay()
             }).catch(function(err) {
 
             console.log(err);
 
             })
+        }, 500);
 
-    }
-    
+    } 
 
     function moveMarker() {
 
@@ -431,8 +557,7 @@ input[type=number] {
         user_lng += deltaLng;
         var latlng = new google.maps.LatLng(user_lat, user_lng);
         marker.setTitle("Latitude:" + user_lat + " | Longitude:" + user_lng);
-        document.getElementById('lat').value=user_lat
-        document.getElementById('lng').value=user_lng
+
         marker.setPosition(latlng);
         if (i != numDeltas) {
             i++;
@@ -444,12 +569,14 @@ input[type=number] {
        
         // console.log('addres selectioner : lat = ',user_lat,'| lng = ',user_lng )
     }
+
     function calculate_distance_one_seller(){
         if(executed == false){
             executed=true
        setTimeout(executed_to_false, 1000);
+        }
     }
-    }
+    // executed is a boolean , its make to not calculate distance in every move of marker only when it reached the detination ( after 1000 ms of the click  )
     function executed_to_false(){
         price_shipping=0
        const shop_lat ={{$shops_latlng[0][0]}}
@@ -458,17 +585,17 @@ input[type=number] {
         latLngB=new google.maps.LatLng(shop_lat,shop_lng);
         var distance = google.maps.geometry.spherical.computeDistanceBetween(latLngA, latLngB)
         distance=distance/1000 
-        console.log('distance totak en Km =',distance); 
+      //  console.log('distance totak en Km =',distance); 
         var first_distance=0
         var secande_distance=0
         if(distance >10){
             first_distance = 10
             secande_distance=distance-10;
-            price_shipping=(first_distance * shipping_fee_first_10_km)+(secande_distance * shipping_fee_more_than_10_km)
+            price_shipping=(first_distance * shipping_fee_first_10_km_Customer)+(secande_distance * shipping_fee_more_than_10_km_Customer)
         }else{
-            price_shipping=(distance * shipping_fee_first_10_km)
-            if(price_shipping < min_shipping_fee){
-                price_shipping=min_shipping_fee
+            price_shipping=(distance * shipping_fee_first_10_km_Customer)
+            if(price_shipping < min_shipping_fee_Customer){
+                price_shipping=min_shipping_fee_Customer
             }
         }
         calculate_distance_with_google_api()

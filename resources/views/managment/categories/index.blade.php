@@ -15,7 +15,7 @@
       <h3 class="card-title">CATÉGORIES</h3>
       @if(in_array( "category.create", json_decode(Auth::user()->Role->permissions)))
       <div class=" w-100 float-right">
-        <a href="{{ route('category.create',app()->getLocale())}}" class="btn bg-gradient-primary btn-sm float-right">ajouter une catégorie</a>
+        <a href="{{ route('category.create',app()->getLocale())}}" class="btn bg-primary btn-sm float-right">ajouter une catégorie</a>
       </div>
       @endif
     </div>
@@ -33,9 +33,12 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Rendering engine: activate to sort column ascending">#</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">name</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">description</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending" style="">percentage</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">category mére</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">options</th>
-                  </tr>
+                    @if(in_array( "category.create", json_decode(Auth::user()->Role->permissions)))
+                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending" style="">options</th>
+                    @endif
+                    </tr>
                 </thead>
                 <tbody>
                  
@@ -44,6 +47,7 @@
                     <td class="dtr-control" tabindex="0">{{$category->id}}</td>
                     <td>{{$category->name}}</td>
                     <td>{{$category->description}}</td>
+                    <td>{{$category->admin_percent}}</td>
                     @if($category->parent_id != null)
                       @foreach($categories as $cat)
                         @if($cat->id == $category->parent_id)
@@ -53,9 +57,11 @@
                     @else
                       <td>-</td>
                     @endif
+                    @if(in_array( "category.create", json_decode(Auth::user()->Role->permissions)))
                     <td>
                       <a href="{{ route('category.edit',['language'=>app()->getLocale(),'id'=>encrypt($category->id)])}}" title="{{ translate('edit') }}"><i class="mx-1 fas fa-language"></i></a>
                     </td>
+                    @endif
                   </tr>
                   @endforeach
                 </tbody>

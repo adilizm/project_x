@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
@@ -46,6 +48,11 @@ class RegisteredUserController extends Controller
             'phone' => $request->phone,
             'role_id' => 5, // 1 = admin | 2 = manager | 3 = seller | 4 = livreur | 5 =customer
             'password' => Hash::make($request->password),
+        ]);
+        
+        $new_customer =Customer::create([
+            'user_id'=>$user->id,
+            'city_id'=>Cookie::get('user_city'),
         ]);
 
         event(new Registered($user));

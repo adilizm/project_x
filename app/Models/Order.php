@@ -31,4 +31,8 @@ class Order extends Model
     {
         return $this->belongsTo(City::class);
     }
+    public function Delivery()
+    {
+        return $this->belongsTo(Delivery::class);
+    }
 }
