@@ -12,9 +12,9 @@
     <!-- Default box -->
     <div class="card">
         <div class=" p-3 d-flex justify-content-between">
-            <h3 class="card-title">Shops</h3>
+            <h3 class="card-title">Delivery</h3>
             <div class="d-flex row justify-content-flex-end">
-                <form class="mx-2" action="{{ route('shops.index',app()->getLocale()) }}" method="get">
+                <form class="mx-2" action="#" method="get">
                     @csrf
                     <div class="d-flex justify-content-end">
                         <select name="city_id" class="form-control mr-1">

@@ -46,7 +46,7 @@ class OrderController extends Controller
             return view('managment.orders.manager.index', compact('orders'));
         }
         if (in_array("Livreur", json_decode(Auth::user()->Role->permissions))) {
-            $orders = Order::where(['status'=>'confirmed','city_id'=> Auth::user()->Livreur()->first()->city_id,'livreur_id'=>Auth::user()->Livreur()->first()->id])->orderBy('created_at', 'desc');
+            $orders = Order::where(['status' => 'confirmed', 'city_id' => Auth::user()->Livreur()->first()->city_id, 'livreur_id' => null])->orderBy('created_at', 'desc');
             if ($request->status != null && $request->status != 'filtrer Des ordres') {
                 $orders = $orders->where('status', $request->status);
             }
@@ -76,6 +76,15 @@ class OrderController extends Controller
             $livreurs = Delivery::where(['city_id' => $order->city_id, 'is_active' => 1, 'is_confirmed' => 1])->get();
             $orders_detailes = Orderdetail::where('order_id', $order->id)->get();
             return view('managment.orders.admin.edit', compact('order', 'orders_detailes', 'livreurs'));
+        }
+    }
+    public function manager_edit_order($language, $id)
+    {
+        if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
+            $order = Order::find(decrypt($id));
+            $livreurs = Delivery::where(['city_id' => $order->city_id, 'is_active' => 1, 'is_confirmed' => 1])->get();
+            $orders_detailes = Orderdetail::where('order_id', $order->id)->get();
+            return view('managment.orders.manager.edit', compact('order', 'orders_detailes', 'livreurs'));
         }
     }
 
@@ -180,7 +189,7 @@ class OrderController extends Controller
     }
     public function Store_order(Request $request)
     {
-       
+
         $order = new Order();
         $total_products = 0;
         $total_shipping = $request->session()->get('shipping_price');
@@ -209,12 +218,8 @@ class OrderController extends Controller
         if ($request->Zone != null) {
             $Zone = $request->Zone;
         }
-        $address_more_info = null;
-        if ($request->address_more_info != null) {
-            $address_more_info = $request->numaddress_more_infober;
-        }
 
-     /*    $new_order = $order->create([
+        $new_order = $order->create([
             'user_id' => Auth::user()->id,
             "status" => "new_arrivale",
             "delivery_status" => "not_assigned",
@@ -229,16 +234,15 @@ class OrderController extends Controller
             "Zone" => $Zone,
             "address_more_info" => $request->session()->get('address'),
             "delivery_price_shipping" => $delivery_price_shipping,
-            
-        ]); */
+
+        ]);
 
         foreach ($cart as $product) {
             $orderdetail = new Orderdetail();
-            dd( Product::find( $product['product_id'])->Shop()->first()->User()->first()->Vondeur()->first()->id);
             $orderdetail->create([
                 'order_id' => $new_order->id,
                 'product_id' => $product['product_id'],
-                'vondeur_id' => Product::find( $product['product_id'])->Shop()->first()->User()->first()->Vondeur()->first()->id,
+                'vondeur_id' => Product::find($product['product_id'])->Shop()->first()->User()->first()->Vondeur()->first()->id,
                 'variant' => json_encode($product['variant_info']),
                 'price' => $product['variant_info']['prix'],
                 'qty' => $product['quantity'],
@@ -248,7 +252,7 @@ class OrderController extends Controller
         $request->session()->forget('shipping_price');
         $request->session()->forget('lat');
         $request->session()->forget('lng');
-        return 'thankyou';
+        return ' thank you page';
     }
     public function encreas_qty(Request $request)
     {
@@ -276,7 +280,7 @@ class OrderController extends Controller
     public function update_order_delivery(Request $request)
     {
         if (in_array("Admin", json_decode(Auth::user()->Role->permissions)) || in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
-            $order=Order::find($request->params['order_id']);
+            $order = Order::find($request->params['order_id']);
             $delivery = null;
             if ($request->params['order_delivery'] == 'null') {
                 $delivery = null;
@@ -285,7 +289,6 @@ class OrderController extends Controller
                     'Livreur_id' => $delivery,
                 ]);
                 return '2';
-
             } else {
                 $delivery = $request->params['order_delivery'];
             }
@@ -296,13 +299,45 @@ class OrderController extends Controller
             return '1';
         }
     }
-    public function delivery_show_order($language,$id){
-
-        $order=Order::find(decrypt($id));
-        if($order->city_id == Auth::user()->Livreur()->first()->city_id){
+    public function delivery_show_order($language, $id)
+    {
+        $order = Order::find(decrypt($id));
+        if ($order->city_id == Auth::user()->Livreur()->first()->city_id) {
             $orders_detailes = Orderdetail::where('order_id', $order->id)->get();
-            return view('managment.orders.delivery.show',compact('order','orders_detailes'));
+            return view('managment.orders.delivery.show', compact('order', 'orders_detailes'));
         }
+    }
+    public function delivery_change_delivery_status(Request $request)
+    {
+        $order = Order::find($request->params['order_id']);
+        if ($order->Livreur_id == Auth::user()->Livreur()->first()->id) {
+            $order->update([
+                'delivery_status'=>$request->params['delivery_status'],
+                'status'=>$request->params['delivery_status'],
+            ]);
+            return '1';
+        } 
+    }
+    public function take_order(Request $request)
+    {
+        $order = Order::find($request->params['order_id']);
+        if ($order->Livreur_id != null) {
+            if ($order->Livreur_id == Auth::user()->Livreur()->first()->id ) {
+                return '2';
+            }
+            return '0';
+        }
+        if ($order->city_id == Auth::user()->Livreur()->first()->city_id) {
+            $order->update([
+                'Livreur_id' => Auth::user()->Livreur()->first()->id,
+                'delivery_status' => 'in_the_way'
+            ]);
+            return '1';
+        }
+    }
+    public function orders_in_progress(){
+        $orders= Order::orderBy('created_at', 'desc')->where(['Livreur_id'=>Auth::user()->Livreur()->first()->id,'delivery_status'=>'in_the_way'])->get();
+        return view('managment.orders.delivery.orders_on_cours', compact('orders'));
 
     }
 }
