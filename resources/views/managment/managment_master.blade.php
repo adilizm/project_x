@@ -316,6 +316,25 @@
             </a>
         </li>
         @endif
+        @if( in_array( "orders.index", json_decode(Auth::user()->Role->permissions)) && Auth::user()->Livreur()->first() != null)
+        @php  $orders_in_progress= \App\Models\Order::orderBy('created_at', 'desc')->where(['Livreur_id'=>Auth::user()->Livreur()->first()->id,'delivery_status'=>'in_the_way'])->count(); @endphp
+        <li class="nav-item">
+            <a href="{{route('orders.orders_in_progress',app()->getLocale())}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>in progress orders</p>
+            <span class="badge badge-warning float-right">{{$orders_in_progress}}</span>
+
+            </a>
+        </li>
+        @endif
+        @if( in_array( "orders.index", json_decode(Auth::user()->Role->permissions)) && Auth::user()->Livreur()->first() != null)
+        <li class="nav-item">
+            <a href="{{route('orders.delivery.orders_history',app()->getLocale())}}" class="nav-link">
+            <i class="far fa-circle nav-icon"></i>
+            <p>delivery history orders</p>
+            </a>
+        </li>
+        @endif
         @if( in_array( "delivery.index", json_decode(Auth::user()->Role->permissions)))
         <li class="nav-item">
             <a href="{{route('delivery.index',app()->getLocale())}}" class="nav-link">

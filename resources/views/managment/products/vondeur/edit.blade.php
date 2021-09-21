@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="{{'col-8 option' . $loop->index . 'inpute'}}">
                                     <small class="small-hint">les option doit être séparé par virgule ','</small>
-                                    <input type="text" name="values[]" class="{{'form-control option'.$loop->index}}" onchange="Click_btn_generate_prices()" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="{{'option'.$loop->index.'inpute'}}">
+                                    <input type="text" name="values[]" class="{{'form-control option'.$loop->index}}"  style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="{{'option'.$loop->index.'inpute'}}">
                                 </div>
                                 <div class="col-1" style="align-self: center;">
                                     <span onclick='removeOption("{{'option'.$loop->index.'inpute'}}")' class="btn btn-danger">X</span>
@@ -183,7 +183,7 @@
                                 </div>
                                 <div class="col-8 option0inpute">
                                     <small class="small-hint">les option doit être séparé par virgule ','</small>
-                                    <input type="text" name="values[]" class="form-control option0" onchange="Click_btn_generate_prices()" style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="option0inpute">
+                                    <input type="text" name="values[]" class="form-control option0"  style="width: 100% !important;height:100% !important;" data-role="tagsinput" id="option0inpute">
                                 </div>
                                 <div class="col-1" style="align-self: center;">
                                     <span onclick='removeOption("option0inpute")' class="btn btn-danger">X</span>
@@ -305,7 +305,9 @@
 
     function Adding_variants_to_product() {
         if(show_qty){
+            if( document.getElementById('qty') != null){
                 document.getElementById('qty').remove();
+            }
                 show_qty=false;
             }
         document.getElementById('btn_generate_prices').classList.remove('d-none')

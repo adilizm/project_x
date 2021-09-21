@@ -224,7 +224,7 @@
         </div>
     </div>
 
-    @if(count($top_10_requested_products)>1)
+    @if(count($top_10_requested_products)>=1) 
     <div class="glide_top_products container">
         <div class="d-flex" style="font-size: 1.1rem;font-weight: 500; margin-bottom: 5px; margin-top: 5px;">{{ translate('Most requested')}}</div>
         <div class="glide__track " data-glide-el="track">

@@ -11,7 +11,7 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
-        if (!in_array("products.index", json_decode(Auth::user()->Role->permissions))) {
+        if (!in_array("shops.index", json_decode(Auth::user()->Role->permissions))) {
             abort(403, 'Unauthorized action.');
         }
         if (in_array("Admin", json_decode(Auth::user()->Role->permissions))) { //1 admin change this to Role has permition admin 
@@ -35,6 +35,26 @@ class ShopController extends Controller
             $shops= $shops->paginate(10);
             $cities=City::all();
             return view('managment.shops.admin.index', compact('shops','cities'));
+        }
+        if (in_array("Manager", json_decode(Auth::user()->Role->permissions))) { //1 admin change this to Role has permition admin 
+            
+            $shops=Shop::orderBy('created_at', 'asc')->where('city_id',Auth::user()->Manager()->first()->city_id);
+            
+            if($request->confirmation != null && $request->confirmation !="filtrer par situation"){
+                if($request->confirmation == "1"){
+                    $shops= $shops->where('is_published',1);
+                } else{
+                    $shops= $shops->where('is_published',0);
+                }
+            }
+            
+            if($request->search !=null && $request->search !="filtrer par situation"){
+                $shops= $shops->where('name','like','%'. $request->search .'%');
+            }
+
+            $shops= $shops->paginate(10);
+            $cities=City::all();
+            return view('managment.shops.manager.index', compact('shops','cities'));
         }
     }
 
@@ -94,6 +114,52 @@ class ShopController extends Controller
         $shop = Shop::find(decrypt($id));
         $cities = City::all();
         return view('managment.shops.admin.edit', compact('shop', 'cities'));
+    }
+    public function manager_edit_shop($language,$id)
+    {
+        if (!in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
+            abort(403, 'Unauthorized action.');
+        }
+        $shop = Shop::find(decrypt($id));
+        $cities = City::all();
+        return view('managment.shops.manager.edit', compact('shop', 'cities'));
+    }
+    public function manager_update_shop(Request $request)
+    {
+        if (!in_array("Manager", json_decode(Auth::user()->Role->permissions))) {
+            abort(403, 'Unauthorized action.');
+        }
+        $request->validate([
+            'shop_id' => 'required|max:20',
+        ]);
+        $shop = Shop::find($request->shop_id);
+
+        $name = $shop->name;
+        if ($request->has('name')) {
+            $name = $request->name;
+        }
+
+        $is_published = $shop->is_published;
+        if ($request->has('activation')) {
+            $is_published = $request->activation;
+        }
+
+        $address = $shop->address;
+        if ($request->has('address')) {
+            $address = $request->address;
+        }
+
+        $city_id = $shop->city_id;
+        if ($request->has('city_id')) {
+            $city_id = $request->city_id;
+        }
+        $shop->update([
+            'city_id'=>$city_id,
+            'address'=>$address,
+            'is_published'=>$is_published,
+            'name'=>$name,
+        ]);
+        return redirect()->route('shops.index',app()->getLocale())->with('success','le magasin a ete mise a jour');
     }
     public function admin_update_shop(Request $request)
     {

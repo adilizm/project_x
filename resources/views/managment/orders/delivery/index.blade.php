@@ -32,7 +32,7 @@
               <option value="0">in_the_way</option>
               <option value="0">successed</option>
               <option value="0">returned</option>
-            </select>            
+            </select>
             <button type="submit" class="btn btn-primary">Filtrer</button>
           </div>
         </form>
@@ -56,7 +56,7 @@
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">price</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Order status</th>
                     <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">delivery status</th>
-                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Options</th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Take this order</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -65,25 +65,24 @@
                     <td>{{$order->id}}</td>
                     <td>{{$order->created_at}}</td>
                     <td><strong>name:</strong> {{$order->User()->first()->name}} <br> <strong>phone: </strong> {{$order->User()->first()->phone}} </td>
-                    <td><strong>adress on Map :</strong><a class="mx-1" target="_blank" href="{{'https://www.google.com/maps/?q='.$order->lat . ','.$order->lng}}" title="show on map" ><i class="fas fa-map-marked-alt"></i></a> <br> <strong>ville: </strong> {{$order->City()->first()->name}} </td>
+                    <td><strong>adress on Map :</strong><a class="mx-1" target="_blank" href="{{'https://www.google.com/maps/?q='.$order->lat . ','.$order->lng}}" title="show on map"><i class="fas fa-map-marked-alt"></i></a> <br> <strong>ville: </strong> {{$order->City()->first()->name}} </td>
                     <td><strong>Total:</strong> {{$order->price_total}} <br> <strong>Shipping: </strong>{{$order->price_shipping}} </td>
                     <td>{{$order->status}} </td>
                     <td>{{$order->delivery_status}} </td>
                     @if(in_array("orders.edit", json_decode(Auth::user()->Role->permissions)))
                     <td>
-<!--  -->                    </td>
+                      <a class="mx-1" href="{{ route('delivery_show_order',['language'=>app()->getLocale(),'id'=>encrypt($order->id)]) }}"><i class="fas fa-eye"></i></a>
+                    </td>
                     @endif
                   </tr>
                   @endforeach
-
-
                 </tbody>
-                
               </table>
               <div class="d-flex justify-content-end">
-              {{
+                {{
                 $orders->links();
-              }}</div>
+              }}
+              </div>
             </div>
           </div>
         </div>

@@ -51,7 +51,7 @@ class HomeController extends Controller
 
         /* categories */
         $parent_categoreis = Category::whereNull('parent_id')->get();
-
+       // dd($top_10_requested_products);
         return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
     }
 
