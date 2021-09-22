@@ -172,7 +172,7 @@ Route::group(['prefix' => '{language}'], function () {
                 Route::post('orders/take_order', [OrderController::class, 'take_order'])->name('orders.take_order');
                 Route::get('orders/orders_in_progress', [OrderController::class, 'orders_in_progress'])->name('orders.orders_in_progress');
                 Route::post('order/delivery_change_delivery_status', [OrderController::class, 'delivery_change_delivery_status'])->name('delivery_change_delivery_status');
-                Route::get('order/delivery_show_order/{id}', [OrderController::class, 'delivery_show_order'])->name('delivery_show_order');
+                Route::get('show_order/{id}', [OrderController::class, 'delivery_show_order'])->name('delivery_show_order');
             });
         });
         Route::prefix('vendeur')->group(function () {

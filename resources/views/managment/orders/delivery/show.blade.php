@@ -22,7 +22,7 @@
                     <strong>name:</strong> {{$order->User()->first()->name}} <br>
                     <strong>Telephone:</strong> {{$order->User()->first()->phone}}<br>
                     <strong>email:</strong> {{$order->User()->first()->email}}<br>
-                    <strong>address:</strong> @if($order->number != null) N° {{$order->number}}, @endif @if($order->floor != null) Etage, {{$order->floor}}, @endif {{$order->address_more_info}} <a class="mx-1" target="_blank" title="Voir sur la carte" href="{{'https://www.google.com/maps/?q='.$order->lat . ','.$order->lng}}"><i class="fas fa-map-marked-alt"></i></a> <br>
+                    <strong>address:</strong> @if($order->number != null) N° {{$order->number}}, @endif @if($order->floor != null) Etage: {{$order->floor}}, @endif @if($order->Business != null) Business: {{$order->Business}}, @endif {{$order->address_more_info}} <a class="mx-1" target="_blank" title="Voir sur la carte" href="{{'https://www.google.com/maps/?q='.$order->lat . ','.$order->lng}}"><i class="fas fa-map-marked-alt"></i></a> <br>
                 </div>
                 @if($order->Livreur_id == null)
                 <div class="col-sm-12 col-md-6" style="text-align-last: left; padding: 0px 32px;">
@@ -159,6 +159,24 @@
                 toastr.success("order delivery_status has been changed with success");
             } else {
                 toastr.error("Erreur dans cett commande");
+            }
+        }).catch(function(err) {
+            console.log(err);
+        })
+    }
+    function take_order() {
+        axios.post('{{route('orders.take_order',app()->getlocale())}}', {
+                params: {
+                    order_id: {{$order->id}},
+                }
+            }).then(function(responce) {
+            console.log('responce.data =', responce.data)
+            if (responce.data == '1') {
+                toastr.success("this order is yours pls delivered it as soon as possible");
+            } else  if (responce.data == '0') {
+                toastr.error("This order is alredy taken pls try fast next time");
+            } else  if (responce.data == '2') {
+                toastr.error("This order is alredy Yours GG pls delivered it as soon as possible");
             }
         }).catch(function(err) {
             console.log(err);

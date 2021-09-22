@@ -158,15 +158,6 @@ input[type=number] {
             @csrf
             <div class="row">
                 <div class="form-group col-12 col-md-6">
-                    <label for="exampleInputEmail">City</label>
-                    <select name="city_id" class="form-control" >
-                        <option>Your city</option>
-                        @foreach($citeis as $city)
-                            <option value="{{$city->id}}">{{$city->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group col-12 col-md-6">
                     <label for="exampleInputEmail1">number</label>
                     <input type="number" name="number" class="form-control">
                 </div>
@@ -183,12 +174,6 @@ input[type=number] {
                 <div class="form-group col-12 col-md-6">
                     <label for="exampleInputEmail1">District | Zone | Secteur</label>
                     <input type="text" name="Zone" class="form-control">
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-12">
-                    <label for="exampleInputEmail1">More info about address</label>
-                    <input type="text" name="address_more_info" class="form-control">
                 </div>
             </div>
             <div class="d-flex justify-content-end">
