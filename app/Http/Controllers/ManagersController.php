@@ -8,12 +8,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
+
 
 class ManagersController extends Controller
 {
     public function index(){
         $managers=Manager::OrderBy('created_at','desc')->paginate(10);
-
         return view('managment.managers.index',compact('managers'));
     }
     public function create(){
@@ -73,6 +74,63 @@ class ManagersController extends Controller
             ]);
             return '1';
         }
+
+    }
+    public function admin_edit_manager($language,$id){
+        Gate::authorize('Admin');
+      
+        $manager=Manager::find(decrypt($id));
+        $cities=City::all();
+      
+       return view('managment.managers.edit',compact('manager','cities'));
+    }
+    public function update_manager_info(Request $request){
+        Gate::authorize('Admin');
+        
+        $manager=Manager::find($request->manager_id);
+        $user=User::find($manager->user_id);
+
+        $name=$user->name;
+        if($request->name != null){
+            $name=$request->name;
+        }
+
+        $phone=$user->phone;
+        if($request->phone != null){
+            $phone=$request->phone;
+        }
+
+        $email=$user->email;
+        if($request->email != null){
+            $email=$request->email;
+        }
+
+        $city=$manager->city_id;
+        if($request->city != null){
+            $city=$request->city;
+        }
+     
+        if($request->password != null){
+            $user->update([
+                'name'=>$name,
+                'phone'=>$phone,
+                'email'=>$email,
+                'password'=>Hash::make($request->password),
+            ]);
+            $manager->update([
+                'city_id'=>$city
+            ]);
+        }else{
+            $user->update([
+                'name'=>$name,
+                'phone'=>$phone,
+                'email'=>$email,
+            ]);
+            $manager->update([
+                'city_id'=>$city
+            ]);
+        }
+        return back()->with('success','the manager is updated ');
 
     }
 }

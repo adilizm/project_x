@@ -36,7 +36,7 @@
                 @else
                 <div class="col-sm-12 col-md-6" style="text-align-last: left; padding: 0px 32px;">
                     <div class="form-group">
-                        <select class="form-control" name="" id="" onchange="">
+                        <select class="form-control" id="delivery_status" onchange="update_delivery_status()">
                             <option disabled selected>select delivery status</option>
                             <option value="successed">successed</option>
                             <option value="returned">returned</option>
@@ -147,20 +147,16 @@
 </script>
 
 <script>
-    function take_order(order_id) {
-        axios.post('{{route('
-            orders.take_order ',app()->getlocale())}}', {
+    function update_delivery_status() {
+        axios.post('{{route('delivery_change_delivery_status',app()->getlocale())}}', {
                 params: {
-                    order_id: order_id,
+                    order_id: {{$order->id}},
+                    delivery_status:document.getElementById('delivery_status').value,
                 }
             }).then(function(responce) {
             console.log('responce.data =', responce.data)
             if (responce.data == '1') {
-                toastr.success("merci de servir cette commande aussi vite que possible");
-            } else if (responce.data == '0') {
-                toastr.info("cette commande est deja prise par un(e) autre livreur(se)");
-            } else if (responce.data == '2') {
-                toastr.success("cette commande est deja prise par Vous");
+                toastr.success("order delivery_status has been changed with success");
             } else {
                 toastr.error("Erreur dans cett commande");
             }

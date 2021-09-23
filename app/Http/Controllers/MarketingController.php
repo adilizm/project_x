@@ -123,7 +123,6 @@ class MarketingController extends Controller
     }
     public function delete_slider(Request $request){
         Gate::authorize('Admin');
-        
         $slider= Slider::FindOrFail($request->slider_id)->delete();
         return back()->with('success','le curseur est supprimer');
     }

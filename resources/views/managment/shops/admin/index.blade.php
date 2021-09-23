@@ -81,8 +81,8 @@
                       </span>
                     </td>
                     <td>
-                    <a href="{{ route('admin.shops.admin_edit_shop',['language'=>app()->getLocale(),'id'=>encrypt($shop->id)])}}"><i class="fas fa-edit"></i></a>
-
+                    <a href="{{ route('admin.shops.admin_edit_shop',['language'=>app()->getLocale(),'id'=>encrypt($shop->id)])}}" title="edit shop"><i class="fas fa-edit"></i></a> <br>
+                    <a href="{{ route('shops.products',['language'=>app()->getLocale(),'shop_id'=>encrypt($shop->id)])}}" title="products"><i class="fab fa-product-hunt"></i></a>
                     </td>
                   </tr>
                   @endforeach
