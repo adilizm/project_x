@@ -35,7 +35,8 @@ class UsersController extends Controller
         return back()->with('success','le rôle de l\'utilisateur <strong>'. $user->name .'</strong> a été mis à jour avec succès');
     }
     public function login($language,$id)
-    {
+    {        
+       // check if admin or manager
         $user = User::findOrFail(decrypt($id));
         auth()->login($user, true);
         return redirect()->route('home',app()->getLocale());

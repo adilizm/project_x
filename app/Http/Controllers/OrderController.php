@@ -8,6 +8,7 @@ use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Orderdetail;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -57,15 +58,21 @@ class OrderController extends Controller
             return view('managment.orders.delivery.index', compact('orders'));
         }
         if (in_array("Vondeur", json_decode(Auth::user()->Role->permissions))) {
-            $orders = Orderdetail::where('vondeur_id', Auth::user()->Vondeur()->first()->id)->orderBy('created_at', 'desc');
+            $orders = Orderdetail::where('vondeur_id', Auth::user()->Vondeur()->first()->id)->with('Order')->orderBy('created_at', 'desc');
             if ($request->status != null && $request->status != 'filtrer Des ordres') {
-                $orders = $orders->where('status', $request->status);
+                $status=$request->status;
+                $orders = $orders->where('Order', function(Builder $qeury) use($status){
+                    $qeury->where('status',$status);
+                });
             }
             if ($request->delivery_status != null && $request->delivery_status != 'delivery_status') {
-                $orders = $orders->where('delivery_status', $request->delivery_status);
+                $delivery_status=$request->delivery_status;
+                $orders = $orders->where('Order', function(Builder $qeury) use($delivery_status){
+                    $qeury->where('delivery_status',$delivery_status);
+                });
             }
             $orders = $orders->paginate(10);
-            return view('managment.orders.delivery.index', compact('orders'));
+            return view('managment.orders.vondeur.index', compact('orders'));
         }
         return 'you should be admin or manager pls contact admin to take care of you, Thanks';
     }

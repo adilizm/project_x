@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\githubLoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ManagmentController;
 use App\Http\Controllers\MarketingController;
@@ -52,6 +53,8 @@ Route::group(['prefix' => '{language}'], function () {
 
     /* Login_required */
     Route::get('Login_required', [HomeController::class, 'Login_required'])->name('Login_required');
+    Route::get('sign-in/github', [githubLoginController::class, 'github'])->name('login_github');
+    Route::get('sign-in/github-redirect', [githubLoginController::class, 'githubRedirect'])->name('login_github_redirect');
 
 
     Route::get('/', [HomeController::class, 'index'])->middleware([city_checker::class])->name('home');
