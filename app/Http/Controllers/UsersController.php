@@ -67,6 +67,14 @@ class UsersController extends Controller
         return redirect()->route('users.index',app()->getLocale())->with('success','les informations de l\'utilisateur '. $user->name .' ont été mises à jour');
     }
     public function My_profile(){
-       return view('frontend.user.profile');
+       return view('frontend-user.profile.user-profile');
+    }
+    public function update_password()
+    {
+        return view('frontend-user.profile.change-user-password');
+    }
+    public function user_orders()
+    {
+        return view('frontend-user.profile.user-order');
     }
 }
