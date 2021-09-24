@@ -1,5 +1,5 @@
 @extends('frontend-user.app')
-@section('home')
+@section('content_section')
 <div class="bg-white mb-4">
    <article class="rounded-lg ">
       <div class="flex flex-col md:flex-row border-b border-border-200 border-opacity-70 py-4">
