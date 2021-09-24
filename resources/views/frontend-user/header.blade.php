@@ -13,7 +13,7 @@
                       <label for="grocery search at header" class="sr-only">konly search at header</label>
                       <input  type="text" onkeyup="search_typing()" id="search"
                         autocomplete="off"
-                        class="w-full h-full flex item-center appearance-none transition duration-300 ease-in-out text-heading text-md placeholder-gray-500 overflow-hidden rounded-lg focus:outline-none focus:ring-0 bg-gray-100 pl-10 pr-12 md:pl-14 border border-border-200 focus:border-green-600 focus:bg-white"
+                        class="w-full h-full flex item-center appearance-none text-heading text-md placeholder-gray-500 overflow-hidden rounded-lg focus:outline-none focus:ring-0 bg-gray-100 pl-10 pr-12 md:pl-14 border border-border-200 focus:border-green-600 focus:bg-white"
                         name="search" placeholder="Search your products from here" value=""><button
                         class="h-full w-10 md:w-14 flex items-center justify-center absolute left-0 text-gray-500 transition-colors duration-200 focus:outline-none hover:text-green-600-hover focus:text-green-600-hover"><span
                            class="sr-only">Search</span><svg viewBox="0 0 17.048 18" class="w-3.5 h-3.5 md:w-4 md:h-4">
@@ -32,16 +32,17 @@
 
                <li>
                   <!-- dropdown -->
-                  <div class="relative">
-                     <img src="{{asset('/images/nav/shopping-cart.svg')}}" alt="" srcset="" class="img-responsive w-7" onClick="toggleDropCart()"
+                  <div class="relative shopping-cart">
+                     <img src="{{asset('/images/nav/shopping-cart.svg')}}" alt="" srcset="" class="img-responsive w-7" onClick="showCheckoutSideNav()"
                         id="menu-button" aria-expanded="true" aria-haspopup="true">
-                        <div id="pol-cart"
+                        <span class="bg-green-600 rounded-full px-1 absolute -top-2 -right-2 text-sm " id="card_product_number">@if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif</span>
+                        {{-- <div id="pol-cart"
                         class="hidden origin-top-right absolute right-0 mt-4 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
                         <div class="py-1" role="none">
                            <svg class="feather feather-frown text-gray-800 mx-auto my-2" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" ><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>                        </div>
                               <p class="text-center text-gray-800 my-2">Votre Panier Est Vide</p>
-                        </div>
+                        </div> --}}
                   </div>
                   <!-- end dropdown -->
                </li>
@@ -53,38 +54,38 @@
                         <div id="pol-user"
                         class="hidden origin-top-right absolute right-0 mt-4 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                        <div class="text-gray-700 px-4" role="none">
+                        <div class="px-4 text-heading text-md text-gray-500" role="none">
                             @auth
-                            <a class="py-1 block" href="{{ route('myprofil',app()->getLocale())}}"> Mon profil </a>
-                            <a class="py-1 block" href="{{ route('panier',app()->getLocale())}}"> Ma carte </a>
-                  @if(Auth::user()->role_id == 1)
-                  <a class="py-1 block" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a>
+                            <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="{{ route('myprofil',app()->getLocale())}}"> Mon profil </a>
+                            <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="{{ route('panier',app()->getLocale())}}"> Ma carte </a>
+                           @if(Auth::user()->role_id == 1)
+                           <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="{{ route('managment.index',app()->getLocale())}}"> Admin managment </a>
                   @elseif(Auth::user()->role_id == 2)
-                  <a class="py-1 block" href="#"> {{ translate('manager managment')}} </a>
+                  <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="#"> {{ translate('manager managment')}} </a>
                   @elseif(Auth::user()->role_id == 3)
-                  <a class="py-1 block" href="{{ route('managment.index',app()->getLocale()) }}"> vendor managment </a>
+                  <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="{{ route('managment.index',app()->getLocale()) }}"> vendor managment </a>
                   @elseif(Auth::user()->role_id == 4)
                     @if(Auth::user()->Livreur()->first()->is_active == 1 && Auth::user()->Livreur()->first()->is_confirmed == 1 )
-                      <a class="py-1 block" href="#">livreur managment </a>
+                      <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="#">livreur managment </a>
                     @else
-                      <a class="py-1 block" href="#">livreur not active</a>
+                      <a class="py-1 block hover:text-green-600 focus:text-greeen-600" href="#">livreur not active</a>
                     @endif
                     @endif
                   
-                    <form method="POST" action="{{ route('logout',app()->getLocale()) }}">
+                    <form method="POST" action="{{ route('logout',app()->getLocale()) }}" class="cursor-pointer">
                       @csrf
-                      <a class="py-1 block" :href="route('logout',app()->getLocale())" onclick="event.preventDefault();
+                      <a class="py-1 block hover:text-red-600 focus:text-red-600 cursor-pointer" :href="route('logout',app()->getLocale())" onclick="event.preventDefault();
                                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                       </a>
                     </form>
                   @else
              
-                    {{-- <a href="{{ route('login',app()->getLocale()) }}" class="py-1 block">Connectez-vous</a> --}}
-                    <button onclick="showModelLogin()" class="py-1 block">Connectez-vous</button>
+                    {{-- <a href="{{ route('login',app()->getLocale()) }}" class="py-1 block hover:text-green-600 focus:text-greeen-600">Connectez-vous</a> --}}
+                    <button onclick="showModelLogin()" class="py-1 block hover:text-green-600 focus:text-greeen-600">Connectez-vous</button>
                     
-                    {{-- <a href="{{ route('register',app()->getLocale()) }}" class="py-1 block">Créer un compte</a> --}}
-                    <a onclick="showModelRegister()" class="py-1 block">Créer un compte</a>
+                    {{-- <a href="{{ route('register',app()->getLocale()) }}" class="py-1 block hover:text-green-600 focus:text-greeen-600">Créer un compte</a> --}}
+                    <a onclick="showModelRegister()" class="py-1 block hover:text-green-600 focus:text-greeen-600">Créer un compte</a>
                
                 @endauth
                         </div>
@@ -95,7 +96,7 @@
             </ul>
          </div>
       </header>
-<div class="visible lg:hidden h-12 md:h-14">
+<div class="visible lg:hidden">
          <nav
             class="h-12 md:h-14 w-full py-1.5 px-2 flex justify-between fixed start-0 bottom-0 z-10 bg-white shadow-400">
             <button class="flex p-2 h-full items-center justify-center focus:outline-none focus:text-green-600"><span
@@ -140,22 +141,20 @@
 </div>
  @include('frontend-user.components.login-model')
   @include('frontend-user.components.register-model')
+   @include('frontend-user.components.checkout-side-nav')
       <script>
+         var nbr_products_in_cart= @if(session()->get('cart') != null ) {{count(session()->get('cart'))}} @else 0 @endif ;
                function toggleDropUser() {
          document.getElementById('pol-user').style.display = 'block';
       }
-      function toggleDropCart() {
-         document.getElementById('pol-cart').style.display = 'block';
-      }
+    
      window.addEventListener('mouseup', function (event) {
          var polUser = document.getElementById('pol-user');
-         var polCart = document.getElementById('pol-cart');
+         
          if (event.target != polUser && event.target.parentNode != polUser) {
             polUser.style.display = 'none';
          }
-         if (event.target != polCart && event.target.parentNode != polCart) {
-            polCart.style.display = 'none';
-         }
+        
       });
 
         function search() {

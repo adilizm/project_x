@@ -30,7 +30,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {   
         // $request->session()->forget('cart');
-        // dd($request);
+        //  dd($request);
         $sliders = Slider::all();
         /* Top 10 requested products */
         $top_10_requested_products = [];
@@ -53,7 +53,7 @@ class HomeController extends Controller
         $parent_categoreis = Category::whereNull('parent_id')->get();
 
 
-        //return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
+       //return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
         return view('frontend-user.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
 
     }
@@ -156,7 +156,7 @@ class HomeController extends Controller
         /*         dd($variants,$options,$variables);
  */
         if ($product != null) {
-            // return view('frontend.product.product_index', compact('product', 'variants', 'options', 'variables'));
+            //return view('frontend.product.product_index', compact('product', 'variants', 'options', 'variables'));
             return view('frontend-user.product.index', compact('product', 'variants', 'options', 'variables'));
 
         } else {
@@ -255,7 +255,8 @@ class HomeController extends Controller
             $max_Delivery_price_delivery_man = Businesssetting::where("name", "max_Delivery_price_delivery_man")->first()->value;
 
             
-            return view('frontend.cart.cart', compact('max_Delivery_price_delivery_man','min_Delivery_price_delivery_man','Delivery_price_delivery_man_more_than_10_KM','Delivery_price_delivery_man_less_than_10_KM','citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng','shops_info','max_Delivery_price_costumer'));
+           // return view('frontend.cart.cart', compact('max_Delivery_price_delivery_man','min_Delivery_price_delivery_man','Delivery_price_delivery_man_more_than_10_KM','Delivery_price_delivery_man_less_than_10_KM','citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng','shops_info','max_Delivery_price_costumer'));
+            return view('frontend-user.cart.cart', compact('max_Delivery_price_delivery_man','min_Delivery_price_delivery_man','Delivery_price_delivery_man_more_than_10_KM','Delivery_price_delivery_man_less_than_10_KM','citeis', 'products_in_cart', 'nbr_shops', 'shipping_fee_first_10_km', 'shipping_fee_more_than_10_km', 'min_shipping_fee', 'shops_latlng','shops_info','max_Delivery_price_costumer'));
         } else {
             return 'cart empty';
         }

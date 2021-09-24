@@ -1,7 +1,6 @@
 @extends('frant_master')
 
 @section('frant_head')
-<script src="{{'https://maps.googleapis.com/maps/api/js?key=AIzaSyBpi8qc5SF5O4Tok6Iu0wkTEiNb0vn59FE&libraries=geometry&language='.app()->getLocale().'&v=weekly'}}" async></script>
 
 	<style>
 		/* Chrome, Safari, Edge, Opera */
