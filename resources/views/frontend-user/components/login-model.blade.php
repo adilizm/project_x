@@ -12,15 +12,20 @@
             <h2 class="text-center text-sm md:text-base mt-4 sm:mt-5 mb-8 sm:mb-10">Login with your email & password</h3>
                 <div class="mb-5 grid justify-items-start mb-5">
                     <label for="email" class="text-left mb-3">Email</label>
-                    <input id="email" name="email" type="email" class="px-4  w-full   border border-border-base rounded-md focus:border-accent h-12">
+                    <input id="email" name="email" value="{{old('email')}}" required autofocus type="email" class="px-4  w-full   border border-border-base rounded-md focus:border-accent h-12">
                 </div>
                 <div class="mb-5">
                     <div class="flex items-center justify-between">
                         <label for="password" class="mb-3">Password</label>
-                        <button type="button" class="text-xs text-green-600 transition-colors duration-200 focus:outline-none focus:text-green-600 focus:font-semibold hover:text-green-hover">Forgot password?</button>
+                          @if (Route::has('password.request'))
+                    <a class="text-xs text-green-600 transition-colors duration-200 focus:outline-none focus:text-green-600 focus:font-semibold hover:text-green-hover" href="{{ route('password.request',app()->getLocale()) }}">
+                        {{ __('Forgot your password?') }}
+                    </a>
+                @endif
+                        
                     </div>
                     <div class="relative">
-                        <input id="password" name="password" type="password" class="px-4  w-full   border border-border-base rounded-md focus:border-green h-12" placeholder="************">
+                        <input id="password" name="password" type="password" class="px-4  w-full   border border-border-base rounded-md focus:border-green h-12" placeholder="************" required>
                         <label for="password" class="absolute right-4 top-5 -mt-2 cursor-pointer text-black">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -30,9 +35,14 @@
                     </div>
                 </div>
 
-                            
+                <div class="mb-5">
+                <label for="remember_me" class="flex items-center ">
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50" name="remember">
+                    <span class="ml-2">{{ __('Remember me') }}</span>
+                </label>
+            </div>             
         </div>
-        
+       
         <div class="px-3  mx-2 text-center space-x-4 md:block">
             <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-md">
                 Login
