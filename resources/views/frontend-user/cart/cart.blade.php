@@ -15,6 +15,7 @@
           <p class="text-lg lg:text-xl text-heading capitalize">{{translate('My Orders')}}</p>
         </div>
     </div>
+    
     @foreach($products_in_cart as $product)
     <div class="shadow-700 bg-white px-2 md:px-5 rounded-lg border">
         <div class="flex items-center py-4   text-sm  justify-between" style="opacity: 1;">
