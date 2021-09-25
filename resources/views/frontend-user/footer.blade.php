@@ -8,44 +8,52 @@
                   <div class="w-full lg:w-1/2 mb-16 lg:mb-0 flex">
                      <div class="w-full lg:w-1/2 px-6">
                         <ul>
+                           
                            <li><a class="focus:text-green-600   text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Components</a></li>
+                                 href="javascript:void(0)">Termes et conditions</a></li>
                            <li class="mt-6"><a
                                  class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Templates</a></li>
+                                 href="javascript:void(0)">Politique de retour</a></li>
                            <li class="mt-6"><a
                                  class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Pricing</a></li>
+                                 href="javascript:void(0)">Politique de soutien</a></li>
                            <li class="mt-6"><a
                                  class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">FAQ</a></li>
-                           <li class="mt-6"><a href="javascript:void(0)"
-                                 class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50">Documentation</a>
-                           </li>
+                                 href="javascript:void(0)">Politique de confidentialité</a></li>
+                           
                         </ul>
                      </div>
                      <div class="w-full lg:w-1/2 px-6">
                         <ul>
                            <li><a class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Free components</a></li>
+                                 href="javascript:void(0)">contact@konly.ma</a></li>
                            <li class="mt-6"><a
                                  class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Blog</a></li>
+                                 href="javascript:void(0)">+2120612345678</a></li>
                            <li class="mt-6"><a
                                  class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Changelog</a></li>
+                                 href="javascript:void(0)">Mon-Sat 10:00pm - 7:00pm</a></li>
+                           <li class="mt-6"><a
+                                 class="focus:text-green-600  text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
+                                 href="javascript:void(0)">APP3, 1ère étage IMM109 abdellah genoun, hay salam, Agadir 80000.</a></li>
                         </ul>
                      </div>
                   </div>
                   <div class="w-full lg:w-1/2 flex">
                      <div class="w-full lg:w-1/2 px-6">
                         <ul>
-                           <li><a href="javascript:void(0)"
-                                 class=" focus:text-green-600 text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50">Privacy
-                                 policy</a></li>
+                           <li><a href=""
+                                 class=" focus:text-green-600 text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50">
+                                 Devenir vendeur</a></li>
                            <li class="mt-6"><a
                                  class=" focus:text-green-600 text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
-                                 href="javascript:void(0)">Terms of service</a></li>
+                                 href="{{route('login.delivery',app()->getLocale())}}">Devenir Livreur</a></li>
+                           <li class="mt-6"><a
+                                 class=" focus:text-green-600 text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
+                                 href="javascript:void(0)" id="buttonInstall">Install App</a></li>
+                           <li class="mt-6"><a
+                                 class=" focus:text-green-600 text-xs lg:text-sm leading-none hover:text-green-600 dark:hover:text-green-600 text-gray-800 dark:text-gray-50"
+                                 href="javascript:void(0)">Besoin Aides</a></li>
                         </ul>
                      </div>
                      <div class="w-full lg:w-1/2 px-6 flex flex-col justify-between">

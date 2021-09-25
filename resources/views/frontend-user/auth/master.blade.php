@@ -19,16 +19,17 @@
     <!-- Scripts-->
     <script src="/glide/glide.min.js"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-    @yield('head_section')
+    @yield('head')
 </head>
 
 <body class="font-sans bg-gray-100">
-    @include('frontend-user.header')
-    <div class="container mx-auto bg-gray-100" style="min-height:50vh">
-        @yield('content_section')
+   
+    <div class="bg-gray-100">
+    @yield('body')
     </div>
-    @yield('script_section')
-    @include('frontend-user.footer')
+    
+    @yield('script')
+    
 </body>
 
 </html>
