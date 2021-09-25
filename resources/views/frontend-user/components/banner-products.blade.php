@@ -28,8 +28,9 @@
                       <a href="{{route('product.index',['language'=>app()->getLocale(),'slug'=>$product->slug])}}">
                      <h3 class="text-xs md:text-sm text-gray-600  mb-4 cursor-pointer leading-6 h-11 overflow-hidden overflow-ellipsis">{{ $product->name }}</h3>
                       </a>
-                     <div class="flex overflow-hidden w-full h-7 md:h-9 bg-green-600 text-white rounded">
-                           <button
+                     <div class="flex justify-center items-center overflow-hidden w-full h-7 md:h-9 bg-green-600 text-white rounded">
+                        {{translate('Voir Plus')}}
+                           {{-- <button
                               class="cursor-pointer p-2 transition-colors duration-200 focus:outline-none hover:bg-green-600-hover">
                               <span class="sr-only">minus</span>
                               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-3 w-3 stroke-3">
@@ -46,23 +47,9 @@
                                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
                                  </path>
                               </svg>
-                           </button>
+                           </button> --}}
                      </div>
-                     {{-- <div class="flex overflow-hidden w-full h-7 md:h-9 bg-green-600 text-white rounded">
-                        <button class="cursor-pointer p-2 transition-colors duration-200 focus:outline-none hover:bg-green-600-hover">
-                           <span class="sr-only text-white">minus</span>
-                           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-3 w-3 stroke-2.5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4"></path>
-                           </svg>
-                        </button>
-                        <div class="flex-1 flex items-center justify-center text-sm font-semibold">13</div>
-                        <button class="cursor-pointer p-2 transition-colors duration-200 focus:outline-none hover:bg-green-600-hover" title="">
-                           <span class="sr-only text-white">plus</span>
-                           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-3.5 w-3.5 md:h-4.5 md:w-4.5 stroke-2.5">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                           </svg>
-                        </button>
-                     </div> --}}
+                    
                   </header>
                </article>
               </a>
