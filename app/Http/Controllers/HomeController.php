@@ -19,7 +19,8 @@ class HomeController extends Controller
     public function Select_city()
     {
         $cities = City::all();
-        return view('frontend.select_city', compact('cities'));
+        //return view('frontend.select_city', compact('cities'));
+        return view('frontend-user.choose-city', compact('cities'));
     }
     public function store_city($language, $id, Request $request)
     {
@@ -54,7 +55,7 @@ class HomeController extends Controller
 
 
        //return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
-        return view('frontend-user.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
+        return view('frontend-user.auth.login', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
 
     }
 
