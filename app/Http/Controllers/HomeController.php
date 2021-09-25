@@ -55,7 +55,7 @@ class HomeController extends Controller
 
 
        //return view('frontend.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
-        return view('frontend-user.auth.login', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
+        return view('frontend-user.home', compact('sliders', 'top_10_requested_products', 'parent_categoreis'));
 
     }
 

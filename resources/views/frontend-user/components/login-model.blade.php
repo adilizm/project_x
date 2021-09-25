@@ -7,9 +7,9 @@
           <div class="">
            <form method="POST" action="{{ route('login',app()->getLocale()) }}">
             @csrf
-        <div class="text-center p-5 flex-auto justify-center">
-            <img src="{{asset('/images/logo/PickBazar.png')}}" alt="" srcset="" class="img-responsive mx-auto" style="max-width: 12rem;">
-            <h2 class="text-center text-sm md:text-base mt-4 sm:mt-5 mb-8 sm:mb-10">Login with your email & password</h3>
+        <div class="text-center  flex-auto justify-center">
+            <img src="{{asset('/images/logo/konly-logo.svg')}}" alt="" srcset="" class="w-40 h-40 mx-auto" style="max-width: 12rem;">
+            <h2 class="text-center text-sm md:text-base mt-2 sm:mt-5 mb-4 sm:mb-5">Login with your email & password</h3>
                 <div class="mb-5 grid justify-items-start mb-5">
                     <label for="email" class="text-left mb-3">Email</label>
                     <input id="email" name="email" value="{{old('email')}}" required autofocus type="email" class="px-4  w-full   border border-border-base rounded-md focus:border-accent h-12">
@@ -71,7 +71,7 @@
                 
         </div>
          
-        <div class="flex flex-col items-center justify-center relative text-sm text-heading mt-8 sm:mt-11 mb-6 sm:mb-8"><hr class="w-full"></div>
+        <div class="flex flex-col items-center justify-center relative text-sm text-heading mt-4 sm:mt-6 mb-3 sm:mb-4"><hr class="w-full"></div>
         <div class="text-sm sm:text-base text-gray-600 text-center">Don't have any account? 
             <button onclick="showModelRegister()" class="ms-1 underline text-green-600 font-semibold transition-colors duration-200 focus:outline-none hover:text-accent-hover focus:text-accent-hover hover:no-underline focus:no-underline">Register</button></div>
       </div>
