@@ -120,6 +120,8 @@ Route::group(['prefix' => '{language}'], function () {
         Route::post('users/change_Role', [UsersController::class, 'change_role'])->name('users.change_Role');
         Route::get('users/login/{id}', [UsersController::class, 'login'])->name('users.login');
         Route::post('users/update', [UsersController::class, 'update'])->name('users.update');
+        Route::get('users/update-password', [UsersController::class, 'update_password'])->name('users.update.password');
+        Route::get('users/orders', [UsersController::class, 'user_orders'])->name('users.orders');
 
         /* categorie Routes */
         Route::get('categorie', [CategoryController::class, 'index'])->name('category.index');
