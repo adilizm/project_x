@@ -1,4 +1,20 @@
+
+const { colors: defaultColors } = require('tailwindcss/defaultTheme')
+
+const colors = {
+    ...defaultColors,
+    ...{
+        "custom": {
+        "primary": "#03305A",
+        "secondary": "#D56639",
+        },
+    },
+}
+
 module.exports = {
+    "theme": {
+        "colors": colors,
+    },
   corePlugins: {
     container: false
   },
